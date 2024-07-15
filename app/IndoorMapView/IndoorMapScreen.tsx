@@ -1,10 +1,10 @@
 import React from "react";
 import { View } from 'react-native';
 
-import NodeEditor from "../components/NodeEditor";
-import NavigationBar from "../components/NavigationBar";
-import Map from "../components/Map";
-import FloorMenu from "../components/FloorMenu";
+import NodeEditor from "./NodeEditor";
+import NavigationBar from "./NavigationBar";
+import Map from "./Map";
+import FloorMenu from "./FloorMenu";
 
 
 
