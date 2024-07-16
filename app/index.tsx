@@ -11,7 +11,7 @@ export default function Index() {
       }}
     >
       <Text>Hi Honghui</Text>
-      <Link href="/screens/IndoorMapScreen">
+      <Link href="/(Editor)/MapEditor">
         Go to Map Screen
       </Link>
     </View>
