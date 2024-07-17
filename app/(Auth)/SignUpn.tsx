@@ -6,5 +6,5 @@ export default function SignUpScreen() {
         <View>
         <Text> GIVE ME YOUR INFORMATION PLS, SIGN UP </Text>
         </View>
-    )
+    );
 }

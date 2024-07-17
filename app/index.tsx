@@ -11,9 +11,11 @@ export default function Index() {
       }}
     >
       <Text>Hi Honghui</Text>
-      <Link href="/(Editor)/MapEditor">
-        Go to Map Screen
+      <Link href="/(Auth)/LogIn">
+        Go to Login
       </Link>
     </View>
   );
 }
+
+// <Link href="/(Editor)/MapEditor">
