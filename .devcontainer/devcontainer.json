@@ -1,0 +1,8 @@
+{
+	"name": "NavigationApp",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"remoteUser": "node",
+	"postCreateCommand": "npm install"
+}
