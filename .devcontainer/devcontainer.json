@@ -1,13 +1,8 @@
 {
-	"name": "NavigationApp (Ubuntu 22.04)",
+	"name": "NavigationApp",
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				
-			]
-		}
-	}
+	"remoteUser": "node",
+	"postCreateCommand": "npm install"
 }
