@@ -1,8 +1,8 @@
 import React from "react";
 import { View } from 'react-native';
 
-import NodeEditor from "../../components/NodeEditor";
 import NavigationBar from "../../components/NavigationBar";
+import EditBar from "../../components/EditBar";
 import Map from "../../components/Map";
 import FloorMenu from "../../components/FloorMenu";
 
@@ -10,11 +10,11 @@ import FloorMenu from "../../components/FloorMenu";
 
 export default function MapEditor() {
     return (
-        <View>
+        <View style={{flex: 1}}>
             <NavigationBar />
-            <NodeEditor />
             <Map />
             <FloorMenu />
+            <EditBar /> 
         </View>
     )
 }
