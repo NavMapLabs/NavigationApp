@@ -1,41 +1,49 @@
-import { Text, View, TextInput, StyleSheet, Button } from "react-native"
+import { Text, View, TextInput, StyleSheet } from "react-native"
 import { Link } from "expo-router"
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function LogInScreen() {
     return (
-    <View
-        style={styles.container}>
-       <View
-        style={styles.box}>
-       <Text>Email</Text> 
-        <TextInput 
-            style={styles.input}
-            placeholder='Value' 
-            placeholderTextColor="#a9a9a9" // this makes the placeholder grey
-        />
-        <Text>Password</Text>
-        <TextInput 
-            style={styles.input}
-            placeholder='Value' 
-            placeholderTextColor="#a9a9a9" // this makes the placeholder grey
-        />
-        <Button
-            title="Sign In"
-            color="#37e6a8"
-        >
-        </Button>
+        <View
+            style={styles.container}>
+            <View
+                style={styles.box}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Value'
+                    placeholderTextColor="#a9a9a9"
+                    // obtain data here
+                />
+                <Text style={styles.label}>Password</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Value'
+                    placeholderTextColor="#a9a9a9"
+                    // obtain data here
+                />
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                        // handle sign-in action here
+                    }}
+                >
+                    <Text style={styles.buttonText}>Sign In</Text>
+                </TouchableOpacity>
 
-        <Text style={styles.underline}> 
-            Forgot password?
-        </Text>
-        <Text style={styles.underline}>
-            Need an account? Sign-up{' '}
-        <Link href="/(Auth)/SignUpn">
-        here.
-        </Link>
-        </Text>
+                <Text style={styles.textSpace}>
+                    <Text style={styles.underline}>
+                        Forgot password?
+                    </Text>
+                </Text>
+                <Text style={styles.underline}>
+                    Need an account? Sign-up{' '}
+                    <Link href="/(Auth)/SignUpn">
+                        here.
+                    </Link>
+                </Text>
+            </View>
         </View>
-    </View>
     );
 }
 
@@ -49,7 +57,7 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: '#777',
-        backgroundColor: 'white', // remove this later when youre done
+        backgroundColor: 'white',
         padding: 8,
         margin: 10,
         borderRadius: 10,
@@ -62,18 +70,38 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 15,
         width: 400,
+        alignItems: 'center',
     },
     underline: {
-        textDecorationLine: 'underline', 
+        textDecorationLine: 'underline',
         color: 'black', // set this color of the underline 'black'
+    },
+    button: {
+        backgroundColor: '#71E0BC',
+        borderRadius: 5,
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 10,
+        width: 350,
+    },
+    buttonText: {
+        color: 'black', // Set the text color to black
+        // fontSize: 10, --> change font size if needed
+    },
+    textSpace: {
+        marginTop: 8, // Space before text
+        marginBottom: 8, // Space after text
+    },
+    label: {
+        alignSelf: 'flex-start', // align labels to the start
+        marginLeft: 10, // Add some margin to the left to match the input margin
+        marginBottom: 5, // Space between label and input
     }
 });
 
 /*
 Self-Note:
-1. "Email" and "Password" should aligned to the left, not center
-2. have the button aligned with the text inputs and text needs to be black (Button)
-3. Button needs to be customized
+re-adjust the link to the left
+fix the padding on the labels
 */
-
-
