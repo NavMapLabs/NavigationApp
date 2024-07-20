@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { IconButton, FAB } from 'react-native-paper';
 
 //make this edit bar be set to the bottom of the screen and at the center
 export default function EditBar(clickedNode : boolean){
