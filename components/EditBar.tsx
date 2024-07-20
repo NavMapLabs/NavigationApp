@@ -3,12 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 
 //make this edit bar be set to the bottom of the screen and at the center
-export default function EditBar(){
-    const [isVisible, setIsVisible] = React.useState(true);
+export default function EditBar(clickedNode : boolean){
+    const [isVisible, setIsVisible] = React.useState(false);
 
-    const toggleVisibility = () => {
+    if (clickedNode) {
         setIsVisible(!isVisible);
-    };
+    }
 
     return (
         <View style={styles.container}> 
@@ -23,7 +23,6 @@ export default function EditBar(){
                     <IconButton icon="undo" size={24} onPress={() => console.log('undo')} />
                     <IconButton icon="redo" size={24} onPress={() => console.log('redo')} />
                 </View>
-            <IconButton icon={isVisible ? 'eye-off' : 'eye'} size={24} onPress={toggleVisibility} />
         </View>
     )
 };
