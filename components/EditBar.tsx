@@ -2,11 +2,13 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { IconButton, FAB } from 'react-native-paper';
 
-//make this edit bar be set to the bottom of the screen and at the center
-export default function EditBar(clickedNode : boolean){
+// EditBar component, accepts a boolean value to determine if the node is clicked
+export default function EditBar(clickedNode : boolean) {
+    // isVisible state to determine if the edit bar is visible, default is false
     const [isVisible, setIsVisible] = React.useState(false);
 
-    if (clickedNode) {
+    // if the node is clicked, the edit bar will be visible
+    if (!clickedNode) {
         setIsVisible(!isVisible);
     }
 
