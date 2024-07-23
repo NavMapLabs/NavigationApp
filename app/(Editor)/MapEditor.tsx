@@ -26,12 +26,14 @@ export default function MapEditor() {
 
 const styles = StyleSheet.create({
     main: {
-        //
+        flex: 1,
     },
     ui: {
         zIndex: 2
     },
     canvas: {
-        zIndex: 1
+        zIndex: 1,
+        height: '100%',
+        width: '100%',
     }
 })

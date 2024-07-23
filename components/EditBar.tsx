@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
         padding: 10,
         position: 'absolute',
         width: 'auto',
-        bottom: 10,
+        bottom: 80,
     },
 });
