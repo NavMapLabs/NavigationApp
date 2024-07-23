@@ -4,8 +4,10 @@ RUN apt-get update
 # Install Expo CLI globally
 RUN npm install -g expo-cli
 
-# Install Firebase
-RUN npm install firebase
+# Install Firebase globally (if required globally)
+RUN npm install -g firebase
+
+# RUN npx expo customize metro.config.js
 
 # Expose ports expo runs on
 EXPOSE 8001

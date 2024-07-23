@@ -1,6 +1,9 @@
 import { Text, View, TextInput, StyleSheet, Button } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+import "../../secret/firebaseConfig";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 export default function SignUpScreen() {
     return (
         <View
@@ -89,3 +92,4 @@ const styles = StyleSheet.create({
 /*
 fix the padding on the labels
 */
+
