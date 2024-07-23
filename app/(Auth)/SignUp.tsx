@@ -1,10 +1,16 @@
 import { Text, View, TextInput, StyleSheet, Button } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler";
+import React, { useState } from "react";
 
-import "../../secret/firebaseConfig";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { handleSignUp } from "./firebaseAuth"
 
 export default function SignUpScreen() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [rePassword, setRePassword] = useState("");
+
+    const [showPassword, setShowPassword] = useState(false)
+
     return (
         <View
             style={styles.container}>
@@ -15,26 +21,34 @@ export default function SignUpScreen() {
                     style={styles.input}
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
+                    value={email}
+                    onChangeText={setEmail}
                     // obtain data here
                 />
                 <Text style={styles.label}>Password</Text>
                 <TextInput
+                    secureTextEntry={!showPassword} 
                     style={styles.input}
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
+                    value={password}
+                    onChangeText={setPassword}
                     // obtain data here
                 />
                 <Text style={styles.label}>Re-enter Password</Text>
                 <TextInput
+                    secureTextEntry={!showPassword} 
                     style={styles.input}
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
+                    value={rePassword}
+                    onChangeText={setRePassword}
                     // obtain data here
                 />
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        // handle sign-in action here
+                        handleSignUp(email, password, rePassword)
                     }}
                 >
                     <Text style={styles.buttonText}>Sign In</Text>
@@ -92,4 +106,3 @@ const styles = StyleSheet.create({
 /*
 fix the padding on the labels
 */
-

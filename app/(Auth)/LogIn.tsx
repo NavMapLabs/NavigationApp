@@ -38,7 +38,7 @@ export default function LogInScreen() {
                 </Text>
                 <Text style={styles.underline}>
                     Need an account? Sign-up{' '}
-                    <Link href="/(Auth)/SignUpn">
+                    <Link href="/(Auth)/SignUp">
                         here.
                     </Link>
                 </Text>

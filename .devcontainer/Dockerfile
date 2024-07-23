@@ -4,8 +4,8 @@ RUN apt-get update
 # Install Expo CLI globally
 RUN npm install -g expo-cli
 
-# Install Firebase globally (if required globally)
-RUN npm install -g firebase
+# # Install Firebase globally (if required globally)
+# RUN npm install firebase
 
 # RUN npx expo customize metro.config.js
 
