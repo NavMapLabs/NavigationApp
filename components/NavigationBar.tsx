@@ -4,7 +4,7 @@ import { Appbar } from 'react-native-paper';
 
 const NavTitle = ({title}: {title: string}) =>(
     <Appbar.Content title={title}  
-        style={{ marginLeft: 0, position: 'absolute', left: 0, right: 0, zIndex: -1 }} 
+        style={{ marginLeft: 0, position: 'absolute', left: 0, right: 0, zIndex: 1}} 
         titleStyle={{ alignSelf: 'center' }} />
 )
 
@@ -24,7 +24,7 @@ export default function NavigationBar(){
     },   [screenWidth])
 
     const updateTitle = () => {
-        if(screenWidth[0] > 700){
+        if(screenWidth[0] > 1000){
             return 'Map Editor'
         }
         return ''
