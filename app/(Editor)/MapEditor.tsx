@@ -31,6 +31,12 @@ const styles = StyleSheet.create({
     ui: {
         zIndex: 2
     },
+    canvasContainer:{
+        flex: 1,
+        justifyContent: 'center', 
+        alignItems: 'center',
+        zIndex: 1,
+    },
     canvas: {
         zIndex: 1,
         height: '100%',

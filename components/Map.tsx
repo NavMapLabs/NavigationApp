@@ -1,4 +1,4 @@
-import { View, Text } from "react-native"
+import { View, Text, Image } from "react-native"
 import React from "react"
 import { StyleSheet } from 'react-native'
 import Canvas from 'react-native-canvas'
@@ -9,7 +9,7 @@ import Canvas from 'react-native-canvas'
 const Map = () => {
     return (
         <View style={styles.container}>
-            <View style={{width: 100, height: 300, backgroundColor: 'red'}}></View>
+            <Image source={require('../assets/images/sampleMap.png')} style={styles.image}  />
         </View>
     )
 }
@@ -20,5 +20,10 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+    image:{
+        width: 800, 
+        height: 800, 
+        resizeMode: 'contain', 
+    },
 })
