@@ -8,7 +8,7 @@ interface FloorplanState {
 }
 
 const initialState: FloorplanState = {
-  floorplan: new Floorplan("empty"),
+  floorplan: new Floorplan("empty", null),
 };
 
 const floorplanReducer = (state = initialState, action: FloorplanActions): FloorplanState => {
