@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 
 import NavigationBar from "../../components/NavigationBar";
 import EditBar from "../../components/EditBar";
-import MapEditorCanvas from "../../components/MapEditorCanvas";
+import MapEditorCanvas from "../../components/MapEditorCanvas/MapEditorCanvas";
 import FloorMenu from "../../components/FloorMenu";
 
 
