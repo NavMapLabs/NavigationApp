@@ -1,20 +1,21 @@
-import { View, Text, Image } from "react-native"
+import { View, StyleSheet,StyleProp, ViewStyle, Text, Image } from "react-native"
 import React from "react"
-import { StyleSheet } from 'react-native'
 import Canvas from 'react-native-canvas'
 
 
 //just testing this format out
 //make map component an empty component for now that takes up the whole screen using flex
-const Map = () => {
+const MapEditorCanvas = ({canvasStyle}: {canvasStyle: StyleProp<ViewStyle>}) => {
     return (
-        <View style={styles.container}>
-            <Image source={require('../assets/images/sampleMap.png')} style={styles.image}  />
+        <View style = {canvasStyle}>
+            <View style={styles.container}>
+                <Image source={require('../assets/images/sampleMap.png')} style={styles.image}  />
+            </View>
         </View>
     )
 }
 
-export default Map;
+export default MapEditorCanvas;
 
 const styles = StyleSheet.create({
     container: {

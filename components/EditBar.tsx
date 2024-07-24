@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 import { IconButton, FAB } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView  } from 'react-native-safe-area-context';
 
 // EditBar component, accepts a boolean value to determine if the node is clicked, add a style prop
-export default function EditBar({ clickedNode }: { clickedNode: boolean }) {
+const EditBar = ({ editBarStyle, clickedNode }: {editBarStyle: StyleProp<ViewStyle>, clickedNode: boolean }) => {
     // isVisible state to determine if the edit bar is visible, default is false
     const [isVisible, setIsVisible] = React.useState(clickedNode);
 
@@ -14,21 +14,25 @@ export default function EditBar({ clickedNode }: { clickedNode: boolean }) {
     }, [clickedNode]);
 
     return (
-        <SafeAreaView style={styles.container}> 
-            <View style={styles.bottom}>
-                {isVisible && (
-                    <>
-                        <IconButton icon="pencil" size={24} onPress={() => console.log('pencil')} />
-                        <IconButton icon="plus" size={24} onPress={() => console.log('plus')} />
-                        <IconButton icon="minus" size={24} onPress={() => console.log('minus')} />
-                    </>
-                )}
-                <IconButton icon="undo" size={24} onPress={() => console.log('undo')} />
-                <IconButton icon="redo" size={24} onPress={() => console.log('redo')} />
-            </View>
-        </SafeAreaView>
+        <View style={editBarStyle}>
+            <SafeAreaView style={styles.container}> 
+                <View style={styles.bottom}>
+                    {isVisible && (
+                        <>
+                            <IconButton icon="pencil" size={24} onPress={() => console.log('pencil')} />
+                            <IconButton icon="plus" size={24} onPress={() => console.log('plus')} />
+                            <IconButton icon="minus" size={24} onPress={() => console.log('minus')} />
+                        </>
+                    )}
+                    <IconButton icon="undo" size={24} onPress={() => console.log('undo')} />
+                    <IconButton icon="redo" size={24} onPress={() => console.log('redo')} />
+                </View>
+            </SafeAreaView>
+        </View>
     )
 };
+
+export default EditBar;
 
 const styles = StyleSheet.create({
     container: {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import { Appbar } from 'react-native-paper';
+import { View, StyleProp, ViewStyle } from 'react-native';
 
 const NavTitle = ({title}: {title: string}) =>(
     <Appbar.Content title={title}  
@@ -8,7 +9,7 @@ const NavTitle = ({title}: {title: string}) =>(
         titleStyle={{ alignSelf: 'center' }} />
 )
 
-export default function NavigationBar(){
+const NavigationBar = ({navBarStyle}: {navBarStyle: StyleProp<ViewStyle>})=> {
     const screenWidth = useState(Dimensions.get('window').width);
 
     useEffect(() => {
@@ -32,16 +33,20 @@ export default function NavigationBar(){
 
     return (
         //change color of the header
-        <Appbar.Header style={{backgroundColor: '#71E0BC'}}>
-            <Appbar.Action icon={require('../assets/icons/submenu.png')} onPress={() => {}} />
-            <NavTitle title={updateTitle()} />
-            <Appbar.Content title='' /> 
-            <Appbar.Action icon={require('../assets/icons/node.png')} onPress={() => {}} />
-            <Appbar.Action icon={require('../assets/icons/move.png')} onPress={() => {}} />
-            <Appbar.Action icon= 'grid' onPress={() => {}} />
-            <Appbar.Action icon={require('../assets/icons/search.png')} onPress={() => {}} />
-            <Appbar.Action icon={require('../assets/icons/layer.png')} onPress={() => {}} />
-        </Appbar.Header>
+        <View style={navBarStyle}>
+            <Appbar.Header style={{backgroundColor: '#71E0BC'}}>
+                <Appbar.Action icon={require('../assets/icons/submenu.png')} onPress={() => {}} />
+                <NavTitle title={updateTitle()} />
+                <Appbar.Content title='' /> 
+                <Appbar.Action icon={require('../assets/icons/node.png')} onPress={() => {}} />
+                <Appbar.Action icon={require('../assets/icons/move.png')} onPress={() => {}} />
+                <Appbar.Action icon= 'grid' onPress={() => {}} />
+                <Appbar.Action icon={require('../assets/icons/search.png')} onPress={() => {}} />
+                <Appbar.Action icon={require('../assets/icons/layer.png')} onPress={() => {}} />
+            </Appbar.Header>
+        </View>
     )
 }
+
+export default NavigationBar;
 
