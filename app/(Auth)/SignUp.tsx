@@ -1,15 +1,40 @@
 import { Text, View, TextInput, StyleSheet, Button } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler";
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native"
+import { AuthError, UserCredential } from 'firebase/auth';
 
-import { handleSignUp } from "./firebaseAuth"
+import { signUp } from "./firebaseAuth";
+import auth from "../../secret/firebaseConfig";
 
 export default function SignUpScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
 
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+
     const [showPassword, setShowPassword] = useState(false)
+
+    // Function to handle user creation
+    const handleSignUp = async () => {
+        try {
+            const user = await signUp(email, password, rePassword)
+            if(user) {
+                //use saveUserData from firebase if needed
+                const id = user.uid;
+            }
+        } catch (error: unknown) {
+            if ((error as AuthError).code === 'auth/email-already-in-use') {
+                alert('Email already in use');
+            } else if ((error as AuthError).code === 'auth/weak-password') {
+                alert('Weak Password. Please choose a stronger password')
+            } else {
+                alert("Signup error: " + (error as Error).message)
+            }
+    };
+}
 
     return (
         <View
@@ -48,7 +73,7 @@ export default function SignUpScreen() {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        handleSignUp(email, password, rePassword)
+                        handleSignUp()
                     }}
                 >
                     <Text style={styles.buttonText}>Sign In</Text>

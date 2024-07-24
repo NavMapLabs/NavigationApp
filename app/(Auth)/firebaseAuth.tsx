@@ -1,25 +1,52 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 import auth from "../../secret/firebaseConfig";
 
-// Function to handle user creation
-export const handleSignUp = (email: string, password: string, repassword: string) => {
-    if (password !== repassword) {
-        console.log("Password doesn't match")
-        return
+export const signUp = async (email: string, password: string, rePassword: string) => {
+    try {
+        if (password !== rePassword) {
+            throw new Error('Passwords do not match');
+        }
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await emailVerification();
+
+        //User successfully registered
+        const user = userCredential.user
+        console.log("User registered:", user)
+
+        return user
+    } catch (error: unknown) {
+        throw error;
     }
-    
-    // const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            console.log("User created successfully:", user);
-            // You can navigate to a different screen or show a success message here
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("Error creating user:", errorCode, errorMessage);
-            // Handle errors here, such as showing an alert to the user
-        });
-};
+}
+
+export const handleLogIn = (email: string, password: string) => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log("Hi, you're log in then")
+        // ...
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+    });
+}
+
+export const emailVerification = async () => {
+
+    const user = auth.currentUser
+    if(user) {
+        try {
+            await sendEmailVerification(user)
+            .then(()=>{
+                alert("Verification Email Sent")
+            });
+        } catch(error: unknown) {
+            console.log("Errror sending verification email")
+        }
+    } else {
+            console.error("No user is signed in")
+    }
+}

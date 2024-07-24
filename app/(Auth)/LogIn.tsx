@@ -1,8 +1,16 @@
 import { Text, View, TextInput, StyleSheet } from "react-native"
 import { Link } from "expo-router"
 import { TouchableOpacity } from "react-native-gesture-handler";
+import React, { useState } from "react";
+
+import { handleLogIn } from "./firebaseAuth";
 
 export default function LogInScreen() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [showPassword, setShowPassword] = useState(false)
+
     return (
         <View
             style={styles.container}>
@@ -13,19 +21,23 @@ export default function LogInScreen() {
                     style={styles.input}
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
-                    // obtain data here
+                    value={email}
+                    onChangeText={setEmail}
                 />
                 <Text style={styles.label}>Password</Text>
                 <TextInput
+                    secureTextEntry={!showPassword} 
                     style={styles.input}
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
+                    value={password}
+                    onChangeText={setPassword}
                     // obtain data here
                 />
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        // handle sign-in action here
+                        handleLogIn(email, password)
                     }}
                 >
                     <Text style={styles.buttonText}>Sign In</Text>
@@ -37,9 +49,8 @@ export default function LogInScreen() {
                     </Text>
                 </Text>
                 <Text style={styles.underline}>
-                    Need an account? Sign-up{' '}
                     <Link href="/(Auth)/SignUp">
-                        here.
+                        Need an account? Sign-up here.
                     </Link>
                 </Text>
             </View>
