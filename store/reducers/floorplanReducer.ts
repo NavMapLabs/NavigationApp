@@ -3,12 +3,12 @@ import Graph from '../../scripts/map_editor/graph';
 import Floorplan from '../../scripts/map_editor/floorplan';
 
 interface FloorplanState {
-  floorplan: Floorplan | null;
+  floorplan: Floorplan;
   edgeExists?: boolean;
 }
 
 const initialState: FloorplanState = {
-  floorplan: null,
+  floorplan: new Floorplan("empty"),
 };
 
 const floorplanReducer = (state = initialState, action: FloorplanActions): FloorplanState => {

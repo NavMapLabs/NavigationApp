@@ -4,10 +4,11 @@ class Floorplan {
     #nodes;
     #graph;
     #idPrefix;
+    name: String;
     
-    constructor(name, data = null) {
+    constructor(name: String, data = null) {
         this.name = name;
-        if (data) {
+        if (data != null) {
             this.deserialize(data);
         }
         else {
@@ -17,7 +18,7 @@ class Floorplan {
         }
     }
 
-    get nodes() {
+    get nodes(): Map<string, Node> {
         return this.#nodes;
     }
 
