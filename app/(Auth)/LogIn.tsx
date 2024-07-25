@@ -2,19 +2,22 @@ import { Text, View, TextInput, StyleSheet } from "react-native"
 import { Link } from "expo-router"
 import { TouchableOpacity } from "react-native-gesture-handler";
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native"
 import { Auth, AuthError, signInWithEmailAndPassword, User } from "firebase/auth";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
-
+import { RootStackParamList } from '@/constants/types';
 import { emailVerification, logIn, logOut } from "./firebaseAuth";
 
-export default function LogInScreen() {
+type LogInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LogInScreen'>;
+
+const LogInScreen: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const [showPassword, setShowPassword] = useState(false)
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<LogInScreenNavigationProp>();
     
     const handleLogIn = async () => {
         try {
@@ -156,3 +159,5 @@ const checkIfEmailVerified = async (user: User) => {
         throw new Error("Failed to check User")
     }
 }
+
+export default LogInScreen
