@@ -1,12 +1,10 @@
 import React from 'react';
 import { Text, View, Button, StyleSheet } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/constants/types';
+import { HomeNavigationProp } from '@/constants/types';
 
-type HomeNavigationProp = StackNavigationProp<RootStackParamList,'Homepage'>;
-
-const Homepage: React.FC = () => {
+const Homepage = () => {
   // Access navigation via useNavigation hook
   const navigation = useNavigation<HomeNavigationProp>();
 

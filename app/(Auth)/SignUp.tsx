@@ -2,12 +2,12 @@ import { Text, View, TextInput, StyleSheet, Button } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native"
-import { AuthError, UserCredential } from 'firebase/auth';
+import { AuthError } from 'firebase/auth';
 
+import { SignUpScreenNavigationProp } from "@/constants/types";
 import { signUp } from "./firebaseAuth";
-import auth from "../../secret/firebaseConfig";
 
-export default function SignUpScreen() {
+const SignUpScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
@@ -17,7 +17,7 @@ export default function SignUpScreen() {
 
     const [showPassword, setShowPassword] = useState(false)
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<SignUpScreenNavigationProp>();
 
     // Function to handle user creation
     const handleSignUp = async () => {
@@ -133,3 +133,5 @@ const styles = StyleSheet.create({
 /*
 fix the padding on the labels
 */
+
+export default SignUpScreen;

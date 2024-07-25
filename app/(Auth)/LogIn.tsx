@@ -1,17 +1,13 @@
 import { Text, View, TextInput, StyleSheet } from "react-native"
-import { Link } from "expo-router"
 import { TouchableOpacity } from "react-native-gesture-handler";
 import React, { useState } from "react";
-import { Auth, AuthError, signInWithEmailAndPassword, User } from "firebase/auth";
-import { StackNavigationProp } from '@react-navigation/stack';
+import { AuthError, User } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
+import { LogInScreenNavigationProp } from "@/constants/types";
 
-import { RootStackParamList } from '@/constants/types';
 import { emailVerification, logIn, logOut } from "./firebaseAuth";
 
-type LogInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LogInScreen'>;
-
-const LogInScreen: React.FC = () => {
+const LogInScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -76,10 +72,11 @@ const LogInScreen: React.FC = () => {
                         Forgot password?
                     </Text>
                 </Text>
-                <Text style={styles.underline}>
-                    <Link href="/(Auth)/SignUp">
+                <Text style={styles.underline}
+                    onPress={() => {
+                        navigation.navigate('SignUpScreen')
+                    }}>
                         Need an account? Sign-up here.
-                    </Link>
                 </Text>
             </View>
         </View>
