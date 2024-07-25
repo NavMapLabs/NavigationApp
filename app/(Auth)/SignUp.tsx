@@ -17,6 +17,8 @@ export default function SignUpScreen() {
 
     const [showPassword, setShowPassword] = useState(false)
 
+    const navigation = useNavigation();
+
     // Function to handle user creation
     const handleSignUp = async () => {
         try {

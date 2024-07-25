@@ -2,14 +2,39 @@ import { Text, View, TextInput, StyleSheet } from "react-native"
 import { Link } from "expo-router"
 import { TouchableOpacity } from "react-native-gesture-handler";
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native"
+import { Auth, AuthError, signInWithEmailAndPassword, User } from "firebase/auth";
 
-import { handleLogIn } from "./firebaseAuth";
+
+import { emailVerification, logIn, logOut } from "./firebaseAuth";
 
 export default function LogInScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const [showPassword, setShowPassword] = useState(false)
+
+    const navigation = useNavigation();
+    
+    const handleLogIn = async () => {
+        try {
+            const user = await logIn(email, password)
+            await checkIfEmailVerified(user)
+
+        } catch (error: unknown) {
+            if (
+                (error as AuthError).code === "auth/user-not-found" ||
+                (error as AuthError).code === "auth/wrong-password"
+            ) {
+                alert('Email already in use');
+            } else if ((error as AuthError).code === "auth/too-many-request") {
+                alert("Too many unsuccessful login attempts. Please try again later.")
+            } else {
+                alert("Sign In error: " + (error as Error).message)
+            }
+        }
+    }
+
 
     return (
         <View
@@ -37,7 +62,7 @@ export default function LogInScreen() {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        handleLogIn(email, password)
+                        handleLogIn()
                     }}
                 >
                     <Text style={styles.buttonText}>Sign In</Text>
@@ -116,3 +141,18 @@ Self-Note:
 re-adjust the link to the left
 fix the padding on the labels
 */
+
+const checkIfEmailVerified = async (user: User) => {
+    const navigation = useNavigation();
+
+    if(user) {
+        if(!user.emailVerified)
+        // means that user is still not verified yet, need them to be verified
+        await emailVerification()
+        await logOut();
+
+        // navigation.navigate("index");
+    } else {
+        throw new Error("Failed to check User")
+    }
+}

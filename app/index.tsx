@@ -1,21 +1,35 @@
-import { Text, View } from "react-native";
-import { Link } from 'expo-router';
+import React from 'react';
+import { Text, View, Button, StyleSheet } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import RootStackParamList from '../App';
 
-export default function Index() {
+// Define the navigation prop type for this component
+type IndexScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Index'
+>;
+
+const Index: React.FC<IndexScreenNavigationProp> = () => {
+  const navigation = useNavigation<IndexScreenNavigationProp>();
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <View style={styles.container}>
       <Text>Hi Honghui</Text>
-      <Link href="/(Auth)/LogIn">
-        Go to Login
-      </Link>
+      <Button
+        title="Go to Login"
+        onPress={() => navigation.navigate('LogIn')}
+      />
     </View>
   );
-}
+};
 
-// <Link href="/(Editor)/MapEditor">
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export default Index;

@@ -1,4 +1,5 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+        sendEmailVerification, signOut } from "firebase/auth";
 
 import auth from "../../secret/firebaseConfig";
 
@@ -20,18 +21,17 @@ export const signUp = async (email: string, password: string, rePassword: string
     }
 }
 
-export const handleLogIn = (email: string, password: string) => {
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        // Signed in 
+export const logIn = async (email: string, password: string) => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        
         const user = userCredential.user;
-        console.log("Hi, you're log in then")
-        // ...
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-    });
+        console.log("User signed in:", user);
+        return user
+    } catch (error: unknown) {
+        console.log((error as Error).message)
+        throw error
+    }
 }
 
 export const emailVerification = async () => {
@@ -44,9 +44,17 @@ export const emailVerification = async () => {
                 alert("Verification Email Sent")
             });
         } catch(error: unknown) {
-            console.log("Errror sending verification email")
+            throw error
         }
     } else {
-            console.error("No user is signed in")
+            throw new Error("No user is signed in")
+    }
+}
+
+export const logOut = async () => {
+    try {
+        await signOut(auth)
+    } catch (error: unknown) {
+        throw error
     }
 }
