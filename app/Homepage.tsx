@@ -11,6 +11,8 @@ const Homepage = () => {
   return (
     <View style={styles.container}>
       <Text>Hi Honghui</Text>
+      <View style={[{ height: 10, backgroundColor: '#000' }]} />
+
       <Button
         title="Go to Login"
         onPress={() => {
@@ -18,6 +20,15 @@ const Homepage = () => {
           console.log("Pressed")
         }}
       />
+      
+      <View style={[{ height: 10, backgroundColor: '#000' }]} />
+
+      <Button
+      title="Go to Editor"
+      onPress={() => {
+        navigation.navigate('MapEditor')
+      }}
+    />
     </View>
   );
 };

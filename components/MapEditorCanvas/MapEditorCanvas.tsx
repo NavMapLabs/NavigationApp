@@ -1,10 +1,11 @@
 import { View, StyleSheet,StyleProp, ViewStyle, Text, Image, ImageBackground } from "react-native"
 import React, { ReactNode } from "react"
 import Canvas from 'react-native-canvas'
-import Svg, { G } from 'react-native-svg';
+import Svg, { G, Circle, Rect } from 'react-native-svg';
 import MapBackgroud from './MapBackgroud'
 import NavigationNodeDisplay from './NavigationNodeDisplay'
 import NavigationEdgeDisplay from './NavigationEdgeDisplay'
+import NavigationNode from './NavigationNode'
 
 //just testing this format out
 //make map component an empty component for now that takes up the whole screen using flex
@@ -12,7 +13,8 @@ import NavigationEdgeDisplay from './NavigationEdgeDisplay'
 const MapCanvasWrapper = ({children, canvasStyle}: {children: ReactNode, canvasStyle: StyleProp<ViewStyle>}) => {
     return (
         <View style = {canvasStyle}>
-            <Svg><G>
+            <Svg  width="100%" height="100%" viewBox="0 0 100 100">
+                <G fill="blue" stroke="black" strokeWidth="2">
                 {children}
             </G></Svg>
         </View>
@@ -23,8 +25,12 @@ const MapEditorCanvas = ({canvasStyle}: {canvasStyle: StyleProp<ViewStyle>}) => 
     return (
         <MapCanvasWrapper canvasStyle = {canvasStyle}>
             <MapBackgroud backgroundStyle={styles.backgroundStyle} imageStyle={styles.imageStyle}/>
-            <NavigationNodeDisplay/>
-            <NavigationEdgeDisplay/>
+            {/* <NavigationNodeDisplay/> */}
+            {/* <NavigationEdgeDisplay/> */}
+            <NavigationNode x="50" y="10"/>
+            <Circle cx="25" cy="25" r="20" />
+            {/* <Rect x="50" y="10" width="30" height="30" /> */}
+            <Text>Hi Honghui</Text>
         </MapCanvasWrapper>
     )
 }
@@ -39,6 +45,5 @@ const styles = StyleSheet.create({
     imageStyle:{
         width: 800, 
         height: 800, 
-        resizeMode: 'contain', 
     },
 })

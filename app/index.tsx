@@ -5,7 +5,9 @@ import App from '../App';
 // registerRootComponent(App);
 
 const index = () => {
-    return <App />
-}
+    return (
+      <App />
+    );
+};
 
 export default index;
