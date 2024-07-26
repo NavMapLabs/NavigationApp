@@ -1,19 +1,11 @@
-import { Text, View } from "react-native";
-import { Link } from 'expo-router';
+import { registerRootComponent } from 'expo';
+import App from '../App';
 
-export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Hi Honghui</Text>
-      <Link href="/(Editor)/MapEditor">
-        Go to Map Screen
-      </Link>
-    </View>
-  );
+// // Register the root component with Expo
+// registerRootComponent(App);
+
+const index = () => {
+    return <App />
 }
+
+export default index;
