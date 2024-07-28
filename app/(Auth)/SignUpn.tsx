@@ -1,32 +1,83 @@
-import { Text, View, TextInput, StyleSheet, Button } from "react-native"
+import { Text, View, TextInput, StyleSheet } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler";
+import React, { useState } from "react";
+import { TextInput as PaperTextInput } from 'react-native-paper';
 
 export default function SignUpScreen() {
+    const [emailText, setEmailText] = useState('');
+    const [password, setPassword] = useState('');
+    const [reEnterPassword, setReEnterPassword] = useState('');
+
+    const [passwordVisible, setPasswordVisible] = useState(true);
+    const [reEnterPasswordVisible, setReEnterPasswordVisible] = useState(true);
+    
+    const [emailBorderColor, setEmailBorderColor] = useState('gray');
+    const [passwordbBorderColor, setPasswordBorderColor] = useState('gray');
+    const [ReEnterPasswordbBorderColor, setReEnterPasswordBorderColor] = useState('gray');
+
     return (
         <View
             style={styles.container}>
             <View
                 style={styles.box}>
                 <Text style={styles.label}>Email</Text>
-                <TextInput
-                    style={styles.input}
+                  <PaperTextInput
+                    style={[styles.paperInput, { borderColor: emailBorderColor }]}
+                    onFocus={() => setEmailBorderColor('black')} // border color on focus
+                    onBlur={() => setEmailBorderColor('gray')}  // border color on focus
+
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
-                    // obtain data here
+                    value={emailText}
+                    onChangeText={setEmailText}
+
+                    theme={{ colors: { primary: "transparent" } }} // this removes the underline
+                    underlineColor="transparent"
+                // obtain data here
                 />
                 <Text style={styles.label}>Password</Text>
-                <TextInput
-                    style={styles.input}
+                <PaperTextInput
+                    style={[styles.paperInput, { borderColor: passwordbBorderColor }]}
+                    onFocus={() => setPasswordBorderColor('black')} // border color on focus
+                    onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
+
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
-                    // obtain data here
+                    secureTextEntry={passwordVisible}
+                    value={password}
+                    onChangeText={setPassword}
+                    right={
+                        <PaperTextInput.Icon
+                            icon={passwordVisible ? 'eye' : 'eye-off'}
+                            onPress={() => setPasswordVisible(!passwordVisible)}
+                            style={styles.icon} // this adjusts eye icon position
+                        />
+                    }
+                    theme={{ colors: { primary: "transparent" } }} // this removes the underline
+                    underlineColor="transparent"
+                // obtain data here
                 />
                 <Text style={styles.label}>Re-enter Password</Text>
-                <TextInput
-                    style={styles.input}
+                <PaperTextInput
+                    style={[styles.paperInput, { borderColor: ReEnterPasswordbBorderColor }]}
+                    onFocus={() => setReEnterPasswordBorderColor('black')} // border color on focus
+                    onBlur={() => setReEnterPasswordBorderColor('gray')}  // border color on focus
+
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
-                    // obtain data here
+                    secureTextEntry={reEnterPasswordVisible}
+                    value={reEnterPassword}
+                    onChangeText={setReEnterPassword}
+                    right={
+                        <PaperTextInput.Icon
+                            icon={reEnterPasswordVisible ? 'eye' : 'eye-off'}
+                            onPress={() => setReEnterPasswordVisible(!reEnterPasswordVisible)}
+                            style={styles.icon} // this adjusts eye icon position
+                        />
+                    }
+                    theme={{ colors: { primary: "transparent" } }} // this removes the underline
+                    underlineColor="transparent"
+                // obtain data here
                 />
                 <TouchableOpacity
                     style={styles.button}
@@ -48,18 +99,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    input: {
-        borderWidth: 1,
-        borderColor: '#777',
-        backgroundColor: 'white',
-        padding: 8,
-        margin: 10,
-        borderRadius: 10,
-        width: 350,
-    },
     box: {
-        // borderWidth: 1,      --> un-comment this later to check
-        // borderColor: '#777', --> un-comment this later to check
         backgroundColor: 'gray', // change this color to white later once we have the overall background
         borderRadius: 10,
         padding: 15,
@@ -84,8 +124,26 @@ const styles = StyleSheet.create({
         marginLeft: 10, // Add some margin to the left to match the input margin
         marginBottom: 5, // Space between label and input
     },
+    icon: {
+        marginTop: 20,
+    },
+    paperInput: {
+        borderWidth: 2,
+        borderColor: '#777',
+        backgroundColor: 'white',
+        paddingHorizontal: 9,
+        paddingVertical: 8,
+        margin: 10,
+        borderRadius: 12,
+        width: 350,
+        height: 23,
+        // this adjust font size and line height to the standard
+        fontSize: 14,
+        // lineHeight: 22,
+    },
 });
 
-/*
-fix the padding on the labels
-*/
+/* self-note
+1. fix the border radius --> paper text input
+2. when pressing eye, the typing should always point on the right side
+ */
