@@ -1,8 +1,8 @@
 import { Text, View, StyleSheet, Pressable } from "react-native"
-import { Link } from "expo-router"
 import React, { useState } from "react";
 import { TextInput as PaperTextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { LogInScreenNavigationProp } from "@/constants/types"; // this is the identity 
 
 export default function LogInScreen() {
     const [emailText, setEmailText] = useState('');
@@ -12,6 +12,8 @@ export default function LogInScreen() {
 
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
     const [PasswordBorderColor, setPasswordBorderColor] = useState('gray');
+
+    const navigation = useNavigation<LogInScreenNavigationProp>(); // this gives you access 
 
     return (
         <View
@@ -30,7 +32,7 @@ export default function LogInScreen() {
                     onChangeText={setEmailText}
 
                     theme={{ colors: { primary: "transparent" } }} // this removes the underline
-                    underlineColor="transparent"
+                    underlineColor="transparent"  // this removes the any extra underline
                 // obtain data here
                 />
                 <Text style={styles.label}>Password</Text>
@@ -52,7 +54,7 @@ export default function LogInScreen() {
                         />
                     }
                     theme={{ colors: { primary: "transparent" } }} // this removes the underline
-                    underlineColor="transparent"
+                    underlineColor="transparent" // this removes any extra underline
                 // obtain data here
                 />
                 <Pressable
@@ -71,11 +73,13 @@ export default function LogInScreen() {
                     </Text>
                 </Text>
                 <Text
-                    style={styles.underline}>
-                    Need an account? Sign-up{' '}
-                    <Link href="/(Auth)/SignUp">
-                        here.
-                    </Link>
+                    style={styles.underline}
+                    onPress={() => {
+                        navigation.navigate('SignUpScreen')
+                        console.log("Pressed")
+                    }}
+                >
+                    Need an account? Sign-up here.
                 </Text>
             </View>
         </View>
@@ -111,7 +115,6 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'black', // Set the text color to black
-        // fontSize: 10, --> change font size if needed
     },
     textSpace: {
         marginTop: 4, // Space before text
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 9,
         paddingVertical: 8,
         margin: 10,
-        borderRadius: 8,
+        borderRadius: 6,
         width: 350,
         height: 23,
         // this adjust font size and line height to the standard
@@ -141,7 +144,5 @@ const styles = StyleSheet.create({
 });
 
 /* self-note
-1. fix the border radius --> paper text input
-2. when pressing eye, the typing should always point on the right side
 3. use navigation for link
  */

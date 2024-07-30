@@ -1,6 +1,8 @@
 import { Text, View, TextInput, StyleSheet, Pressable } from "react-native"
 import React, { useState } from "react";
 import { TextInput as PaperTextInput } from 'react-native-paper';
+import { SignUpScreenNavigationProp } from "@/constants/types"; // this is the identity
+import { useNavigation } from '@react-navigation/native'; // incase
 
 export default function SignUpScreen() {
     const [emailText, setEmailText] = useState('');
@@ -116,7 +118,6 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'black', // Set the text color to black
-        // fontSize: 10, --> change font size if needed
     },
     label: {
         alignSelf: 'flex-start', // align labels to the start
@@ -133,15 +134,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 9,
         paddingVertical: 8,
         margin: 10,
-        borderRadius: 8,
+        borderRadius: 6,
         width: 350,
         height: 23,
-        // this adjust font size and line height to the standard
+        // this adjust font size to to the standard
         fontSize: 14,
     },
 });
-
-/* self-note
-1. fix the border radius --> paper text input
-2. when pressing eye, the typing should always point on the right side
- */
