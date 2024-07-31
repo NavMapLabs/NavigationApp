@@ -9,6 +9,7 @@ import { Coordinate } from "@/constants/Coordinate";
 import { Dimension } from "@/constants/Dimension";
 
 // define the dynamic canvas view containing all canvas element in screen
+// will be moved and resize for the zoom-in features
 const MapCanvas = ({children, offsetCoor, dimension}: 
     {children: ReactNode, offsetCoor:Coordinate, dimension: Dimension}) => {
     return (

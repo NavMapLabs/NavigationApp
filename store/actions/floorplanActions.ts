@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+import { Coordinate } from '@/constants/Coordinate';
 
 export const CREATE_FLOORPLAN = 'CREATE_FLOORPLAN';
 export const ADD_NODE = 'ADD_NODE';
@@ -15,7 +16,7 @@ export interface CreateFloorplanAction extends Action<typeof CREATE_FLOORPLAN> {
 }
 
 export interface AddNodeAction extends Action<typeof ADD_NODE> {
-  payload: { name: string; coords: any; tag?: string; description?: string };
+  payload: { name: string; coords: Coordinate; tag?: string; description?: string };
 }
 
 export interface RemoveNodeAction extends Action<typeof REMOVE_NODE> {
@@ -62,7 +63,7 @@ export const createFloorplan = (name: string, data: any | null): CreateFloorplan
   payload: { name, data },
 });
 
-export const addNode = (name: string, coords: any, tag: string = 'None', description: string = ''): AddNodeAction => ({
+export const addNode = (name: string, coords: Coordinate, tag: string = 'None', description: string = ''): AddNodeAction => ({
   type: ADD_NODE,
   payload: { name, coords, tag, description },
 });

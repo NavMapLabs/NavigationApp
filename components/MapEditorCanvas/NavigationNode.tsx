@@ -7,7 +7,9 @@ import { Dimension } from "@/constants/Dimension";
 const defultImage:ImageProps = require('../../assets/images/sampleNode.png')
 
 // const NavigationNode = ({coor} : {coor: Coordinate}) => {
-  const NavigationNode = ({x, y, dimension}: {x:number, y:number, dimension:Dimension}) => {
+  const NavigationNode = ({coords, dimension}: {coords:Coordinate, dimension:Dimension}) => {
+    const x = coords.x;
+    const y = coords.y;
     
     return (
       <Image 
