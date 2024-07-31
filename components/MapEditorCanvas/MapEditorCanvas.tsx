@@ -8,6 +8,7 @@ import NavigationEdgeDisplay from './NavigationEdgeDisplay'
 import { Coordinate } from "@/constants/Coordinate";
 import { Dimension } from "@/constants/Dimension";
 
+// define the dynamic canvas view containing all canvas element in screen
 const MapCanvas = ({children, offsetCoor, dimension}: 
     {children: ReactNode, offsetCoor:Coordinate, dimension: Dimension}) => {
     return (
@@ -22,24 +23,28 @@ const MapCanvas = ({children, offsetCoor, dimension}:
     )
 }
 
+// define the static canvas view wrapper in screen
 const MapCanvasWrapper = ({children, canvasStyle, offsetCoor, dimension}: 
     {children: ReactNode, canvasStyle: StyleProp<ViewStyle>, offsetCoor:Coordinate, dimension: Dimension}) => {
     return (
         <View style={canvasStyle} >
-            <MapCanvas children={children} offsetCoor={offsetCoor}  dimension={dimension}/>
+            <MapCanvas offsetCoor={offsetCoor}  dimension={dimension}>
+                {children} 
+            </MapCanvas>
         </View>
     )
 }
 
 
 const centerCoor:Coordinate = {x:0, y:0}
-const defaultImageDimention:Dimension = {height:900, width: 900}
+const defaultImageDimention:Dimension = {height:0, width: 900}
+const defaultNodeDimention:Dimension = {height:30, width: 30}
 
 const MapEditorCanvas = ({canvasStyle}: {canvasStyle: StyleProp<ViewStyle>}) => {
     return (
         <MapCanvasWrapper canvasStyle = {canvasStyle} offsetCoor={centerCoor}  dimension={defaultImageDimention}>
             <MapBackgroud/>
-            <NavigationNodeDisplay/>
+            <NavigationNodeDisplay dimension={defaultNodeDimention}/>
             <NavigationEdgeDisplay/>
             <Text>Hi Honghui</Text>
         </MapCanvasWrapper>
