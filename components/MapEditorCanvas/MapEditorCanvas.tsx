@@ -1,35 +1,46 @@
 import { View, StyleSheet,StyleProp, ViewStyle, Text, Image, ImageBackground } from "react-native"
-import React, { ReactNode } from "react"
+import React, { ReactNode, useCallback } from "react"
 import Canvas from 'react-native-canvas'
 import Svg, { G, Circle, Rect } from 'react-native-svg';
 import MapBackgroud from './MapBackgroud'
 import NavigationNodeDisplay from './NavigationNodeDisplay'
 import NavigationEdgeDisplay from './NavigationEdgeDisplay'
-import NavigationNode from './NavigationNode'
+import { Coordinate } from "@/constants/Coordinate";
+import { Dimension } from "@/constants/Dimension";
 
-//just testing this format out
-//make map component an empty component for now that takes up the whole screen using flex
-// <G> component can accept various attributes that affect all its children
-const MapCanvasWrapper = ({children, canvasStyle}: {children: ReactNode, canvasStyle: StyleProp<ViewStyle>}) => {
+const MapCanvas = ({children, offsetCoor, dimension}: 
+    {children: ReactNode, offsetCoor:Coordinate, dimension: Dimension}) => {
     return (
-        <View style = {canvasStyle}>
-            <Svg  width="100%" height="100%" viewBox="0 0 100 100">
-                <G fill="blue" stroke="black" strokeWidth="2">
+        <View style={[styles.canvas, 
+            { 
+                marginLeft: -dimension.width/2 + offsetCoor.x,
+                marginTop: offsetCoor.y,
+                width: dimension.width,
+            }]} >
                 {children}
-            </G></Svg>
         </View>
     )
 }
 
+const MapCanvasWrapper = ({children, canvasStyle, offsetCoor, dimension}: 
+    {children: ReactNode, canvasStyle: StyleProp<ViewStyle>, offsetCoor:Coordinate, dimension: Dimension}) => {
+    return (
+        <View style={canvasStyle} >
+            <MapCanvas children={children} offsetCoor={offsetCoor}  dimension={dimension}/>
+        </View>
+    )
+}
+
+
+const centerCoor:Coordinate = {x:0, y:0}
+const defaultImageDimention:Dimension = {height:900, width: 900}
+
 const MapEditorCanvas = ({canvasStyle}: {canvasStyle: StyleProp<ViewStyle>}) => {
     return (
-        <MapCanvasWrapper canvasStyle = {canvasStyle}>
-            <MapBackgroud backgroundStyle={styles.backgroundStyle} imageStyle={styles.imageStyle}/>
-            {/* <NavigationNodeDisplay/> */}
-            {/* <NavigationEdgeDisplay/> */}
-            <NavigationNode x="50" y="10"/>
-            <Circle cx="25" cy="25" r="20" />
-            {/* <Rect x="50" y="10" width="30" height="30" /> */}
+        <MapCanvasWrapper canvasStyle = {canvasStyle} offsetCoor={centerCoor}  dimension={defaultImageDimention}>
+            <MapBackgroud/>
+            <NavigationNodeDisplay/>
+            <NavigationEdgeDisplay/>
             <Text>Hi Honghui</Text>
         </MapCanvasWrapper>
     )
@@ -37,13 +48,11 @@ const MapEditorCanvas = ({canvasStyle}: {canvasStyle: StyleProp<ViewStyle>}) => 
 
 export default MapEditorCanvas;
 
+
 const styles = StyleSheet.create({
-    backgroundStyle: {
-        alignItems: 'center',
-        justifyContent: 'center', 
-    },
-    imageStyle:{
-        width: 800, 
-        height: 800, 
-    },
+    canvas: {
+        flex: 1,
+        left: "50%",
+        height:"100%"
+    }
 })

@@ -4,6 +4,7 @@ import { RootState, AppDispatch } from '../../store/datastore';
 import React from "react"
 import Svg, { G } from 'react-native-svg';
 import Canvas from 'react-native-canvas'
+import NavigationNode from './NavigationNode'
 
 
 //just testing this format out
@@ -14,11 +15,14 @@ const NavigationNodeDisplay = () => {
 
 
     return (
-        <G>
-          {nodes.map(node => (
-            <NodeComponent key={node.id} {...node} />
-          ))}
-        </G>
+      <>
+        <NavigationNode x={50} y={10} />
+      </>
+        // <G>
+        //   {nodes.map(node => (
+        //     <NodeComponent key={node.id} {...node} />
+        //   ))}
+        // </G>
       );
 }
 
