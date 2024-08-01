@@ -1,15 +1,21 @@
-import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from './reducers';
+import { configureStore, createSelector  } from '@reduxjs/toolkit';
+import { combineReducers } from "redux";
+import floorplanReducer from './floorPlanSlice';
+
+const rootReducer = combineReducers({
+  floorplanState: floorplanReducer,
+});
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
 });
 
 export default store;
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
+export const selectNodeByKey = (key: string) =>
+  createSelector(
+    (state: RootState) => state.floorplanState.floorPlan,
+    (floorPlan) => floorPlan.get(key)
+  );
