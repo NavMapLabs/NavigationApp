@@ -1,9 +1,9 @@
 import { configureStore, createSelector  } from '@reduxjs/toolkit';
 import { combineReducers } from "redux";
-import floorplanReducer from './floorPlanSlice';
+import NavMapReducer from './NavMapSlice';
 
 const rootReducer = combineReducers({
-  floorplanState: floorplanReducer,
+  NavMapState: NavMapReducer,
 });
 
 const store = configureStore({
@@ -16,6 +16,6 @@ export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export const selectNodeByKey = (key: string) =>
   createSelector(
-    (state: RootState) => state.floorplanState.floorPlan,
-    (floorPlan) => floorPlan.get(key)
+    (state: RootState) => state.NavMapState.nodes,
+    (nodes) => nodes.get(key)
   );

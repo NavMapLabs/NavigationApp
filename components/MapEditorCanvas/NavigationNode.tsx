@@ -1,26 +1,37 @@
-import { View, StyleSheet, StyleProp, ImageSourcePropType, Image, ImageProps, Text, DimensionValue } from "react-native"
-import { Image as SvgImage, NumberProp } from 'react-native-svg';
+import { TouchableOpacity, StyleSheet, Image, ImageProps } from "react-native"
+import { AppDispatch } from '../../store/datastore';
+import { useDispatch } from 'react-redux';
+import { removeNode } from "@/store/NavMapSlice";
 import React from "react"
 import { Coordinate } from "../../constants/Coordinate"
 import { Dimension } from "@/constants/Dimension";
 
-const defultImage:ImageProps = require('../../assets/images/sampleNode.png')
+const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
 
 // const NavigationNode = ({coor} : {coor: Coordinate}) => {
-  const NavigationNode = ({coords, dimension}: {coords:Coordinate, dimension:Dimension}) => {
+  const NavigationNode = ({id, coords, dimension}: {id:string, coords:Coordinate, dimension:Dimension}) => {
     const x = coords.x;
     const y = coords.y;
-    
+
+    const dispatch = useDispatch<AppDispatch>();
+    const handleClick = () => {
+      dispatch(removeNode({key: id}));
+      console.log("clicked");
+    };
+
+
     return (
-      <Image 
-        source={defultImage} 
-        style={[styles.image, { 
-          marginLeft: x - dimension.width/2, 
-          marginTop: y - dimension.height/2, 
-          width: dimension.width, 
-          height: dimension.height 
-        }]}
-      />
+      <TouchableOpacity onPress={handleClick}>
+        <Image 
+          source={defaultImage} 
+          style={[styles.image, { 
+            marginLeft: x - dimension.width/2, 
+            marginTop: y - dimension.height/2, 
+            width: dimension.width, 
+            height: dimension.height 
+          }]}
+        />
+      </TouchableOpacity>
     );
 };
 

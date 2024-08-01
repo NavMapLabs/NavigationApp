@@ -1,6 +1,6 @@
 import {Coordinate} from './Coordinate'
 
-export interface NavigationNode {
+export interface NavNodeType {
     name: String;
     id: String;
     coords: Coordinate;
