@@ -12,7 +12,7 @@ const AddNodeButton = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const handlePress = () => {
-        const coords:Coordinate = {x:10, y:0}
+        const coords:Coordinate = {x:10, y:10 * count}
         const node: NavNodeType = {
             name: "test" + count,
             id: "" + count,
@@ -21,6 +21,7 @@ const AddNodeButton = () => {
             description: "testing node"
         }
         dispatch(addNode({key: node.name, node:node}));
+        setCount(count+1);
       };
 
     return (
