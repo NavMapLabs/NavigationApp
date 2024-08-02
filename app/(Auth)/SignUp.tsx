@@ -1,19 +1,20 @@
-import { Text, View, StyleSheet, Pressable } from "react-native"
+import { Text, View, TextInput, StyleSheet, Pressable } from "react-native"
 import React, { useState } from "react";
 import { TextInput as PaperTextInput } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { LogInScreenNavigationProp } from "@/constants/types"; // this is the identity 
+import { SignUpScreenNavigationProp } from "@/constants/types"; // this is the identity
+import { useNavigation } from '@react-navigation/native'; // incase
 
-export default function LogInScreen() {
+export default function SignUpScreen() {
     const [emailText, setEmailText] = useState('');
-    const [passwordText, setPasswordText] = useState('');
+    const [password, setPassword] = useState('');
+    const [reEnterPassword, setReEnterPassword] = useState('');
 
     const [passwordVisible, setPasswordVisible] = useState(true);
-
+    const [reEnterPasswordVisible, setReEnterPasswordVisible] = useState(true);
+    
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
-    const [PasswordBorderColor, setPasswordBorderColor] = useState('gray');
-
-    const navigation = useNavigation<LogInScreenNavigationProp>(); // this gives you access 
+    const [passwordbBorderColor, setPasswordBorderColor] = useState('gray');
+    const [ReEnterPasswordbBorderColor, setReEnterPasswordBorderColor] = useState('gray');
 
     return (
         <View
@@ -21,7 +22,7 @@ export default function LogInScreen() {
             <View
                 style={styles.box}>
                 <Text style={styles.label}>Email</Text>
-                <PaperTextInput
+                  <PaperTextInput
                     style={[styles.paperInput, { borderColor: emailBorderColor }]}
                     onFocus={() => setEmailBorderColor('black')} // border color on focus
                     onBlur={() => setEmailBorderColor('gray')}  // border color on focus
@@ -32,20 +33,20 @@ export default function LogInScreen() {
                     onChangeText={setEmailText}
 
                     theme={{ colors: { primary: "transparent" } }} // this removes the underline
-                    underlineColor="transparent"  // this removes the any extra underline
+                    underlineColor="transparent"
                 // obtain data here
                 />
                 <Text style={styles.label}>Password</Text>
                 <PaperTextInput
-                    style={[styles.paperInput, { borderColor: PasswordBorderColor }]}
+                    style={[styles.paperInput, { borderColor: passwordbBorderColor }]}
                     onFocus={() => setPasswordBorderColor('black')} // border color on focus
                     onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
 
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
                     secureTextEntry={passwordVisible}
-                    value={passwordText}
-                    onChangeText={setPasswordText}
+                    value={password}
+                    onChangeText={setPassword}
                     right={
                         <PaperTextInput.Icon
                             icon={passwordVisible ? 'eye' : 'eye-off'}
@@ -54,7 +55,29 @@ export default function LogInScreen() {
                         />
                     }
                     theme={{ colors: { primary: "transparent" } }} // this removes the underline
-                    underlineColor="transparent" // this removes any extra underline
+                    underlineColor="transparent"
+                // obtain data here
+                />
+                <Text style={styles.label}>Re-enter Password</Text>
+                <PaperTextInput
+                    style={[styles.paperInput, { borderColor: ReEnterPasswordbBorderColor }]}
+                    onFocus={() => setReEnterPasswordBorderColor('black')} // border color on focus
+                    onBlur={() => setReEnterPasswordBorderColor('gray')}  // border color on focus
+
+                    placeholder='Value'
+                    placeholderTextColor="#a9a9a9"
+                    secureTextEntry={reEnterPasswordVisible}
+                    value={reEnterPassword}
+                    onChangeText={setReEnterPassword}
+                    right={
+                        <PaperTextInput.Icon
+                            icon={reEnterPasswordVisible ? 'eye' : 'eye-off'}
+                            onPress={() => setReEnterPasswordVisible(!reEnterPasswordVisible)}
+                            style={styles.icon} // this adjusts eye icon position
+                        />
+                    }
+                    theme={{ colors: { primary: "transparent" } }} // this removes the underline
+                    underlineColor="transparent"
                 // obtain data here
                 />
                 <Pressable
@@ -65,22 +88,6 @@ export default function LogInScreen() {
                 >
                     <Text style={styles.buttonText}>Sign In</Text>
                 </Pressable>
-                <Text
-                    style={styles.textSpace}>
-                    <Text
-                        style={styles.underline}>
-                        Forgot password?
-                    </Text>
-                </Text>
-                <Text
-                    style={styles.underline}
-                    onPress={() => {
-                        navigation.navigate('SignUpScreen')
-                        console.log("Pressed")
-                    }}
-                >
-                    Need an account? Sign-up here.
-                </Text>
             </View>
         </View>
     );
@@ -98,11 +105,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 15,
         width: 400,
-        alignItems: "center",
-    },
-    underline: {
-        textDecorationLine: 'underline',
-        color: 'black', // set this color of the underline 'black'
+        alignItems: 'center',
     },
     button: {
         backgroundColor: '#71E0BC',
@@ -116,14 +119,10 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'black', // Set the text color to black
     },
-    textSpace: {
-        marginTop: 4, // Space before text
-        marginBottom: 8, // Space after text
-    },
     label: {
         alignSelf: 'flex-start', // align labels to the start
         marginLeft: 10, // Add some margin to the left to match the input margin
-        marginBottom: 1, // Space between label and input
+        marginBottom: 5, // Space between label and input
     },
     icon: {
         marginTop: 20,
@@ -138,11 +137,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         width: 350,
         height: 23,
-        // this adjust font size and line height to the standard
+        // this adjust font size to to the standard
         fontSize: 14,
     },
 });
-
-/* self-note
-3. use navigation for link
- */
