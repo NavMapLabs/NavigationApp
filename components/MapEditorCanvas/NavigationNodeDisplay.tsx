@@ -19,7 +19,7 @@ const NavigationNodeDisplay = ({dimension}: {dimension:Dimension}) => {
       <AddNodeButton/>
       {
         [...nodes.entries()].map(([name, node]) => (
-          <NavigationNode key={name} id={node.id} coords={node.coords} dimension={dimension}/>
+          <NavigationNode key={name} name={node.name} id={node.id} coords={node.coords} dimension={dimension}/>
         ))
       }
       </>

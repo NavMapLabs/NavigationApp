@@ -20,7 +20,7 @@ const AddNodeButton = () => {
             coords: coords,
             description: "testing node"
         }
-        dispatch(addNode({key: "TestNode", node:node}));
+        dispatch(addNode({key: node.name, node:node}));
       };
 
     return (

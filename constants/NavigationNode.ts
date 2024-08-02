@@ -1,10 +1,10 @@
 import {Coordinate} from './Coordinate'
 
 export interface NavNodeType {
-    name: String;
-    id: String;
+    name: string;
+    id: string;
     coords: Coordinate;
-    tag: String;
+    tag: string;
     description: string;
   }
   
