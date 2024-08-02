@@ -11,7 +11,7 @@ import FloorMenu from "../../components/FloorMenu";
 const MapEditor = () => {
     return (
         <View style={styles.main}>
-            <NavigationBar  navBarStyle={styles.ui}/>
+            <NavigationBar  navBarStyle={styles.ui} />
             <MapEditorCanvas canvasStyle = {styles.canvas}/>
             <EditBar editBarStyle={styles.ui} clickedNode={false} />
         </View>

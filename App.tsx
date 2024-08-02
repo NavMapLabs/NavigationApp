@@ -6,6 +6,7 @@ import { RootStackParamList } from './constants/types';
 import datastore from './store/datastore';
 import Homepage from './app/Homepage'
 import MapEditor from './app/(Editor)/MapEditor';
+import SubMenu from './components/SubMenu';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -18,6 +19,7 @@ const App: React.FC = () => {
             >
                 <Stack.Screen name="Homepage" component={Homepage} />
                 <Stack.Screen name="MapEditor" component={MapEditor} />
+                <Stack.Screen name="SubMenu" component={SubMenu} />
             </Stack.Navigator>
         </Provider>
     )
