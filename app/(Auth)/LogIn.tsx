@@ -13,7 +13,7 @@ export default function LogInScreen() {
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
     const [PasswordBorderColor, setPasswordBorderColor] = useState('gray');
 
-    const navigation = useNavigation<LogInScreenNavigationProp>(); // this gives you access 
+    const navigation = useNavigation<LogInScreenNavigationProp>(); // this gives you access to the hook
 
     return (
         <View

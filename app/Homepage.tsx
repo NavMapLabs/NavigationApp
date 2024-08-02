@@ -7,7 +7,7 @@ import { HomeNavigationProp } from '@/constants/types';
 const Homepage = () => {
   // Access navigation via useNavigation hook
   const navigation = useNavigation<HomeNavigationProp>();
-
+  
   return (
     <View style={styles.container}>
       <Text>Hi Honghui</Text>

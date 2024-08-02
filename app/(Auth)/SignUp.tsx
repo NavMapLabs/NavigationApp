@@ -2,7 +2,7 @@ import { Text, View, TextInput, StyleSheet, Pressable } from "react-native"
 import React, { useState } from "react";
 import { TextInput as PaperTextInput } from 'react-native-paper';
 import { SignUpScreenNavigationProp } from "@/constants/types"; // this is the identity
-import { useNavigation } from '@react-navigation/native'; // incase
+import { useNavigation } from '@react-navigation/native';
 
 export default function SignUpScreen() {
     const [emailText, setEmailText] = useState('');

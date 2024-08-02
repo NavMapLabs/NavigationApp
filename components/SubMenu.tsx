@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#71E0BC',
         padding: 5,
-        width: 200, // maybe change this width(?)
+        width: 200,
     },
     box: {
         left: -17,
