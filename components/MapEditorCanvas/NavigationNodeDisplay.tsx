@@ -5,7 +5,6 @@ import { Dimension } from "@/constants/Dimension";
 import { Coordinate } from "@/constants/Coordinate";
 import { addNode } from "@/store/NavMapSlice";
 import { NavNodeType } from "@/constants/NavigationNode";
-import AddNodeButton from "./AddNodeButton"
 import NavigationNode from "@/components/MapEditorCanvas/NavigationNode"
 
 
@@ -16,7 +15,6 @@ const NavigationNodeDisplay = ({dimension}: {dimension:Dimension}) => {
 
     return (
       <>
-      <AddNodeButton/>
       {
         [...nodes.entries()].map(([name, node]) => (
           <NavigationNode key={name} name={node.name} id={node.id} coords={node.coords} dimension={dimension}/>
