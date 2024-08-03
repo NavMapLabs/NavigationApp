@@ -1,20 +1,48 @@
-import { View, StyleSheet,StyleProp, ViewStyle, Text, Image, ImageBackground } from "react-native"
-import React, { ReactNode, useCallback, useEffect, useState } from "react"
-import Canvas from 'react-native-canvas'
-import Svg, { G, Circle, Rect } from 'react-native-svg';
+import { View, StyleSheet,StyleProp, ViewStyle, Pressable, GestureResponderEvent  } from "react-native"
+import React, { ReactNode, useEffect, useState } from "react"
 import MapBackgroud from './MapBackgroud'
 import NavigationNodeDisplay from './NavigationNodeDisplay'
 import NavigationEdgeDisplay from './NavigationEdgeDisplay'
 import { Coordinate } from "@/constants/Coordinate";
 import { Dimension } from "@/constants/Dimension";
 import AddNodeButton from "./AddNodeButton"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "@/store/datastore"
+import { NavNodeType } from "@/constants/NavigationNode"
+import { addNode } from "@/store/NavMapSlice";
 
 // define the dynamic canvas view containing all canvas element in screen
 // will be moved and resize for the zoom-in features
 const MapCanvas = ({children, offsetCoor, dimension}: 
     {children: ReactNode, offsetCoor:Coordinate, dimension: Dimension}) => {
+    const dispatch = useDispatch<AppDispatch>();
+
+
+    const handlePress = (event: GestureResponderEvent) => {
+        console.log("===== pressed =====");
+        // console.log(event.nativeEvent);
+        
+        const { offsetX, offsetY } = event.nativeEvent;
+        console.log(offsetX, offsetY);
+        console.log("===== offsetted =====");
+        console.log(offsetX - dimension.width/2, offsetY);
+        addNodeEvent(offsetX - dimension.width/2, offsetY)
+    };
+
+    const addNodeEvent = (x:number, y:number) => {
+        const coords:Coordinate = {x:x, y:y}
+        const node: NavNodeType = {
+            name: "test",
+            id: "test",
+            tag: "",
+            coords: coords,
+            description: "testing node"
+        }
+        dispatch(addNode({key: node.name, node:node}));
+      };
+
     return (
-        <View style={[styles.canvas, 
+        <Pressable onPress={handlePress} style={[styles.canvas, 
             { 
                 marginLeft: -dimension.width/2 + offsetCoor.x,
                 marginTop: -dimension.height/2 + offsetCoor.y,
@@ -22,7 +50,7 @@ const MapCanvas = ({children, offsetCoor, dimension}:
                 width: dimension.width,
             }]} >
                 {children}
-        </View>
+        </Pressable>
     )
 }
 
