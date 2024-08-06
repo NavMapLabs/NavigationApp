@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack' 
 import { RootStackParamList } from './constants/types';
 import datastore from './store/datastore';
@@ -12,7 +11,7 @@ import SignUpScreen from './app/(Auth)/SignUp';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const App: React.FC = () => {
+const App = () => {
     return (
         <Provider store={datastore}>
             <Stack.Navigator

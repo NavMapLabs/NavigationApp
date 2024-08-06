@@ -1,6 +1,6 @@
-import { Text, View, TextInput, StyleSheet, Button } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Text, View, StyleSheet, Pressable} from "react-native"
 import React, { useState } from "react";
+import { TextInput as PaperTextInput } from 'react-native-paper';
 import { useNavigation } from "@react-navigation/native"
 import { AuthError } from 'firebase/auth';
 
@@ -10,10 +10,10 @@ import { signUp } from "./firebaseAuth";
 const SignUpScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [rePassword, setRePassword] = useState("");
+    const [reEnterPassword, setReEnterPassword] = useState("");
 
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    const [reEnterPasswordVisible, setReEnterPasswordVisible] = useState(false);
+    const [passwordVisible, setPasswordVisible] = useState(true);
+    const [reEnterPasswordVisible, setReEnterPasswordVisible] = useState(true);
 
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
     const [passwordbBorderColor, setPasswordBorderColor] = useState('gray');
@@ -27,7 +27,7 @@ const SignUpScreen = () => {
     // Function to handle user creation
     const handleSignUp = async () => {
         try {
-            const user = await signUp(email, password, rePassword)
+            const user = await signUp(email, password, reEnterPassword)
             if(user) {
                 //use saveUserData from firebase if needed
                 const id = user.uid;
@@ -57,8 +57,8 @@ const SignUpScreen = () => {
 
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
-                    value={emailText}
-                    onChangeText={setEmailText}
+                    value={email}
+                    onChangeText={setEmail}
 
                     theme={{ colors: { primary: "transparent" } }} // this removes the underline
                     underlineColor="transparent"

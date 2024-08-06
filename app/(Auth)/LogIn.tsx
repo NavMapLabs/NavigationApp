@@ -11,7 +11,7 @@ const LogInScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [passwordVisible, setPasswordVisible] = useState(true);
 
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
     const [PasswordBorderColor, setPasswordBorderColor] = useState('gray');
@@ -52,8 +52,8 @@ const LogInScreen = () => {
 
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
-                    value={emailText}
-                    onChangeText={setEmailText}
+                    value={email}
+                    onChangeText={setEmail}
 
                     theme={{ colors: { primary: "transparent" } }} // this removes the underline
                     underlineColor="transparent"  // this removes the any extra underline
@@ -68,8 +68,8 @@ const LogInScreen = () => {
                     placeholder='Value'
                     placeholderTextColor="#a9a9a9"
                     secureTextEntry={passwordVisible}
-                    value={passwordText}
-                    onChangeText={setPasswordText}
+                    value={password}
+                    onChangeText={setPassword}
                     right={
                         <PaperTextInput.Icon
                             icon={passwordVisible ? 'eye' : 'eye-off'}
