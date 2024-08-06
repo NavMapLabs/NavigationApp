@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import NodeEditor from "../../components/NodeEditor";
 import NavigationBar from "../../components/NavigationBar";

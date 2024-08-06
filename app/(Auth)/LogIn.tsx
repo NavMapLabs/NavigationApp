@@ -20,6 +20,7 @@ const LogInScreen = () => {
             const user = await logIn(email, password)
             await checkIfEmailVerified(user, navigation)
 
+
         } catch (error: unknown) {
             if (
                 (error as AuthError).code === "auth/user-not-found" ||
@@ -33,7 +34,7 @@ const LogInScreen = () => {
             }
         }
     }
-
+    
 
     return (
         <View
@@ -152,8 +153,8 @@ const checkIfEmailVerified = async (user: User, navigation: LogInScreenNavigatio
             navigation.navigate("Homepage");
         }
         //If verified, navigate to other place
-        console.log("Woo Verified, I'll navigate you later")
-        // navigation.navigate("MapEditor")
+        // console.log("Woo Verified, I'll navigate you later")
+        navigation.navigate("MapEditor")
     } else {
         throw new Error("Failed to check User")
     }
