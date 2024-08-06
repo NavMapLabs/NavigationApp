@@ -15,7 +15,7 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
 
     const dispatch = useDispatch<AppDispatch>();
     const handleClick = () => {
-      dispatch(removeNode({key: name}));
+      dispatch(removeNode({key: id}));
       console.log("clicked");
     };
 

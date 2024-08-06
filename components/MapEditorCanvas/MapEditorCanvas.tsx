@@ -9,7 +9,7 @@ import AddNodeButton from "./AddNodeButton"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "@/store/datastore"
 import { NavNodeType } from "@/constants/NavigationNode"
-import { addNode } from "@/store/NavMapSlice";
+import { addNode, addNodeWithCoord } from "@/store/NavMapSlice";
 
 // define the dynamic canvas view containing all canvas element in screen
 // will be moved and resize for the zoom-in features
@@ -22,7 +22,10 @@ const MapCanvas = ({children, offsetCoor, dimension}:
         console.log("===== pressed =====");
         // console.log(event.nativeEvent);
         
+        // false error from VS Code, it will work
         const { offsetX, offsetY } = event.nativeEvent;
+        // false error from VS Code, it will work
+
         console.log(offsetX, offsetY);
         console.log("===== offsetted =====");
         console.log(offsetX - dimension.width/2, offsetY);
@@ -31,14 +34,7 @@ const MapCanvas = ({children, offsetCoor, dimension}:
 
     const addNodeEvent = (x:number, y:number) => {
         const coords:Coordinate = {x:x, y:y}
-        const node: NavNodeType = {
-            name: "test",
-            id: "test",
-            tag: "",
-            coords: coords,
-            description: "testing node"
-        }
-        dispatch(addNode({key: node.name, node:node}));
+        dispatch(addNodeWithCoord({coords:coords}));
       };
 
     return (
