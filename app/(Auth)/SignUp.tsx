@@ -27,6 +27,7 @@ const SignUpScreen = () => {
                 //use saveUserData from firebase if needed
                 const id = user.uid;
             }
+            //should navigate to a loading screen, or ask to verify first before doing anything
         } catch (error: unknown) {
             if ((error as AuthError).code === 'auth/email-already-in-use') {
                 alert('Email already in use');

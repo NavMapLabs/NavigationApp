@@ -6,9 +6,7 @@ import NavigationBar from "../../components/NavigationBar";
 import Map from "../../components/Map";
 import FloorMenu from "../../components/FloorMenu";
 
-
-
-export default function MapEditor() {
+const MapEditor = () => {
     return (
         <View>
             <NavigationBar />
@@ -18,3 +16,5 @@ export default function MapEditor() {
         </View>
     )
 }
+
+export default MapEditor

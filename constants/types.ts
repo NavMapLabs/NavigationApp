@@ -4,6 +4,7 @@ export type RootStackParamList = {
     Homepage: undefined;
     LogInScreen: undefined;
     SignUpScreen: undefined;
+    MapEditor: undefined;
     //add more as you need navigation
 }
 

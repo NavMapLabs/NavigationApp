@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '@/constants/types';
 import { HomeNavigationProp } from '@/constants/types';
+
 
 const Homepage = () => {
   // Access navigation via useNavigation hook

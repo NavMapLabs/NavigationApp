@@ -18,7 +18,7 @@ const LogInScreen = () => {
     const handleLogIn = async () => {
         try {
             const user = await logIn(email, password)
-            await checkIfEmailVerified(user)
+            await checkIfEmailVerified(user, navigation)
 
         } catch (error: unknown) {
             if (
@@ -142,16 +142,18 @@ re-adjust the link to the left
 fix the padding on the labels
 */
 
-const checkIfEmailVerified = async (user: User) => {
-    const navigation = useNavigation();
-
+const checkIfEmailVerified = async (user: User, navigation: LogInScreenNavigationProp) => {
     if(user) {
-        if(!user.emailVerified)
-        // means that user is still not verified yet, need them to be verified
-        await emailVerification()
-        await logOut();
+        if(!user.emailVerified) {
+            // means that user is still not verified yet, need them to be verified
+            await emailVerification()
+            await logOut();
 
-        // navigation.navigate("index");
+            navigation.navigate("Homepage");
+        }
+        //If verified, navigate to other place
+        console.log("Woo Verified, I'll navigate you later")
+        // navigation.navigate("MapEditor")
     } else {
         throw new Error("Failed to check User")
     }
