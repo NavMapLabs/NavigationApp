@@ -4,7 +4,8 @@ import { NavNodeType } from '@/constants/NavigationNode';
 import { Coordinate } from '@/constants/Coordinate';
 
 interface AdjacencyList {
-  list: any;
+  forwardList: string[],
+  backwardList: string[],
 }
 
 // Define the initial state using an Immutable.js Map
@@ -23,8 +24,12 @@ const navMapSlice = createSlice({
   name: 'navMap',
   initialState,
   reducers: {
-    addNode: (state, action: PayloadAction<{ key: string, node: NavNodeType }>) => {
-      state.nodes = state.nodes.set(action.payload.key, action.payload.node);
+    addNode: (state, action: PayloadAction<{ node: NavNodeType }>) => {
+      let id:string = Math.random().toString().slice(2, 8);
+      while (state.nodes.has(id)) { 
+        id = Math.random().toString().slice(2, 8);
+      };
+      state.nodes = state.nodes.set(id, action.payload.node);
     },
     addNodeWithCoord: (state, action: PayloadAction<{ coords:Coordinate }>) => {
       let id:string = Math.random().toString().slice(2, 8);
@@ -33,7 +38,7 @@ const navMapSlice = createSlice({
       };
 
       const newNode: NavNodeType = {
-        name: "node" + id,
+        name: "node-" + id,
         id: id,
         tag: "",
         coords: action.payload.coords,
@@ -56,11 +61,43 @@ const navMapSlice = createSlice({
         state.nodes = state.nodes.set(action.payload.key, updatedNode);
       }
     },
+    addEdge: (state, action:PayloadAction<{nodeID_1: string, nodeID_2:string}>) => {
+      const nodeID_1: string = action.payload.nodeID_1;
+      const nodeID_2: string = action.payload.nodeID_2;
+      
+      console.log("====== before =====")
+      console.log(state.graph)
+
+      let draftGraph = state.graph;
+
+      if (!draftGraph.has(nodeID_1)) {
+        draftGraph = draftGraph.set(nodeID_1, {forwardList:[], backwardList:[]})
+      }
+
+      if (!draftGraph.has(nodeID_2)) {
+        draftGraph = draftGraph.set(nodeID_2, {forwardList:[], backwardList:[]})
+      }
+
+
+      if (!draftGraph.get(nodeID_1).forwardList.includes(nodeID_2)) {
+        draftGraph.get(nodeID_1).forwardList = [...draftGraph.get(nodeID_1).forwardList, nodeID_2]
+      }
+
+      if (!draftGraph.get(nodeID_2).backwardList.includes(nodeID_1)) {
+        draftGraph.get(nodeID_2).backwardList = [...draftGraph.get(nodeID_2).backwardList, nodeID_1]
+      }
+
+
+
+      state.graph = draftGraph
+      console.log("====== after =====")
+      console.log(state.graph)
+    }
   },
 });
 
 // Export the actions
-export const { addNode, addNodeWithCoord, removeNode, updateNodeCoords } = navMapSlice.actions;
+export const { addNode, addNodeWithCoord, removeNode, updateNodeCoords, addEdge } = navMapSlice.actions;
 
 // Export the reducer
 export default navMapSlice.reducer;
