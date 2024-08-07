@@ -35,7 +35,6 @@ export const logIn = async (email: string, password: string) => {
 }
 
 export const emailVerification = async () => {
-
     const user = auth.currentUser
     if(user) {
         try {
