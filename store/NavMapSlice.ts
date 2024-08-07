@@ -48,11 +48,11 @@ const navMapSlice = createSlice({
       state.nodes = state.nodes.set(id, newNode);
     },
     removeNode: (state, action: PayloadAction<{ key: string }>) => {
-      // the error is Microsoft's error, it will work
+      // If it shows error is Microsoft's error, it will work
       // the delete function from immutable should return a new Map not like the "go to defenition"
       // weird issue from VS code or something
       state.nodes = state.nodes.delete(action.payload.key);
-      // the error is Microsoft's error, it will work
+      // If it shows error is Microsoft's error, it will work
     },
     updateNodeCoords: (state, action: PayloadAction<{ key: string, coords: Coordinate }>) => {
       const existingNode = state.nodes.get(action.payload.key);
@@ -65,8 +65,8 @@ const navMapSlice = createSlice({
       const nodeID_1: string = action.payload.nodeID_1;
       const nodeID_2: string = action.payload.nodeID_2;
       
-      console.log("====== before =====")
-      console.log(state.graph)
+      // console.log("====== before addEdge =====")
+      // console.log(state.graph)
 
       let draftGraph = state.graph;
 
@@ -79,25 +79,78 @@ const navMapSlice = createSlice({
       }
 
 
-      if (!draftGraph.get(nodeID_1).forwardList.includes(nodeID_2)) {
-        draftGraph.get(nodeID_1).forwardList = [...draftGraph.get(nodeID_1).forwardList, nodeID_2]
+      // If it shows error is fine, it will work
+      let forwardList = draftGraph.get(nodeID_1)?.forwardList ?? [];
+      let backwardList = draftGraph.get(nodeID_2)?.backwardList ?? [];
+
+
+      if (!forwardList.includes(nodeID_2)) {
+        forwardList = [...forwardList, nodeID_2]
       }
 
-      if (!draftGraph.get(nodeID_2).backwardList.includes(nodeID_1)) {
-        draftGraph.get(nodeID_2).backwardList = [...draftGraph.get(nodeID_2).backwardList, nodeID_1]
+      if (!backwardList.includes(nodeID_1)) {
+       backwardList = [...backwardList, nodeID_1]
       }
 
+      // type graud for [Object is possibly 'undefined'] issue
+      let node_1 = draftGraph.get(nodeID_1)
+      let node_2 = draftGraph.get(nodeID_2)
+      if (node_1 != undefined && node_2 != undefined) {
+        node_1.forwardList = forwardList;
+        node_2.backwardList = backwardList;
+      }
 
-
+      // assign back the state's graph in redux store
       state.graph = draftGraph
-      console.log("====== after =====")
-      console.log(state.graph)
+      // console.log("====== after =====")
+      // console.log(state.graph)
+    },
+    removeEdge: (state, action:PayloadAction<{nodeID_1: string, nodeID_2:string}>) => {
+      const nodeID_1: string = action.payload.nodeID_1;
+      const nodeID_2: string = action.payload.nodeID_2;
+      
+      // console.log("====== before removeEdge =====")
+      // console.log(state.graph)
+
+      let draftGraph = state.graph;
+
+      if (!draftGraph.has(nodeID_1)) {
+        console.log("Node not exsisting: ", nodeID_1)
+      }
+      if (!draftGraph.has(nodeID_2)) {
+        console.log("Node not exsisting: ", nodeID_2)
+      }
+
+
+      // If it shows error is fine, it will work
+      let forwardList:string[] = draftGraph.get(nodeID_1)?.forwardList ?? [];
+      let backwardList:string[] = draftGraph.get(nodeID_2)?.backwardList ?? [];
+
+      if (forwardList.includes(nodeID_2)) {
+        forwardList = forwardList.filter(node => node !== nodeID_2);
+      }
+      if (backwardList.includes(nodeID_1)) {
+        backwardList = backwardList.filter(node => node !== nodeID_1);
+      }
+
+      // type graud for [Object is possibly 'undefined'] issue
+      let node_1 = draftGraph.get(nodeID_1)
+      let node_2 = draftGraph.get(nodeID_2)
+      if (node_1 != undefined && node_2 != undefined) {
+        node_1.forwardList = forwardList;
+        node_2.backwardList = backwardList;
+      }
+
+      // assign back the state's graph in redux store
+      state.graph = draftGraph
+      // console.log("====== after =====")
+      // console.log(state.graph)
     }
   },
 });
 
 // Export the actions
-export const { addNode, addNodeWithCoord, removeNode, updateNodeCoords, addEdge } = navMapSlice.actions;
+export const { addNode, addNodeWithCoord, removeNode, updateNodeCoords, addEdge, removeEdge } = navMapSlice.actions;
 
 // Export the reducer
 export default navMapSlice.reducer;
