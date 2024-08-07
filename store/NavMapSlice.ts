@@ -54,11 +54,35 @@ const navMapSlice = createSlice({
       // if see error, install "JavaScript and TypeScript Nightly" extension, fixed linking issue
       state.nodes = state.nodes.delete(action.payload.key);
       // If it shows error is Microsoft's error, it will work
+
+      // removing all edges
+      const nodeID_1: string = action.payload.key;
+      let draftGraph = state.graph;
+      
+      let forwardList:string[] = draftGraph.get(nodeID_1)?.forwardList ?? [];
+
+      forwardList.forEach((nodeID_2: string) => {
+        let node_2 = draftGraph.get(nodeID_2)
+        let backwardList:string[] = node_2?.backwardList ?? [];
+        backwardList = backwardList.filter(node => node !== nodeID_1);
+        if ( node_2 != undefined) {
+          node_2.backwardList = backwardList;
+        }
+      });
+      
+      state.graph = state.graph.delete(action.payload.key);
     },
     updateNodeCoords: (state, action: PayloadAction<{ key: string, coords: Coordinate }>) => {
       const existingNode = state.nodes.get(action.payload.key);
       if (existingNode) {
         const updatedNode = { ...existingNode, coords: action.payload.coords };
+        state.nodes = state.nodes.set(action.payload.key, updatedNode);
+      }
+    },
+    updateName: (state, action: PayloadAction<{ key: string, name: string }>) => {
+      const existingNode = state.nodes.get(action.payload.key);
+      if (existingNode) {
+        const updatedNode = { ...existingNode, name: action.payload.name };
         state.nodes = state.nodes.set(action.payload.key, updatedNode);
       }
     },
