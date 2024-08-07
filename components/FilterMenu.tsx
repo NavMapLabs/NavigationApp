@@ -1,18 +1,19 @@
 import React from "react";
 import {View, StyleSheet, Modal, Pressable, Text, TextInput, FlatList} from "react-native";
 
-interface FilterMenuProps {
-    isVisible: boolean;
-    filters: string[];
-    onClose: () => void;
-    onApplyFilters: (filters: string[]) => void;
+type FilterMenuProps = {
+    isVisible: boolean,
+    filters: string[],
+    onClose: () => void,
+    onApplyFilters: (selectedFilters: string[]) => void
 }
 
-const FilterMenu: React.FC<FilterMenuProps> = ({isVisible, filters, onClose, onApplyFilters}) => {
+
+const FilterMenu = (props: FilterMenuProps) => {
     const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
     const [searchQuery, setSearchQuery] = React.useState('');
 
-    const filterOptions = filters.filter(option =>
+    const filterOptions = props.filters.filter(option =>
         option.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -26,18 +27,18 @@ const FilterMenu: React.FC<FilterMenuProps> = ({isVisible, filters, onClose, onA
       };
 
     const applyFilters = () => {
-        onApplyFilters(selectedFilters);
-        onClose();
+        props.onApplyFilters(selectedFilters);
+        props.onClose();
     };
 
     return (
         <Modal
           transparent={true}
           animationType="none"
-          visible={isVisible}
-          onRequestClose={onClose}
+          visible={props.isVisible}
+          onRequestClose={props.onClose}
         >
-            <Pressable style={styles.modalOverlay} onPress={onClose}>
+            <Pressable style={styles.modalOverlay} onPress={props.onClose}>
                 <View style={styles.menu}>
                     <Pressable onPress={(e) => e.stopPropagation()}>
                         <TextInput
