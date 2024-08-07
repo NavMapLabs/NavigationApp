@@ -1,5 +1,6 @@
 import React from "react";
 import {View, StyleSheet, Modal, Pressable, Text, TextInput, FlatList} from "react-native";
+import { Searchbar } from "react-native-paper";
 
 type FilterMenuProps = {
     isVisible: boolean,
@@ -41,12 +42,11 @@ const FilterMenu = (props: FilterMenuProps) => {
             <Pressable style={styles.modalOverlay} onPress={props.onClose}>
                 <View style={styles.menu}>
                     <Pressable onPress={(e) => e.stopPropagation()}>
-                        <TextInput
-                            style={styles.searchInput}
+                        <TextInput 
                             placeholder="Search..."
                             value={searchQuery}
                             onChangeText={setSearchQuery}
-                            onTouchStart={(e) => e.stopPropagation()}
+                            style={styles.searchInput}
                         />
                     </Pressable>
                     <FlatList
@@ -94,20 +94,20 @@ const styles = StyleSheet.create({
     },
     option: {
       fontSize: 16,
-      paddingVertical: 5,
-      marginVertical: 5,
+      padding: 15,
+      marginVertical: 5
     },
     selected: {
       fontSize: 16,
-      paddingVertical: 5,
-      marginVertical: 5,
+      padding: 15,
       backgroundColor: '#71E0BC',
-      borderRadius: 5,
+      borderRadius: 20,
+      marginVertical: 5
     },
     applyButton: {
       backgroundColor: '#71E0BC',
       padding: 10,
-      borderRadius: 5,
+      borderRadius: 20,
       marginTop: 10,
     },
     buttonText: {
@@ -115,12 +115,12 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     searchInput: {
-        height: 40,
+        height: 50,
         borderColor: '#ccc',
         borderWidth: 1,
-        borderRadius: 5,
+        borderRadius: 20,
         marginBottom: 10,
-        paddingHorizontal: 10,
+        padding: 10,
     }
   });
 

@@ -15,13 +15,12 @@ const SubMenu= (props : SubMenuProps) => {
     return (
         <Modal
           transparent={true}
-          animationType="none"
+          animationType="fade"
           visible={props.isVisible}
           onRequestClose={props.onClose}
         >
-            <Pressable onPress={props.onClose}>
-                <View style={styles.container}>
-                    <View style={styles.left_side}>
+            <Pressable style={styles.container} onPress={props.onClose}>
+                    <Pressable style={styles.left_side} onPress={(e) => e.stopPropagation()}>
                             <Drawer.Section title="MENU">
                                 <Drawer.Item
                                     style={[styles.box, styles.TextSpace]}
@@ -60,8 +59,7 @@ const SubMenu= (props : SubMenuProps) => {
                                     onPress={() => { }}
                                 />
                             </Drawer.Section>
-                    </View>
-                </View>
+                    </Pressable>
             </Pressable>
         </Modal>
     );
@@ -70,7 +68,8 @@ const SubMenu= (props : SubMenuProps) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#71E0BC',
+        // make background color transparent
+        backgroundColor: 'rgba(0,0,0,0.5)',
         justifyContent: 'center',
         alignItems: 'center',
     },
