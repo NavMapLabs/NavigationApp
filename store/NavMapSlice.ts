@@ -51,6 +51,7 @@ const navMapSlice = createSlice({
       // If it shows error is Microsoft's error, it will work
       // the delete function from immutable should return a new Map not like the "go to defenition"
       // weird issue from VS code or something
+      // if see error, install "JavaScript and TypeScript Nightly" extension, fixed linking issue
       state.nodes = state.nodes.delete(action.payload.key);
       // If it shows error is Microsoft's error, it will work
     },
