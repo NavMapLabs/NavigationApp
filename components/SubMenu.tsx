@@ -15,7 +15,7 @@ const SubMenu= (props : SubMenuProps) => {
     return (
         <Modal
           transparent={true}
-          animationType="fade"
+          animationType="none"
           visible={props.isVisible}
           onRequestClose={props.onClose}
         >
