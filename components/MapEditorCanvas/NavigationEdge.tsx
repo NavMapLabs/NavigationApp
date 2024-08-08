@@ -22,7 +22,7 @@ const NavigationEdge = ({coords_1, coords_2}:{coords_1:Coordinate, coords_2:Coor
     };
 
     return (
-        <TouchableOpacity onPress={handleClick} style={{zIndex:10}}>
+        <TouchableOpacity onPress={handleClick} style={{zIndex:5}}>
             <View
                 style={[
                     styles.line,
