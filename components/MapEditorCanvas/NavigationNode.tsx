@@ -21,15 +21,17 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
 
 
     return (
-      <TouchableOpacity onPress={handleClick}>
+      <TouchableOpacity onPress={handleClick} style={{zIndex:10}}>
         <Image 
           source={defaultImage} 
           style={[styles.image, { 
             marginLeft: x - dimension.width/2, 
             marginTop: y - dimension.height/2, 
             width: dimension.width, 
-            height: dimension.height 
+            height: dimension.height,
+            zIndex:10
           }]}
+          z-index={10}
         />
       </TouchableOpacity>
     );
@@ -39,7 +41,6 @@ const styles = StyleSheet.create({
   image: {
     position: 'absolute',
     left: "50%",
-    zIndex: 10,
   },
 });
 

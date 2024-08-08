@@ -28,8 +28,10 @@ const NavigationEdge = ({coords_1, coords_2}:{coords_1:Coordinate, coords_2:Coor
             marginLeft: coords_1.x,
             marginTop: coords_1.y,
             transform: [{ rotate: `${angle}deg` }],
+            zIndex:5
             },
         ]}
+        z-index={5}
         />
     );
 }
@@ -40,7 +42,6 @@ const styles = StyleSheet.create({
       height: 5,
       backgroundColor: 'red',
       left: "50%",
-      zIndex: 9,
     },
   });
   
