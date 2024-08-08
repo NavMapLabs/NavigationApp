@@ -1,7 +1,7 @@
 import {Button} from "react-native"
 import { AppDispatch } from "@/store/datastore";
 import { useDispatch, UseDispatch } from "react-redux";
-import { addNodeWithCoord, addEdge, removeEdge } from "@/store/NavMapSlice";
+import { addNodeWithCoord, addNode, addEdge, removeEdge } from "@/store/NavMapSlice";
 import { Coordinate } from "@/constants/Coordinate";
 import { NavNodeType } from "@/constants/NavigationNode";
 import { useState } from "react";
@@ -11,13 +11,19 @@ const AddNodeButton = () => {
     const dispatch = useDispatch<AppDispatch>();
     const handlePress = () => {
         const coords:Coordinate = {x:10, y:10 * count}
-        // dispatch(addNodeWithCoord({coords}));
-        setCount(count+1);
+        if (count == 0) {
 
-        if (count%2 == 0) {
-            dispatch(removeEdge({nodeID_1:"node1", nodeID_2:"node2"}));
-        } else {
+            setCount(count+1);
+        } else if (count == 1) {
+
+            setCount(count+1);
+        } else if (count == 2) {
+
             dispatch(addEdge({nodeID_1:"node1", nodeID_2:"node2"}));
+            setCount(count+1);
+        } else {
+
+            setCount(0);
         }
       };
 
