@@ -14,7 +14,7 @@ const NavigationNodeDisplay = ({dimension}: {dimension:Dimension}) => {
     return (
       <>
       {
-        [...nodes.entries()].map(([ID, node]) => (
+        [...nodes.entries()].map(([name, node]) => (
           <NavigationNode key={node.id} name={node.name} id={node.id} coords={node.coords} dimension={dimension}/>
         ))
       }

@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux"
 import { AppDispatch } from "@/store/datastore"
 import { NavNodeType } from "@/constants/NavigationNode"
 import { addNode, addNodeWithCoord } from "@/store/NavMapSlice";
+import NavigationEdge from "./NavigationEdge"
 
 // define the dynamic canvas view containing all canvas element in screen
 // will be moved and resize for the zoom-in features
@@ -85,7 +86,7 @@ const MapEditorCanvas = ({canvasStyle}: {canvasStyle: StyleProp<ViewStyle>}) => 
         <MapCanvasWrapper canvasStyle = {canvasStyle} offsetCoor={centerCoor}  dimension={canvasDimensions}>
             <MapBackgroud imageURL={defultImage} canvasDimension={canvasDimensions}/>
             <NavigationNodeDisplay dimension={defaultNodeDimention}/>
-            <NavigationEdgeDisplay/>
+            <NavigationEdgeDisplay />
             {/* <Text>Hi Honghui</Text> */}
         </MapCanvasWrapper>
     )

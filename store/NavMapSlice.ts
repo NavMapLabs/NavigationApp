@@ -24,6 +24,16 @@ const navMapSlice = createSlice({
   name: 'navMap',
   initialState,
   reducers: {
+    addNode_Dev: (state, action: PayloadAction<{ id:string, coords:Coordinate }>) => {
+      const newNode: NavNodeType = {
+        name: action.payload.id,
+        id: action.payload.id,
+        tag: "",
+        coords: action.payload.coords,
+        description: ""
+      }
+      state.nodes = state.nodes.set(action.payload.id, newNode);
+    },
     addNode: (state, action: PayloadAction<{ node: NavNodeType }>) => {
       let id:string = Math.random().toString().slice(2, 8);
       while (state.nodes.has(id)) { 
@@ -90,8 +100,8 @@ const navMapSlice = createSlice({
       const nodeID_1: string = action.payload.nodeID_1;
       const nodeID_2: string = action.payload.nodeID_2;
       
-      // console.log("====== before addEdge =====")
-      // console.log(state.graph)
+      console.log("====== before addEdge =====")
+      console.log(state.graph)
 
       let draftGraph = state.graph;
 
@@ -127,8 +137,9 @@ const navMapSlice = createSlice({
 
       // assign back the state's graph in redux store
       state.graph = draftGraph
-      // console.log("====== after =====")
-      // console.log(state.graph)
+      console.log("====== after =====")
+      console.log(state.graph)
+      console.log(state.nodes)
     },
     removeEdge: (state, action:PayloadAction<{nodeID_1: string, nodeID_2:string}>) => {
       const nodeID_1: string = action.payload.nodeID_1;
@@ -175,7 +186,7 @@ const navMapSlice = createSlice({
 });
 
 // Export the actions
-export const { addNode, addNodeWithCoord, removeNode, updateNodeCoords, addEdge, removeEdge } = navMapSlice.actions;
+export const {addNode_Dev, addNode, addNodeWithCoord, removeNode, updateNodeCoords, addEdge, removeEdge } = navMapSlice.actions;
 
 // Export the reducer
 export default navMapSlice.reducer;

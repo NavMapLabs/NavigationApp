@@ -15,9 +15,9 @@ const calculateLineProperties = (coords_1:Coordinate, coords_2:Coordinate) => {
   };
 
   
-const NavigationEdge = ({node_1, node_2}:{node_1:NavNodeType, node_2:NavNodeType}) => {
+const NavigationEdge = ({coords_1, coords_2}:{coords_1:Coordinate, coords_2:Coordinate}) => {
     
-    const { length, angle } = calculateLineProperties(node_1.coords, node_2.coords);
+    const { length, angle } = calculateLineProperties(coords_1, coords_2);
 
     return (
         <View
@@ -25,8 +25,8 @@ const NavigationEdge = ({node_1, node_2}:{node_1:NavNodeType, node_2:NavNodeType
             styles.line,
             {
             width: length,
-            left: node_1.coords.x,
-            top: node_1.coords.y,
+            marginLeft: coords_1.x,
+            marginTop: coords_1.y,
             transform: [{ rotate: `${angle}deg` }],
             },
         ]}
@@ -37,8 +37,10 @@ const NavigationEdge = ({node_1, node_2}:{node_1:NavNodeType, node_2:NavNodeType
 const styles = StyleSheet.create({
     line: {
       position: 'absolute',
-      height: 2,
-      backgroundColor: 'black',
+      height: 5,
+      backgroundColor: 'red',
+      left: "50%",
+      zIndex: 9,
     },
   });
   

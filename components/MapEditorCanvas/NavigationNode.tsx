@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   image: {
     position: 'absolute',
     left: "50%",
-    top: "50%"
+    zIndex: 10,
   },
 });
 
