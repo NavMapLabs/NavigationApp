@@ -11,10 +11,12 @@ export default function SignUpScreen() {
 
     const [passwordVisible, setPasswordVisible] = useState(true);
     const [reEnterPasswordVisible, setReEnterPasswordVisible] = useState(true);
-    
+
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
     const [passwordbBorderColor, setPasswordBorderColor] = useState('gray');
     const [ReEnterPasswordbBorderColor, setReEnterPasswordBorderColor] = useState('gray');
+
+    const navigation = useNavigation<SignUpScreenNavigationProp>(); // this gives you access 
 
     return (
         <View
@@ -22,7 +24,7 @@ export default function SignUpScreen() {
             <View
                 style={styles.box}>
                 <Text style={styles.label}>Email</Text>
-                  <PaperTextInput
+                <PaperTextInput
                     style={[styles.paperInput, { borderColor: emailBorderColor }]}
                     onFocus={() => setEmailBorderColor('black')} // border color on focus
                     onBlur={() => setEmailBorderColor('gray')}  // border color on focus
@@ -88,6 +90,15 @@ export default function SignUpScreen() {
                 >
                     <Text style={styles.buttonText}>Sign In</Text>
                 </Pressable>
+                <Text
+                    style={[styles.underline, styles.textSpace]}
+                    onPress={() => {
+                        navigation.navigate('LogInScreen')
+                        console.log("Pressed")
+                    }}
+                >
+                    Already have an account? Login here!
+                </Text>
             </View>
         </View>
     );
@@ -139,5 +150,12 @@ const styles = StyleSheet.create({
         height: 23,
         // this adjust font size to to the standard
         fontSize: 14,
+    },
+    underline: {
+        textDecorationLine: 'underline',
+        color: 'black', // set this color of the underline 'black'
+    },
+    textSpace: {
+        marginTop: 3, // Space before text
     },
 });
