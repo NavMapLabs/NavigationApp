@@ -1,8 +1,7 @@
+import { TouchableOpacity, View, StyleSheet } from "react-native"
+import React from 'react';
 import { Coordinate } from '@/constants/Coordinate';
 import { NavNodeType } from '@/constants/NavigationNode';
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Svg, { Line } from 'react-native-svg';
 
 
 const calculateLineProperties = (coords_1:Coordinate, coords_2:Coordinate) => {
@@ -16,23 +15,28 @@ const calculateLineProperties = (coords_1:Coordinate, coords_2:Coordinate) => {
 
   
 const NavigationEdge = ({coords_1, coords_2}:{coords_1:Coordinate, coords_2:Coordinate}) => {
-    
     const { length, angle } = calculateLineProperties(coords_1, coords_2);
 
+    const handleClick = () => {
+        console.log("clicked Edge");
+    };
+
     return (
-        <View
-        style={[
-            styles.line,
-            {
-            width: length,
-            marginLeft: coords_1.x,
-            marginTop: coords_1.y,
-            transform: [{ rotate: `${angle}deg` }],
-            zIndex:5
-            },
-        ]}
-        z-index={5}
-        />
+        <TouchableOpacity onPress={handleClick} style={{zIndex:10}}>
+            <View
+                style={[
+                    styles.line,
+                    {
+                    width: length,
+                    marginLeft: coords_1.x,
+                    marginTop: coords_1.y,
+                    transform: [{ rotate: `${angle}deg` }],
+                    zIndex:5
+                    },
+                ]}
+                z-index={5}
+            />
+        </TouchableOpacity>
     );
 }
 

@@ -21,7 +21,7 @@ const MapCanvas = ({children, offsetCoor, dimension}:
 
     const handlePress = (event: GestureResponderEvent) => {
         console.log("===== pressed =====");
-        // console.log(event.nativeEvent);
+        console.log(event.nativeEvent);
         
         // false error from VS Code, it will work
         const { offsetX, offsetY } = event.nativeEvent;
