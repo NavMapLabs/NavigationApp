@@ -30,11 +30,15 @@ const Homepage = () => {
       }}
       />
 
+      <View style={[{ height: 10, backgroundColor: '#000' }]} />
+
       <Button
       title="Get Data"
       onPress={() => {getData()}}
       />
 
+      <View style={[{ height: 10, backgroundColor: '#000' }]} />
+      
       <Button
       title="Log Out"
       onPress={() => {logOut()}}
