@@ -20,7 +20,7 @@ const App = () => {
             >
                 <Stack.Screen name="Homepage" component={Homepage} />
                 <Stack.Screen name="MapEditor" component={MapEditor} />
-                <Stack.Screen name="SubMenu" component={SubMenu} />
+                {/* <Stack.Screen name="SubMenu" component={SubMenu} /> error here, somewhere*/}
                 <Stack.Screen name="LogInScreen" component={LogInScreen} />
                 <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
             </Stack.Navigator>

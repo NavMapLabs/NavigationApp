@@ -181,7 +181,7 @@ const checkIfEmailVerified = async (user: User, navigation: LogInScreenNavigatio
         }
         //If verified, navigate to other place
         // console.log("Woo Verified, I'll navigate you later")
-        navigation.navigate("MapEditor")
+        navigation.navigate("Homepage")
     } else {
         throw new Error("Failed to check User")
     }

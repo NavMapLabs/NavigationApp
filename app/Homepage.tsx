@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { HomeNavigationProp } from '@/constants/types';
+import { getData, logOut } from './(Auth)/firebaseAuth';
 
 const Homepage = () => {
   // Access navigation via useNavigation hook
@@ -27,7 +28,17 @@ const Homepage = () => {
       onPress={() => {
         navigation.navigate('MapEditor')
       }}
-    />
+      />
+
+      <Button
+      title="Get Data"
+      onPress={() => {getData()}}
+      />
+
+      <Button
+      title="Log Out"
+      onPress={() => {logOut()}}
+      />
     </View>
   );
 };

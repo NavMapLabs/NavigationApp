@@ -57,3 +57,31 @@ export const logOut = async () => {
         throw error
     }
 }
+
+export const getData = async () => {
+    const user = auth.currentUser;
+
+    if(user) { //if not null, thats means users has signed in 
+        let token = await user.getIdToken();
+        fetch('http://127.0.0.1:8000/getData', {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((jsonResponse) => {
+                console.log(jsonResponse);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    } else {
+        alert('Please Log In / Sign Up first');
+    }
+    
+}
