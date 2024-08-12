@@ -61,7 +61,7 @@ const navMapSlice = createSlice({
     },
     removeNode: (state, action: PayloadAction<{ key: string }>) => {
       // If it shows error is Microsoft's error, it will work
-      // the delete function from immutable should return a new Map not like the "go to defenition"
+      // the delete function from immutable should return a new Map not like the "go to definition"
       // weird issue from VS code or something
       // if see error, install "JavaScript and TypeScript Nightly" extension, fixed linking issue
       state.nodes = state.nodes.delete(action.payload.key);
