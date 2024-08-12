@@ -9,13 +9,16 @@ const calculateLineProperties = (coords_1:Coordinate, coords_2:Coordinate) => {
     const dy = coords_2.y - coords_1.y;
     const length = Math.sqrt(dx * dx + dy * dy);
     const angle = Math.atan2(dy, dx) * (180 / Math.PI); // Convert to degrees
+
+    const x_offset = 0;
+    const y_offset = 0;
   
-    return { length, angle };
+    return { x_offset, y_offset, length, angle };
   };
 
   
 const NavigationEdge = ({coords_1, coords_2}:{coords_1:Coordinate, coords_2:Coordinate}) => {
-    const { length, angle } = calculateLineProperties(coords_1, coords_2);
+    const { x_offset, y_offset, length, angle } = calculateLineProperties(coords_1, coords_2);
 
     const handleClick = () => {
         console.log("clicked Edge");
@@ -28,9 +31,9 @@ const NavigationEdge = ({coords_1, coords_2}:{coords_1:Coordinate, coords_2:Coor
                     styles.line,
                     {
                     width: length,
-                    marginLeft: coords_1.x,
-                    marginTop: coords_1.y,
-                    transform: [{ rotate: `${angle}deg` }],
+                    marginLeft: coords_1.x + x_offset,
+                    marginTop: coords_1.y + y_offset,
+                    transform: [{ rotate: `${0}deg` }],
                     zIndex:5
                     },
                 ]}
