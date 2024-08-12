@@ -7,6 +7,7 @@ import { LogInScreenNavigationProp } from "@/constants/types"; // this is the id
 type LogInProps = {
     isVisible: boolean,
     onClose: () => void
+    toggleSignUp: () => void
 }
 
 const LogInScreen = (props: LogInProps) => {
@@ -17,8 +18,6 @@ const LogInScreen = (props: LogInProps) => {
 
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
     const [PasswordBorderColor, setPasswordBorderColor] = useState('gray');
-
-    const navigation = useNavigation<LogInScreenNavigationProp>(); // this gives you access 
 
     return (
         <Modal
@@ -88,8 +87,9 @@ const LogInScreen = (props: LogInProps) => {
                     <Text
                         style={styles.underline}
                         onPress={() => {
-                            navigation.navigate('SignUpScreen')
+                            props.toggleSignUp()
                             console.log("Signup Pressed")
+                            props.onClose()
                         }}
                     >
                         Need an account? Sign-up here.

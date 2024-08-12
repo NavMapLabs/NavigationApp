@@ -17,6 +17,15 @@ const SubMenu = (props: SubMenuProps) => {
     const [isLogInVisible, setLogInVisible] = useState(false);
     const [isSignUpVisible, setSignUpVisible] = useState(false);
 
+    const toggleLogIn = () => {
+        setLogInVisible(!isLogInVisible);
+    }
+
+    const toggleSignUp = () => {
+        setSignUpVisible(!isSignUpVisible);
+    }
+
+
     return (
         <Modal
             transparent={true}
@@ -70,13 +79,15 @@ const SubMenu = (props: SubMenuProps) => {
             {/* LogInScreen Modal */}
             <LogInScreen
                 isVisible={isLogInVisible}
-                onClose={() => setLogInVisible(false)}
+                onClose={toggleLogIn}
+                toggleSignUp={toggleSignUp}
             />
 
             {/* SignUpScreen Modal */}
             <SignUpScreen
                 isVisible={isSignUpVisible}
-                onClose={() => setSignUpVisible(false)}
+                onClose={toggleSignUp}
+                toggleLogIn={toggleLogIn}
             />
         </Modal>
     );

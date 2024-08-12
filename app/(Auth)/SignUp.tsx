@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 type SignUpProps = {
     isVisible: boolean,
     onClose: () => void
+    toggleLogIn: () => void
 }
 
 const SignUpScreen = (props: SignUpProps) => {
@@ -20,8 +21,6 @@ const SignUpScreen = (props: SignUpProps) => {
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
     const [passwordbBorderColor, setPasswordBorderColor] = useState('gray');
     const [ReEnterPasswordbBorderColor, setReEnterPasswordBorderColor] = useState('gray');
-
-    const navigation = useNavigation<SignUpScreenNavigationProp>(); // this gives you access
 
     return (
         <Modal
@@ -102,8 +101,9 @@ const SignUpScreen = (props: SignUpProps) => {
                     <Text
                         style={[styles.underline, styles.textSpace]}
                         onPress={() => {
-                            navigation.navigate('LogInScreen')
+                            props.toggleLogIn();
                             console.log("Login Pressed")
+                            props.onClose();
                         }}
                     >
                         Already have an account? Login here!
