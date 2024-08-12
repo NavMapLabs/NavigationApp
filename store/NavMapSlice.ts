@@ -129,7 +129,7 @@ const navMapSlice = createSlice({
        backwardList = [...backwardList, nodeID_1]
       }
 
-      // type graud for [Object is possibly 'undefined'] issue
+      // type guard for [Object is possibly 'undefined'] issue
       let node_1 = draftGraph.get(nodeID_1)
       let node_2 = draftGraph.get(nodeID_2)
       if (node_1 != undefined && node_2 != undefined) {
@@ -141,7 +141,7 @@ const navMapSlice = createSlice({
       // assign back the state's graph in redux store
       // "mark" the graph state as updated using set and delete
       state.graph = draftGraph
-      state.modifiedFlag = state.modifiedFlag + 1
+      state.modifiedFlag = (state.modifiedFlag + 1) % 100
       // console.log("====== after =====")
       // console.log(state.graph)
       // console.log(state.nodes)
