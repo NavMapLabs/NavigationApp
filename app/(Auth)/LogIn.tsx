@@ -1,10 +1,15 @@
-import { Text, View, StyleSheet, Pressable } from "react-native"
+import { Text, View, StyleSheet, Pressable, Modal } from "react-native"
 import React, { useState } from "react";
 import { TextInput as PaperTextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { LogInScreenNavigationProp } from "@/constants/types"; // this is the identity 
 
-export default function LogInScreen() {
+type LogInProps = {
+    isVisible: boolean,
+    onClose: () => void
+}
+
+const LogInScreen = (props: LogInProps) => {
     const [emailText, setEmailText] = useState('');
     const [passwordText, setPasswordText] = useState('');
 
@@ -16,85 +21,94 @@ export default function LogInScreen() {
     const navigation = useNavigation<LogInScreenNavigationProp>(); // this gives you access 
 
     return (
-        <View
-            style={styles.container}>
-            <View
-                style={styles.box}>
-                <Text style={styles.label}>Email</Text>
-                <PaperTextInput
-                    style={[styles.paperInput, { borderColor: emailBorderColor }]}
-                    onFocus={() => setEmailBorderColor('black')} // border color on focus
-                    onBlur={() => setEmailBorderColor('gray')}  // border color on focus
+        <Modal
+            transparent={true}
+            animationType="none"
+            visible={props.isVisible}
+            onRequestClose={props.onClose}
+        >
+            <Pressable style={styles.container} onPress={props.onClose}>
+                <Pressable style={styles.box} onPress={(e) => e.stopPropagation()} >
+                    <Text style={styles.label}>Email</Text>
+                    <PaperTextInput
+                        style={[styles.paperInput, { borderColor: emailBorderColor }]}
+                        onFocus={() => setEmailBorderColor('black')} // border color on focus
+                        onBlur={() => setEmailBorderColor('gray')}  // border color on focus
 
-                    placeholder='Value'
-                    placeholderTextColor="#a9a9a9"
-                    value={emailText}
-                    onChangeText={setEmailText}
+                        placeholder='Value'
+                        placeholderTextColor="#a9a9a9"
+                        value={emailText}
+                        onChangeText={setEmailText}
 
-                    theme={{ colors: { primary: "transparent" } }} // this removes the underline
-                    underlineColor="transparent"  // this removes the any extra underline
-                // obtain data here
-                />
-                <Text style={styles.label}>Password</Text>
-                <PaperTextInput
-                    style={[styles.paperInput, { borderColor: PasswordBorderColor }]}
-                    onFocus={() => setPasswordBorderColor('black')} // border color on focus
-                    onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
+                        theme={{ colors: { primary: "transparent" } }} // this removes the underline
+                        underlineColor="transparent"  // this removes the any extra underline
+                    /* obtain data here */
+                    />
+                    <Text style={styles.label}>Password</Text>
+                    <PaperTextInput
+                        style={[styles.paperInput, { borderColor: PasswordBorderColor }]}
+                        onFocus={() => setPasswordBorderColor('black')} // border color on focus
+                        onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
 
-                    placeholder='Value'
-                    placeholderTextColor="#a9a9a9"
-                    secureTextEntry={passwordVisible}
-                    value={passwordText}
-                    onChangeText={setPasswordText}
-                    right={
-                        <PaperTextInput.Icon
-                            icon={passwordVisible ? 'eye' : 'eye-off'}
-                            onPress={() => setPasswordVisible(!passwordVisible)}
-                            style={styles.icon} // this adjusts eye icon position
-                        />
-                    }
-                    theme={{ colors: { primary: "transparent" } }} // this removes the underline
-                    underlineColor="transparent" // this removes any extra underline
-                // obtain data here
-                />
-                <Pressable
-                    style={styles.button}
-                    onPress={() => {
-                        // handle sign-in action here
-                    }}
-                >
-                    <Text style={styles.buttonText}>Sign In</Text>
-                </Pressable>
-                <Text
-                    style={styles.textSpace}>
+                        placeholder='Value'
+                        placeholderTextColor="#a9a9a9"
+                        secureTextEntry={passwordVisible}
+                        value={passwordText}
+                        onChangeText={setPasswordText}
+                        right={
+                            <PaperTextInput.Icon
+                                icon={passwordVisible ? 'eye' : 'eye-off'}
+                                onPress={() => setPasswordVisible(!passwordVisible)}
+                                style={styles.icon} // this adjusts eye icon position
+                            />
+                        }
+                        theme={{ colors: { primary: "transparent" } }} // this removes the underline
+                        underlineColor="transparent" // this removes any extra underline
+                    /* obtain data here */
+                    />
+                    <Pressable
+                        style={styles.button}
+                        onPress={() => {
+                            /* handle action here */
+                        }}
+                    >
+                        <Text style={styles.buttonText}>Sign In</Text>
+                    </Pressable>
                     <Text
-                        style={styles.underline}>
-                        Forgot password?
+                        style={styles.textSpace}>
+                        <Text
+                            style={styles.underline}
+                            onPress={() => {
+                            /* handle action here */
+                            }}
+                        >
+                            Forgot password?
+                        </Text>
                     </Text>
-                </Text>
-                <Text
-                    style={styles.underline}
-                    onPress={() => {
-                        navigation.navigate('SignUpScreen')
-                        console.log("Pressed")
-                    }}
-                >
-                    Need an account? Sign-up here.
-                </Text>
-            </View>
-        </View>
+                    <Text
+                        style={styles.underline}
+                        onPress={() => {
+                            navigation.navigate('SignUpScreen')
+                            console.log("Signup Pressed")
+                        }}
+                    >
+                        Need an account? Sign-up here.
+                    </Text>
+                </Pressable>
+            </Pressable>
+        </Modal>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'rgba(0,0,0,0.5)', // making the background page transparent
         justifyContent: 'center',
         alignItems: 'center',
     },
     box: {
-        backgroundColor: 'gray', // change this color to white later once we have the overall background
+        backgroundColor: 'white',
         borderRadius: 10,
         padding: 15,
         width: 400,
@@ -143,6 +157,10 @@ const styles = StyleSheet.create({
     },
 });
 
-/* self-note
-3. use navigation for link
- */
+export default LogInScreen;
+
+/* self-note:
+when clocking the navigation 'link',
+it erases the most components from the main background. figure out how to prevent that.
+setvisible prolly would work for the 'link' (?)
+*/
