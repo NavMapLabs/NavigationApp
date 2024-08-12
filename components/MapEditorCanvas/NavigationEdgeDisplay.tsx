@@ -13,7 +13,8 @@ import { NavNodeType } from "@/constants/NavigationNode";
 const NavigationEdgeDisplay = () => {
     const nodes = useSelector((state: RootState) => state.NavMapState.nodes);
     const graph = useSelector((state: RootState) => state.NavMapState.graph);
-    const modifiedFlag = useSelector((state: RootState) => state.NavMapState.modifiedFlag);
+    // use graphModifiedFlag for sometime react don't recognized graph is updated (detail related to redux store state update rules...)
+    const graphModifiedFlag = useSelector((state: RootState) => state.NavMapState.graphModifiedFlag);
     const emptyCoords:Coordinate = {x:0, y:0}
     const emptyNode:NavNodeType = {
         name:"empty",
