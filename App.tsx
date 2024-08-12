@@ -6,7 +6,6 @@ import { RootStackParamList } from './constants/types';
 import datastore from './store/datastore';
 import Homepage from './app/Homepage'
 import MapEditor from './app/(Editor)/MapEditor';
-import SubMenu from './components/SubMenu';
 import LogInScreen from './app/(Auth)/LogIn';
 import SignUpScreen from './app/(Auth)/SignUp';
 
@@ -21,7 +20,6 @@ const App: React.FC = () => {
             >
                 <Stack.Screen name="Homepage" component={Homepage} />
                 <Stack.Screen name="MapEditor" component={MapEditor} />
-                <Stack.Screen name="SubMenu" component={SubMenu} />
                 <Stack.Screen name="LogInScreen" component={LogInScreen} />
                 <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
             </Stack.Navigator>

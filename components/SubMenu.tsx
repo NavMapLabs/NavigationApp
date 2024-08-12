@@ -1,10 +1,9 @@
 import { Modal, View, StyleSheet, Pressable } from "react-native";
 import { Drawer } from 'react-native-paper';
-import { SubMenuNavigationProp } from "@/constants/types"; // this is the identity
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from "react";
-import LogInScreen from "@/app/(Auth)/LogIn";
-import SignUpScreen from "@/app/(Auth)/SignUp";
+import LogInModal from "@/app/(Auth)/LogInModal";
+import SignUpModal from "@/app/(Auth)/SignUpModal";
 
 type SubMenuProps = {
     isVisible: boolean,
@@ -13,7 +12,6 @@ type SubMenuProps = {
 
 // make this sub menu be set to the left side of the screen 
 const SubMenu = (props: SubMenuProps) => {
-    const navigation = useNavigation<SubMenuNavigationProp>(); // this gives you access to the hook
     const [isLogInVisible, setLogInVisible] = useState(false);
     const [isSignUpVisible, setSignUpVisible] = useState(false);
 
@@ -77,14 +75,14 @@ const SubMenu = (props: SubMenuProps) => {
             </Pressable>
 
             {/* LogInScreen Modal */}
-            <LogInScreen
+            <LogInModal
                 isVisible={isLogInVisible}
                 onClose={toggleLogIn}
                 toggleSignUp={toggleSignUp}
             />
 
             {/* SignUpScreen Modal */}
-            <SignUpScreen
+            <SignUpModal
                 isVisible={isSignUpVisible}
                 onClose={toggleSignUp}
                 toggleLogIn={toggleLogIn}

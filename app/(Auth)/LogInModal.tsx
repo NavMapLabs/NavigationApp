@@ -1,10 +1,14 @@
 import { Text, View, StyleSheet, Pressable, Modal } from "react-native"
 import React, { useState } from "react";
 import { TextInput as PaperTextInput } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { LogInScreenNavigationProp } from "@/constants/types"; // this is the identity 
 
-const LogInScreen = () => {
+type LogInProps = {
+    isVisible: boolean,
+    onClose: () => void
+    toggleSignUp: () => void
+}
+
+const LogInModal = (props: LogInProps) => {
     const [emailText, setEmailText] = useState('');
     const [passwordText, setPasswordText] = useState('');
 
@@ -13,11 +17,15 @@ const LogInScreen = () => {
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
     const [PasswordBorderColor, setPasswordBorderColor] = useState('gray');
 
-    const navigation = useNavigation<LogInScreenNavigationProp>();
-
     return (
-            <Pressable style={styles.container}>
-                <Pressable style={styles.box}>
+        <Modal
+            transparent={true}
+            animationType="none"
+            visible={props.isVisible}
+            onRequestClose={props.onClose}
+        >
+            <Pressable style={styles.container} onPress={props.onClose}>
+                <Pressable style={styles.box} onPress={(e) => e.stopPropagation()} >
                     <Text style={styles.label}>Email</Text>
                     <PaperTextInput
                         style={[styles.paperInput, { borderColor: emailBorderColor }]}
@@ -77,14 +85,16 @@ const LogInScreen = () => {
                     <Text
                         style={styles.underline}
                         onPress={() => {
-                            navigation.navigate('SignUpScreen');
+                            props.toggleSignUp()
                             console.log("Signup Pressed")
+                            props.onClose()
                         }}
                     >
                         Need an account? Sign-up here.
                     </Text>
                 </Pressable>
             </Pressable>
+        </Modal>
     );
 };
 
@@ -145,7 +155,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LogInScreen;
+export default LogInModal;
 
 /* self-note:
 when clocking the navigation 'link',
