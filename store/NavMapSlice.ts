@@ -100,8 +100,8 @@ const navMapSlice = createSlice({
       const nodeID_1: string = action.payload.nodeID_1;
       const nodeID_2: string = action.payload.nodeID_2;
       
-      console.log("====== before addEdge =====")
-      console.log(state.graph)
+      // console.log("====== before addEdge =====")
+      // console.log(state.graph)
 
       let draftGraph = state.graph;
 
@@ -135,11 +135,15 @@ const navMapSlice = createSlice({
         node_2.backwardList = backwardList;
       }
 
+
       // assign back the state's graph in redux store
-      state.graph = draftGraph
-      console.log("====== after =====")
-      console.log(state.graph)
-      console.log(state.nodes)
+      // "mark" the graph state as updated using set and delete
+      state.graph = draftGraph.set("randomNon-existing-Node", {forwardList:[], backwardList:[]})
+      state.graph = state.graph.delete("randomNon-existing-Node")
+      
+      // console.log("====== after =====")
+      // console.log(state.graph)
+      // console.log(state.nodes)
     },
     removeEdge: (state, action:PayloadAction<{nodeID_1: string, nodeID_2:string}>) => {
       const nodeID_1: string = action.payload.nodeID_1;
@@ -151,10 +155,10 @@ const navMapSlice = createSlice({
       let draftGraph = state.graph;
 
       if (!draftGraph.has(nodeID_1)) {
-        console.log("Node not exsisting: ", nodeID_1)
+        console.log("Node not existing: ", nodeID_1)
       }
       if (!draftGraph.has(nodeID_2)) {
-        console.log("Node not exsisting: ", nodeID_2)
+        console.log("Node not existing: ", nodeID_2)
       }
 
 

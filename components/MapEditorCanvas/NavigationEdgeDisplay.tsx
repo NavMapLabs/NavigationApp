@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { View } from "react-native"
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/datastore';
@@ -21,6 +21,11 @@ const NavigationEdgeDisplay = () => {
         description:"empty",
         coords: emptyCoords
     }
+
+    useEffect(() => {
+        console.log("=== graph updated ===")
+        console.log(graph)
+    }, [graph])
     return (
         <>
         {
