@@ -12,11 +12,13 @@ interface AdjacencyList {
 interface NavMapState {
   nodes: Map_I<string, NavNodeType>;
   graph: Map_I<string, AdjacencyList>;
+  modifiedFlag: number;
 }
 
 const initialState: NavMapState = {
   nodes: Map_I<string, NavNodeType>(),
-  graph: Map_I<string, AdjacencyList>()
+  graph: Map_I<string, AdjacencyList>(),
+  modifiedFlag: 0,
 };
 
 // Create the slice
@@ -138,9 +140,8 @@ const navMapSlice = createSlice({
 
       // assign back the state's graph in redux store
       // "mark" the graph state as updated using set and delete
-      state.graph = draftGraph.set("randomNon-existing-Node", {forwardList:[], backwardList:[]})
-      state.graph = state.graph.delete("randomNon-existing-Node")
-      
+      state.graph = draftGraph
+      state.modifiedFlag = state.modifiedFlag + 1
       // console.log("====== after =====")
       // console.log(state.graph)
       // console.log(state.nodes)

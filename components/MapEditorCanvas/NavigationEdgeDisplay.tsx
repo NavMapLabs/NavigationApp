@@ -13,6 +13,7 @@ import { NavNodeType } from "@/constants/NavigationNode";
 const NavigationEdgeDisplay = () => {
     const nodes = useSelector((state: RootState) => state.NavMapState.nodes);
     const graph = useSelector((state: RootState) => state.NavMapState.graph);
+    const modifiedFlag = useSelector((state: RootState) => state.NavMapState.modifiedFlag);
     const emptyCoords:Coordinate = {x:0, y:0}
     const emptyNode:NavNodeType = {
         name:"empty",
