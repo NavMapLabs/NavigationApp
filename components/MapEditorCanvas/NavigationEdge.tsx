@@ -8,7 +8,10 @@ const calculateLineProperties = (coords_1:Coordinate, coords_2:Coordinate) => {
     const dx = coords_2.x - coords_1.x;
     const dy = coords_2.y - coords_1.y;
     const length = Math.sqrt(dx * dx + dy * dy);
-    const angle = Math.atan2(dy, dx) * (180 / Math.PI); // Convert to degrees
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI); // Convert to degrees
+    // if (dy > 0) { // dx or dy has an case need to + 180 ion degree
+    //     angle += 180
+    // }
 
     const x_offset = 0;
     const y_offset = 0;
@@ -33,7 +36,8 @@ const NavigationEdge = ({coords_1, coords_2}:{coords_1:Coordinate, coords_2:Coor
                     width: length,
                     marginLeft: coords_1.x + x_offset,
                     marginTop: coords_1.y + y_offset,
-                    transform: [{ rotate: `${0}deg` }],
+                    transform: [{ rotate: `${angle}deg` }],
+                    transformOrigin: 'left top',
                     zIndex:5
                     },
                 ]}
