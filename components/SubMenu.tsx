@@ -38,7 +38,7 @@ const SubMenu = (props: SubMenuProps) => {
                             style={[styles.box, styles.TextSpace]}
                             label="Log in"
                             onPress={() => {
-                                setLogInVisible(!isLogInVisible); // this shows LogInScreen modal
+                                toggleLogIn();
                                 console.log("Login Pressed")
                             }}
                         />
@@ -46,7 +46,7 @@ const SubMenu = (props: SubMenuProps) => {
                             style={[styles.box, styles.BigSpace]}
                             label="Sign up"
                             onPress={() => {
-                                setSignUpVisible(!isSignUpVisible); // this shows SignUpScreen modal
+                                toggleSignUp();
                                 console.log("Signup Pressed")
                             }}
                         />
