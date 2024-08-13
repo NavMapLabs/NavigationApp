@@ -6,6 +6,8 @@ import MapEditorCanvas from "../../components/MapEditorCanvas/MapEditorCanvas";
 import FloorMenu from "../../components/FloorMenu";
 import FilterMenu from '../../components/FilterMenu';
 import SubMenu from "@/components/SubMenu";
+import { MapEditorNavigationProp } from "@/constants/types";
+import { useNavigation } from "@react-navigation/native"
 
 
 
@@ -30,6 +32,8 @@ const MapEditor = () => {
         console.log('filters applied')
         console.log(filters)
     }
+
+    const navigation = useNavigation<MapEditorNavigationProp>();
 
     const filterOptions = ['Filter 1', 'Filter 2', 'Filter 3', 'Filter 4', 'Filter 5'];
 
