@@ -20,6 +20,16 @@ const Homepage = () => {
           console.log("Pressed")
         }}
       />
+
+      <View style={[{ height: 10, backgroundColor: '#000' }]} />
+      
+      <Button 
+        title="Go to SignUp"
+        onPress={() => {
+          navigation.navigate('SignUpScreen')
+          console.log("Pressed")
+        }}
+      />
       
       <View style={[{ height: 10, backgroundColor: '#000' }]} />
 
