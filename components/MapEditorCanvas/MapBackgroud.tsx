@@ -6,14 +6,14 @@ import { Dimension } from "@/constants/Dimension";
 
 //just testing this format out
 //make map component an empty component for now that takes up the whole screen using flex
-const MapBackground = () => {
-    const defultImage = '../../assets/images/sampleMap.png';
+const MapBackground = ({imageURL, canvasDimension}: {imageURL:string ,canvasDimension:Dimension }) => {
+    const defultImage:string = '../../assets/images/sampleMap.png';
     
     return (
         <Image 
             source={require(defultImage)} 
-            style={styles.imageStyle}
-            resizeMode='contain' 
+            style={[styles.imageStyle, {width:canvasDimension.width, height:canvasDimension.height}]}
+            resizeMode='cover' 
         />
     )
 }
@@ -23,11 +23,7 @@ export default MapBackground;
 
 const styles = StyleSheet.create({
     imageStyle:{
-        flex: 1,
         position: 'absolute',
-        // left: "50%",
-        // top: "50%",
-        height: '90%',
-        width: '100%',
+        top:0,
     },
 })

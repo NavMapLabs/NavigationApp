@@ -1,10 +1,10 @@
 import { Coordinate } from "@/constants/Coordinate";
-import { NavigationNode } from "@/constants/NavigationNode";
+import { NavNodeType } from "@/constants/NavigationNode";
 import {MapData, MapData_Decoded} from "@/constants/MapData";
 const Graph = require('./graph')
 
 class Floorplan {
-    #nodes: Map<string, NavigationNode> = new Map();
+    #nodes: Map<string, NavNodeType> = new Map();
     #graph = new Graph();
     name: string = "Blank";
     #idPrefix: string = "NA";
@@ -19,7 +19,7 @@ class Floorplan {
         }
     }
 
-    get nodes(): Map<string, NavigationNode> {
+    get nodes(): Map<string, NavNodeType> {
         return this.#nodes;
     }
 
@@ -29,7 +29,7 @@ class Floorplan {
 
     addNode(name: string, coords: Coordinate, tag = 'None', description = '') {
         const nodeId = this.#generateId();
-        const node: NavigationNode = { 
+        const node: NavNodeType = { 
             name:name, 
             id: nodeId, 
             coords:coords, 

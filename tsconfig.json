@@ -6,7 +6,8 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "types": ["@types/immutable"]
   },
   "include": [
     "**/*.ts",
