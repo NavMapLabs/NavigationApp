@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Appbar } from 'react-native-paper';
 import { View, StyleProp, ViewStyle,  Dimensions} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { MapEditorNavigationProp } from "@/constants/types";
 
 type NavBarProps = {
     navBarStyle: StyleProp<ViewStyle>,
@@ -17,7 +15,6 @@ const NavTitle = ({title}: {title: string}) =>(
 )
 
 const NavigationBar = (props: NavBarProps) => {
-    const navigation = useNavigation<MapEditorNavigationProp>();
     const screenWidth = useState(Dimensions.get('window').width);
     const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
     const [filters, setFilters] = useState<string[]>([]);
