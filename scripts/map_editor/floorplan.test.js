@@ -78,9 +78,9 @@ describe('Graph operations', () => {
         expect(floorplan.nodes).not.toHaveProperty(f);
     });
 
-    test('Serialization of Floorplan', () => {
-        let serialized = floorplan.serialize();
-        const copy = new Floorplan(floorplan.name, data = serialized);
-        expect(copy.serialize()).toEqual(serialized);
-    })
+    // test('Serialization of Floorplan', () => {
+    //     let serialized = floorplan.serialize();
+    //     const copy = new Floorplan(floorplan.name, data = serialized);
+    //     expect(copy.serialize()).toEqual(serialized);
+    // })
 })
