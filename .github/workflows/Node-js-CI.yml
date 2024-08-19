@@ -51,8 +51,7 @@ jobs:
     - name: Build Expo project
       run: npx expo export -p web 
 
-    - name: Install Github-Page
-      run: npm install -g gh-pages
-
     - name: Deploy to github page
-      run: gh-pages -d dist -t true -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+      uses: actions/deploy-pages@v4
+      with:
+        token: ${{ github.token }}
