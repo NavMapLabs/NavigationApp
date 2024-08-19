@@ -89,6 +89,8 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
+    - name: Check out Branch
+      uses: actions/checkout@v2
     - name: Set-Up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
