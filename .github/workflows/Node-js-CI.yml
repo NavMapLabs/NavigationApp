@@ -21,7 +21,7 @@ jobs:
 
     # use self-define steps to load env
     - name: Load Node.js
-      uses: ./.github/workflows/Load-Node-js.yml
+      uses: ./.github/actions/setup-and-install
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -45,7 +45,7 @@ jobs:
 
     # # use self-define steps to load env
     # - name: Load Node.js
-    #   uses: ./.github/workflows/Load-Node-js.yml
+    #   uses: ./.github/actions/setup-and-install
     #   with:
     #     node-version: ${{ matrix.node-version }}
 
@@ -65,7 +65,7 @@ jobs:
       
     # use self-define steps to load env
     - name: Load Node.js
-      uses: ./.github/workflows/Load-Node-js.yml
+      uses: ./.github/actions/setup-and-install
       with:
         node-version: ${{ matrix.node-version }}
 
