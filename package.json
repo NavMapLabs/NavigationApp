@@ -8,7 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watch --coverage=false",
+    "test": "jest --coverage=true",
     "lint": "expo lint"
   },
   "jest": {
