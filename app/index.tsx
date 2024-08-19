@@ -10,7 +10,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Hi Honghui</Text>
+      <Text>Hello Honghui</Text>
       <Link href="/(Auth)/LogIn">
         Go to Login
       </Link>
