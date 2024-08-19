@@ -7,13 +7,13 @@ on:
   pull_request:
     branches: [ Deployment/CI-CD  ]
 
-strategy:
-    matrix:
-      node-version: [12.x]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
     - name: Check out Branch
       uses: actions/checkout@v2
@@ -29,6 +29,9 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
     needs: test
     steps:
     - name: Check out Branch
