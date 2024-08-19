@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: No Actual Build Workflow Needed At the Moment
         run: echo No Actual Build Workflow Needed At the Moment
-      - run: Since we using github page
+      - run: echo Since we using github page
     # - name: Check out Branch
     #   uses: actions/checkout@v2
 
