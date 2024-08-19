@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [ Deployment/CI-CD  ]
 
+# Grant the necessary permission to workflow
+permissions:
+  pages: write 
+  id-token: write
 
 jobs:
   # Test workflow
