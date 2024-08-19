@@ -2,6 +2,7 @@ name: Setup and Install Dependencies
 description: Set up Node.js and install npm dependencies
 
 runs:
+  runs-on: ubuntu-latest
   using: "composite"
   steps:
   - name: Set-Up Node.js ${{ inputs.node-version }}
