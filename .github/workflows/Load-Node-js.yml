@@ -1,0 +1,42 @@
+name: Load Node.js
+
+on:
+  workflow_call:  # This makes the workflow reusable
+    inputs:
+      node-version:
+        required: true
+        type: string
+
+jobs:
+  load-node-js:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set-Up Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    # Use Cache to speed up process
+    - name: Restore npm package from cache
+      uses: actions/cache@v4
+      id: npm-cache
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install package
+      # some package reported not-found after cache restore
+      # better always run npm install to solve those
+      # if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: npm install
+
+    # Update Cache on the miss (fall back)
+    - name: Update npm cache on cache-miss
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}

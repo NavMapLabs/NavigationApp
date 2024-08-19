@@ -18,68 +18,39 @@ jobs:
     steps:
     - name: Check out Branch
       uses: actions/checkout@v2
-    - name: Set-Up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+
+    # use self-define steps to load env
+    - name: Load Node.js
+      uses: ./.github/workflows/Load-Node-js.yml
       with:
         node-version: ${{ matrix.node-version }}
-
-    # Use Cache to speed up test process
-    - name: Restore npm package from cache
-      uses: actions/cache@v4
-      id: npm-cache
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-
-    - name: Install package
-      # some package reported not-found after cache restore
-      # better always run npm install to solve those
-      # if: steps.npm-cache.outputs.cache-hit != 'true'
-      run: npm install
-
-    # Update Cache on the miss (fall back)
-    - name: Update npm cache on cache-miss
-      if: steps.npm-cache.outputs.cache-hit != 'true'
-      uses: actions/cache@v4
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
     - name: Running Test
       run: npm run test
 
-  # Build workflow
+  # Build workflow 
+  # - No actual build workflow since using github-page
   build:
     needs: test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
+    # strategy:
+    #   matrix:
+    #     node-version: [16.x]
     steps:
-    - name: Check out Branch
-      uses: actions/checkout@v2
-    - name: Set-Up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-        
-    # Use Cache to speed up test process
-    - name: Restore npm package from cache
-      uses: actions/cache@v4
-      id: npm-cache
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: No Actual Build Workflow Needed At the Moment
+        run: echo No Actual Build Workflow Needed At the Moment
+      - run: Since we using github page
+    # - name: Check out Branch
+    #   uses: actions/checkout@v2
 
-    - name: Install package
-      # some package reported not-found after cache restore
-      # better always run npm install to solve those
-      # if: steps.npm-cache.outputs.cache-hit != 'true'
-      run: npm install
+    # # use self-define steps to load env
+    # - name: Load Node.js
+    #   uses: ./.github/workflows/Load-Node-js.yml
+    #   with:
+    #     node-version: ${{ matrix.node-version }}
+
+    # - name: building expo project
+    #   run: npx expo export -p web  
 
   # Deployment workflow
   deploy:
@@ -91,26 +62,12 @@ jobs:
     steps:
     - name: Check out Branch
       uses: actions/checkout@v2
-    - name: Set-Up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      
+    # use self-define steps to load env
+    - name: Load Node.js
+      uses: ./.github/workflows/Load-Node-js.yml
       with:
         node-version: ${{ matrix.node-version }}
-        
-    # Use Cache to speed up test process
-    - name: Restore npm package from cache
-      uses: actions/cache@v4
-      id: npm-cache
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-
-    - name: Install package
-      # some package reported not-found after cache restore
-      # better always run npm install to solve those
-      # if: steps.npm-cache.outputs.cache-hit != 'true'
-      run: npm install
 
     - name: Deploy to github page
-      run: npm run deploy
+      run: npm run deploy-github-action
