@@ -25,13 +25,14 @@ jobs:
       run: npm install
 
     - name: Running Test
-      uses: willcaul/jest-github-action@v4
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        # this is just an example, this could be any command that will trigger jest
-        test-command: "npm run test"
-        changes-only: true
+      run: npm run test
+      # uses: willcaul/jest-github-action@v4
+      # env:
+      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # with:
+      #   # this is just an example, this could be any command that will trigger jest
+      #   test-command: "npm run test"
+      #   changes-only: true
 
   build:
     runs-on: ubuntu-latest
