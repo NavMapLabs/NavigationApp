@@ -10,47 +10,47 @@ on:
 
 jobs:
   # Test workflow
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-    steps:
-    - name: Check out Branch
-      uses: actions/checkout@v2
+  # test:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [16.x]
+  #   steps:
+  #   # - name: Check out Branch
+  #   #   uses: actions/checkout@v2
 
-    # use self-define steps to load env
-    - name: Load Node.js
-      uses: ./.github/actions/setup-and-install
-      with:
-        node-version: ${{ matrix.node-version }}
+  #   # # use self-define steps to load env
+  #   # - name: Load Node.js
+  #   #   uses: ./.github/actions/setup-and-install
+  #   #   with:
+  #   #     node-version: ${{ matrix.node-version }}
 
-    - name: Running Test
-      run: npm run test
+  #   # - name: Running Test
+  #   #   run: npm run test
 
   # Build workflow 
   # - No actual build workflow since using github-page
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     node-version: [16.x]
-    steps:
-      - name: No Actual Build Workflow Needed At the Moment
-        run: echo No Actual Build Workflow Needed At the Moment
-      - run: echo Since we using github page
-    # - name: Check out Branch
-    #   uses: actions/checkout@v2
+  # build:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   # strategy:
+  #   #   matrix:
+  #   #     node-version: [16.x]
+  #   steps:
+  #     - name: No Actual Build Workflow Needed At the Moment
+  #       run: echo No Actual Build Workflow Needed At the Moment
+  #     - run: echo Since we using github page
+  #   # - name: Check out Branch
+  #   #   uses: actions/checkout@v2
 
-    # # use self-define steps to load env
-    # - name: Load Node.js
-    #   uses: ./.github/actions/setup-and-install
-    #   with:
-    #     node-version: ${{ matrix.node-version }}
+  #   # # use self-define steps to load env
+  #   # - name: Load Node.js
+  #   #   uses: ./.github/actions/setup-and-install
+  #   #   with:
+  #   #     node-version: ${{ matrix.node-version }}
 
-    # - name: building expo project
-    #   run: npx expo export -p web  
+  #   # - name: building expo project
+  #   #   run: npx expo export -p web  
 
   # Deployment workflow
   deploy:
@@ -70,4 +70,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Deploy to github page
-      run: npm run deploy-github-action
+      run: gh-pages -d dist -t true -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
