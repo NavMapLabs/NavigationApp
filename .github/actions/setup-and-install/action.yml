@@ -2,7 +2,6 @@ name: Setup and Install Dependencies
 description: Set up Node.js and install npm dependencies
 
 runs:
-  runs-on: ubuntu-latest
   using: "composite"
   steps:
   - name: Set-Up Node.js ${{ inputs.node-version }}
@@ -24,6 +23,7 @@ runs:
     # some package reported not-found after cache restore
     # better always run npm install to solve those
     # if: steps.npm-cache.outputs.cache-hit != 'true'
+    shell: bash
     run: npm install
 
   # Update Cache on the miss (fall back)
