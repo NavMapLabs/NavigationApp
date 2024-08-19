@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1724106262338" clover="3.2.0">
-  <project timestamp="1724106262338" name="All files">
+<coverage generated="1724106521171" clover="3.2.0">
+  <project timestamp="1724106521172" name="All files">
     <metrics statements="98" coveredstatements="73" conditionals="56" coveredconditionals="34" methods="31" coveredmethods="24" elements="185" coveredelements="131" complexity="0" loc="98" ncloc="98" packages="1" files="2" classes="2"/>
     <file name="floorplan.ts" path="X:\Desktop\NavigationApp\scripts\map_editor\floorplan.ts">
       <metrics statements="43" coveredstatements="23" conditionals="20" coveredconditionals="7" methods="13" coveredmethods="8"/>
