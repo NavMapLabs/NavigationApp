@@ -9,6 +9,7 @@ on:
 
 # Grant the necessary permission to workflow
 permissions:
+  contents: read
   pages: write 
   id-token: write
 
@@ -33,11 +34,8 @@ jobs:
   #   #   run: npm run test
 
   # Build workflow 
-  # - No actual build workflow since using github-page
-  #   #   run: npx expo export -p web  
-
-  # Deployment workflow
-  build-and-deploy:
+  build:
+    # needs: test # uncomment after testing ------------------
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -55,7 +53,23 @@ jobs:
     - name: Build Expo project
       run: npx expo export -p web 
 
-    - name: Deploy to github page
-      uses: actions/deploy-pages@v4
+    - name: Setup Github Pages
+      uses: actions/configure-pages@v5
       with:
-        token: ${{ github.token }}
+
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./dist
+
+  # Deployment workflow
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to github page
+      id: deployment
+      uses: actions/deploy-pages@v4
