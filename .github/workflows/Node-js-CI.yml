@@ -33,8 +33,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-node-
 
-    - name: Install package on cache-miss
-      if: steps.npm-cache.outputs.cache-hit != 'true'
+    - name: Install package
+      # some package reported not-found after cache restore
+      # better always run npm install to solve those
+      # if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm install
 
     # Update Cache on the miss (fall back)
@@ -73,8 +75,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-node-
 
-    - name: Install package on cache-miss
-      if: steps.npm-cache.outputs.cache-hit != 'true'
+    - name: Install package
+      # some package reported not-found after cache restore
+      # better always run npm install to solve those
+      # if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm install
 
   # Deployment workflow
@@ -99,6 +103,12 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
+
+    - name: Install package
+      # some package reported not-found after cache restore
+      # better always run npm install to solve those
+      # if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: npm install
 
     - name: Deploy to github page
       run: npm run deploy
