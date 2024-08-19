@@ -87,5 +87,11 @@ jobs:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
     
-    - name: Building Project
-      run: npm run build
+    - name: Building Expo Project (Web)
+      run: npx expo export -p web
+
+  # Deployment workflow
+  deploy:
+    runs-on: ubuntu-latest
+    - name: Deploy to github page
+      run: npm run deploy
