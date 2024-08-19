@@ -50,11 +50,11 @@ jobs:
 
   # Build workflow
   build:
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [16.x]
-    needs: test
     steps:
     - name: Check out Branch
       uses: actions/checkout@v2
@@ -77,21 +77,28 @@ jobs:
       if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm install
 
-    # Update Cache on the miss (fall back)
-    - name: Update npm cache on cache-miss
-      if: steps.npm-cache.outputs.cache-hit != 'true'
-      uses: actions/cache@v4
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-    
-    - name: Building Expo Project (Web)
-      run: npx expo export -p web
-
   # Deployment workflow
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
+    - name: Set-Up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+        
+    # Use Cache to speed up test process
+    - name: Restore npm package from cache
+      uses: actions/cache@v4
+      id: npm-cache
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: Deploy to github page
       run: npm run deploy
