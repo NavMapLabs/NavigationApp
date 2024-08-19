@@ -41,7 +41,6 @@ jobs:
     - name: Update npm cache on cache-miss
       if: steps.npm-cache.outputs.cache-hit != 'true'
       uses: actions/cache@v4
-      id: npm-cache
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -82,7 +81,6 @@ jobs:
     - name: Update npm cache on cache-miss
       if: steps.npm-cache.outputs.cache-hit != 'true'
       uses: actions/cache@v4
-      id: npm-cache
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
