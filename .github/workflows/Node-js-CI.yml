@@ -9,6 +9,7 @@ on:
 
 
 jobs:
+  # Test workflow
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -21,19 +22,34 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install package
+
+    # Use Cache to speed up test process
+    - name: Restore npm package from cache
+      uses: actions/cache@v4
+      id: npm-cache
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install package on cache-miss
+      if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
+
+    # Update Cache on the miss (fall back)
+    - name: Update npm cache on cache-miss
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      uses: actions/cache@v4
+      id: npm-cache
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
     - name: Running Test
       run: npm run test
-      # uses: willcaul/jest-github-action@v4
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # with:
-      #   # this is just an example, this could be any command that will trigger jest
-      #   test-command: "npm run test"
-      #   changes-only: true
 
+  # Build workflow
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -47,8 +63,29 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install package
+        
+    # Use Cache to speed up test process
+    - name: Restore npm package from cache
+      uses: actions/cache@v4
+      id: npm-cache
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install package on cache-miss
+      if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
+
+    # Update Cache on the miss (fall back)
+    - name: Update npm cache on cache-miss
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      uses: actions/cache@v4
+      id: npm-cache
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
     
     - name: Building Project
       run: npm run build
