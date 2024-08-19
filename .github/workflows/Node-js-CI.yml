@@ -34,7 +34,7 @@ jobs:
           ${{ runner.os }}-node-
 
     - name: Install package on cache-miss
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm install
 
     # Update Cache on the miss (fall back)
@@ -74,7 +74,7 @@ jobs:
           ${{ runner.os }}-node-
 
     - name: Install package on cache-miss
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm install
 
     # Update Cache on the miss (fall back)
