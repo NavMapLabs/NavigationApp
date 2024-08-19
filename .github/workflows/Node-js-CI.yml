@@ -7,30 +7,39 @@ on:
   pull_request:
     branches: [ Deployment/CI-CD  ]
 
+strategy:
+    matrix:
+      node-version: [12.x]
+
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
     - name: Check out Branch
       uses: actions/checkout@v2
-      
     - name: Set-Up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        
     - name: Install package
       run: npm install
-    - run: npm install react-scripts
 
     - name: Running Test
       run: npm test
 
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - name: Check out Branch
+      uses: actions/checkout@v2
+    - name: Set-Up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install package
+      run: npm install
+    - run: npm install react-scripts
+    
     - name: Building Project
       run: npm run build
