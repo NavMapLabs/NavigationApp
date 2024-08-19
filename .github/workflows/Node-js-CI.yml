@@ -70,4 +70,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Deploy to github page
-      run: gh-pages -d dist -t true -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+      run:|
+        npm install -g gh-pages
+        gh-pages -d dist -t true -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
