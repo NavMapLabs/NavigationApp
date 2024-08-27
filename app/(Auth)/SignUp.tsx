@@ -1,6 +1,6 @@
 import { Text, View, TextInput, StyleSheet, Pressable, Modal } from "react-native"
 import React, { useState } from "react";
-import { TextInput as PaperTextInput } from 'react-native-paper';
+import { TextInput as PaperTextInput, IconButton } from 'react-native-paper';
 import { SignUpScreenNavigationProp } from "@/constants/types"; // this is the identity
 import { useNavigation } from '@react-navigation/native';
 
@@ -32,13 +32,18 @@ const SignUpScreen = (props: SignUpProps) => {
         >
             <Pressable style={styles.container} onPress={props.onClose}>
                 <Pressable style={styles.box} onPress={(e) => e.stopPropagation()}>
+
+                    <View style={styles.header}>
+                        <IconButton icon="close" size={24} onPress={props.onClose} />
+                    </View>
+
                     <Text style={styles.label}>Email</Text>
                     <PaperTextInput
                         style={[styles.paperInput, { borderColor: emailBorderColor }]}
                         onFocus={() => setEmailBorderColor('black')} // border color on focus
                         onBlur={() => setEmailBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='Enter your Email Address'
                         placeholderTextColor="#a9a9a9"
                         value={emailText}
                         onChangeText={setEmailText}
@@ -53,7 +58,7 @@ const SignUpScreen = (props: SignUpProps) => {
                         onFocus={() => setPasswordBorderColor('black')} // border color on focus
                         onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='Enter your Password'
                         placeholderTextColor="#a9a9a9"
                         secureTextEntry={passwordVisible}
                         value={password}
@@ -75,7 +80,7 @@ const SignUpScreen = (props: SignUpProps) => {
                         onFocus={() => setReEnterPasswordBorderColor('black')} // border color on focus
                         onBlur={() => setReEnterPasswordBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='Confirm your Password'
                         placeholderTextColor="#a9a9a9"
                         secureTextEntry={reEnterPasswordVisible}
                         value={reEnterPassword}
@@ -167,6 +172,13 @@ const styles = StyleSheet.create({
     },
     textSpace: {
         marginTop: 3, // Space before text
+    },
+    header: {
+        width: '100%',
+        height: 15,
+        alignItems: "flex-end",
+        justifyContent: 'center',
+        marginLeft: 30,
     },
 });
 

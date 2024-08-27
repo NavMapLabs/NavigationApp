@@ -1,12 +1,12 @@
 import { Text, View, StyleSheet, Pressable, Modal } from "react-native"
 import React, { useState } from "react";
-import { TextInput as PaperTextInput } from 'react-native-paper';
+import { TextInput as PaperTextInput, IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { LogInScreenNavigationProp } from "@/constants/types"; // this is the identity 
 
 type LogInProps = {
     isVisible: boolean,
-    onClose: () => void
+    onClose: () => void,
 }
 
 const LogInScreen = (props: LogInProps) => {
@@ -29,13 +29,18 @@ const LogInScreen = (props: LogInProps) => {
         >
             <Pressable style={styles.container} onPress={props.onClose}>
                 <Pressable style={styles.box} onPress={(e) => e.stopPropagation()} >
+
+                    <View style={styles.header}>
+                        <IconButton icon="close" size={24} onPress={props.onClose} />
+                    </View>
+
                     <Text style={styles.label}>Email</Text>
                     <PaperTextInput
                         style={[styles.paperInput, { borderColor: emailBorderColor }]}
                         onFocus={() => setEmailBorderColor('black')} // border color on focus
                         onBlur={() => setEmailBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='Email Address'
                         placeholderTextColor="#a9a9a9"
                         value={emailText}
                         onChangeText={setEmailText}
@@ -50,7 +55,7 @@ const LogInScreen = (props: LogInProps) => {
                         onFocus={() => setPasswordBorderColor('black')} // border color on focus
                         onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='Password'
                         placeholderTextColor="#a9a9a9"
                         secureTextEntry={passwordVisible}
                         value={passwordText}
@@ -79,7 +84,7 @@ const LogInScreen = (props: LogInProps) => {
                         <Text
                             style={styles.underline}
                             onPress={() => {
-                            /* handle action here */
+                                /* handle action here */
                             }}
                         >
                             Forgot password?
@@ -155,12 +160,13 @@ const styles = StyleSheet.create({
         // this adjust font size and line height to the standard
         fontSize: 14,
     },
+    header: {
+        width: '100%',
+        height: 15,
+        alignItems: "flex-end",
+        justifyContent: 'center',
+        marginLeft: 30,
+    },
 });
 
 export default LogInScreen;
-
-/* self-note:
-when clocking the navigation 'link',
-it erases the most components from the main background. figure out how to prevent that.
-setvisible prolly would work for the 'link' (?)
-*/
