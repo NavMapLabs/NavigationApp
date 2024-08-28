@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Modal, Pressable } from "react-native"
+import { View, StyleSheet, Modal, Pressable, Image } from "react-native"
 import React from "react"
 
 type FloorMenuProps = {
@@ -8,7 +8,6 @@ type FloorMenuProps = {
 
 const FloorMenu = (props: FloorMenuProps) => {
     return (
-
         <Modal
             transparent={true}
             animationType="none"
@@ -18,9 +17,14 @@ const FloorMenu = (props: FloorMenuProps) => {
             <Pressable style={styles.modalOverlay} onPress={props.onClose}>
                 <View style={styles.menu}>
                     <Pressable onPress={(e) => e.stopPropagation()}>
+                        {/* work on this. this is just base version */}
+                            <Image source={require('../assets/images/sampleMap.png')}
+                                style={styles.image_size_two} />
 
-                        {/* work on this */}
-
+                            <Pressable onPress={() => console.log('add')}>
+                                <Image source={require('../assets/icons/add.png')}
+                                    style={styles.image_size} />
+                            </Pressable>
                     </Pressable>
                 </View>
             </Pressable>
@@ -36,7 +40,7 @@ const styles = StyleSheet.create({
         paddingTop: 50, // Adjust to match the height of the top navigation
     },
     menu: {
-        backgroundColor: 'white',
+        backgroundColor: 'lightgrey',
         padding: 10,
         borderRadius: 5,
         elevation: 5,
@@ -46,6 +50,18 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         marginRight: 10,
         marginTop: 10,
+    },
+    image_size: {
+        width: 40,
+        height: 40,
+        resizeMode: 'contain', // this makes sure the image scales properly
+        marginLeft: 100,
+        marginRight: 70,
+    },
+    image_size_two: {
+        width: 300,
+        height: 300,
+        resizeMode: 'contain', // this makes sure the image scales properly
     },
 });
 

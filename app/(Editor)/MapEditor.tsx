@@ -12,6 +12,7 @@ import SubMenu from "@/components/SubMenu";
 const MapEditor = () => {
     const [isSubMenuVisible, setIsSubMenuVisible] = useState(false);
     const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
+    const [isFloorMenuVisible, setIsFloorMenuVisible] = useState(false);
     const [filters, setFilters] = useState<string[]>([]);
 
     const toggleSubMenu = () => {
@@ -31,6 +32,12 @@ const MapEditor = () => {
         console.log(filters)
     }
 
+    const toggleFloorMenu = () => {
+        setIsFloorMenuVisible(!isFloorMenuVisible);
+        console.log(isFloorMenuVisible)
+        console.log('floor menu toggled')
+    }
+
     const filterOptions = ['Filter 1', 'Filter 2', 'Filter 3', 'Filter 4', 'Filter 5'];
 
     return (
@@ -42,9 +49,14 @@ const MapEditor = () => {
                 onClose={toggleFilterMenu}
                 onApplyFilters={applyFilters}
             />
+            <FloorMenu
+                isVisible={isFloorMenuVisible}
+                onClose={toggleFloorMenu}
+            />
             <NavigationBar  navBarStyle={styles.ui} 
                             toggleSubMenu={toggleSubMenu} 
-                            toggleFilterMenu={toggleFilterMenu}/>
+                            toggleFilterMenu={toggleFilterMenu}
+                            toggleFloorMenu={toggleFloorMenu}/>
             <MapEditorCanvas canvasStyle = {styles.canvas}/>
             <EditBar editBarStyle={styles.ui} clickedNode={false} />
         </View>
