@@ -2,26 +2,40 @@ import * as React from 'react';
 import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 import { IconButton, FAB } from 'react-native-paper';
 import { SafeAreaView  } from 'react-native-safe-area-context';
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from '../store/datastore';
+import { removeNode } from "@/store/NavMapSlice";
+import { unpressNode } from "@/store/NavStateSlice";
+
+
+
+type EditBarProps = {
+    editBarStyle: StyleProp<ViewStyle>,
+    //clickedNode: boolean,
+    //nodeID: string,
+}
 
 // EditBar component, accepts a boolean value to determine if the node is clicked, add a style prop
-const EditBar = ({ editBarStyle, clickedNode }: {editBarStyle: StyleProp<ViewStyle>, clickedNode: boolean }) => {
+const EditBar = (props: EditBarProps) => {
     // isVisible state to determine if the edit bar is visible, default is false
-    const [isVisible, setIsVisible] = React.useState(clickedNode);
+    const isVisible = useSelector((state: any) => state.navState.pressed);
+    const NodeId = useSelector((state: RootState) => state.navState.selectedNodeId);
+    const dispatch = useDispatch<AppDispatch>();
 
-    // if the node is clicked, the edit bar will be visible
-    React.useEffect(() => {
-        setIsVisible(clickedNode);
-    }, [clickedNode]);
+    const removeNodeEvent = () => {
+        dispatch(removeNode({key: NodeId}));
+        dispatch(unpressNode());
+    }
 
     return (
-        <View style={editBarStyle}>
+        <View style={props.editBarStyle}>
             <SafeAreaView style={styles.container}> 
                 <View style={styles.bottom}>
                     {isVisible && (
                         <>
                             <IconButton icon="pencil" size={24} onPress={() => console.log('pencil')} />
                             <IconButton icon="plus" size={24} onPress={() => console.log('plus')} />
-                            <IconButton icon="minus" size={24} onPress={() => console.log('minus')} />
+                            <IconButton icon="minus" size={24} onPress={removeNodeEvent} />
                         </>
                     )}
                     <IconButton icon="undo" size={24} onPress={() => console.log('undo')} />
