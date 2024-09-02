@@ -47,7 +47,7 @@ const NavigationBar = (props: NavBarProps) => {
         return ''
     }
 
-    const updatePressed = () => {
+    const enableAddNode = () => {
         props.canAddNode();
         if(isSelected){
             dispatch(unpressNode());
@@ -62,7 +62,7 @@ const NavigationBar = (props: NavBarProps) => {
                 <Appbar.Action icon={require('../assets/icons/submenu.png')} onPress={props.toggleSubMenu} />
                 <NavTitle title={updateTitle()} />
                 <Appbar.Content title='' /> 
-                <Appbar.Action icon={require('../assets/icons/node.png')} onPress={updatePressed} />
+                <Appbar.Action icon={require('../assets/icons/node.png')} onPress={enableAddNode} />
                 <Appbar.Action icon={require('../assets/icons/move.png')} onPress={() => {}} />
                 <Appbar.Action icon= 'grid' onPress={() => {}} />
                 <Appbar.Action icon={require('../assets/icons/search.png')} onPress={props.toggleFilterMenu} />

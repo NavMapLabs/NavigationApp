@@ -1,7 +1,7 @@
 import { TouchableOpacity, StyleSheet, Image, ImageProps } from "react-native"
 import { AppDispatch, RootState } from '../../store/datastore';
 import { useDispatch, useSelector } from 'react-redux';
-import { pressNode } from "@/store/NavStateSlice";
+import { pressNode, unpressNode } from "@/store/NavStateSlice";
 import React from "react"
 import { Coordinate } from "../../constants/Coordinate"
 import { Dimension } from "@/constants/Dimension";
@@ -15,12 +15,17 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
     const y = coords.y;
     const selectedid = useSelector((state: RootState) => state.navState.selectedNodeId);
     const isPressed = is(selectedid, id);
-
     const dispatch = useDispatch<AppDispatch>();
+
     const handleClick = () => {
-      dispatch(pressNode({nodeID: id}));
-      console.log("clicked Node");
-    };
+      if(isPressed){
+        dispatch(unpressNode());
+        console.log("unpressed node" + id);
+      } else {
+        dispatch(pressNode({nodeID: id}));
+        console.log("pressed node" + id);
+    }
+  }
 
 
     return (

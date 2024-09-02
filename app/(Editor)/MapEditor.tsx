@@ -37,6 +37,11 @@ const MapEditor = () => {
         console.log('node toggled')
     }
 
+    const enableAddNode = () => {
+        setCanAddNode(true);
+        console.log('node enabled')
+    }
+
     const filterOptions = ['Filter 1', 'Filter 2', 'Filter 3', 'Filter 4', 'Filter 5'];
 
     return (
@@ -53,7 +58,7 @@ const MapEditor = () => {
                             toggleFilterMenu={toggleFilterMenu}
                             canAddNode={toggleAddNode}/>
             <MapEditorCanvas canvasStyle = {styles.canvas} canAddNode ={canAddNode}/>
-            <EditBar editBarStyle={styles.ui}/>
+            <EditBar editBarStyle={styles.ui} canAddNode={enableAddNode}/>
         </View>
     )
 }

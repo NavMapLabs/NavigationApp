@@ -6,10 +6,11 @@ import NavigationEdgeDisplay from './NavigationEdgeDisplay';
 import { Coordinate } from "@/constants/Coordinate";
 import { Dimension } from "@/constants/Dimension";
 import AddNodeButton from "./AddNodeButton";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/datastore";
+import { useDispatch, useSelector} from "react-redux";
+import { AppDispatch, RootState } from "@/store/datastore";
 import { NavNodeType } from "@/constants/NavigationNode";
-import { addNode, addNodeWithCoord } from "@/store/NavMapSlice";
+import { addNode, addNodeWithCoord, addEdge, addNodeCoordandSelect} from "@/store/NavMapSlice";
+import { pressNode } from "@/store/NavStateSlice";
 import NavigationEdge from "./NavigationEdge";
 
 type MapCanvasProps = {
@@ -23,6 +24,8 @@ type MapCanvasProps = {
 const MapCanvas = (props: MapCanvasProps) => {
     const dispatch = useDispatch<AppDispatch>();
 
+    const pastNodeId = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
+    const currentNodeId = useSelector((state: RootState) => state.navState.selectedNodeId);
 
     const handlePress = (event: GestureResponderEvent) => {
         console.log("===== pressed =====");
@@ -40,7 +43,11 @@ const MapCanvas = (props: MapCanvasProps) => {
 
     const addNodeEvent = (x:number, y:number) => {
         const coords:Coordinate = {x:x, y:y}
-        dispatch(addNodeWithCoord({coords:coords}));
+        dispatch(addNodeCoordandSelect(coords));
+        if (pastNodeId !== "") {
+            dispatch(addEdge({nodeID_1:pastNodeId, nodeID_2:currentNodeId}));
+            console.log("added edges between " + pastNodeId + " and " + currentNodeId);
+        }
       };
 
     return (

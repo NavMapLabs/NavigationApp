@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppDispatch, RootState } from './datastore';
 import { Map as Map_I } from 'immutable';
 import { NavNodeType } from '@/constants/NavigationNode';
 import { Coordinate } from '@/constants/Coordinate';
+import { pressNode } from './NavStateSlice';
 
 interface AdjacencyList {
   forwardList: string[],
-  backwardList: string[],
+  backwardList: string[]
 }
 
 // Define the initial state using an Immutable.js Map
@@ -16,7 +18,7 @@ interface NavMapState {
 
 const initialState: NavMapState = {
   nodes: Map_I<string, NavNodeType>(),
-  graph: Map_I<string, AdjacencyList>()
+  graph: Map_I<string, AdjacencyList>(),
 };
 
 // Create the slice
@@ -35,10 +37,11 @@ const navMapSlice = createSlice({
       state.nodes = state.nodes.set(action.payload.id, newNode);
     },
     addNode: (state, action: PayloadAction<{ node: NavNodeType }>) => {
-      let id:string = Math.random().toString().slice(2, 8);
-      while (state.nodes.has(id)) { 
-        id = Math.random().toString().slice(2, 8);
-      };
+      //let id:string = Math.random().toString().slice(2, 8);
+      //while (state.nodes.has(id)) { 
+      //  id = Math.random().toString().slice(2, 8);
+      //};
+      let id = action.payload.node.id;
       state.nodes = state.nodes.set(id, action.payload.node);
     },
     addNodeWithCoord: (state, action: PayloadAction<{ coords:Coordinate }>) => {
@@ -54,7 +57,6 @@ const navMapSlice = createSlice({
         coords: action.payload.coords,
         description: ""
       }
-
       state.nodes = state.nodes.set(id, newNode);
     },
     removeNode: (state, action: PayloadAction<{ key: string }>) => {
@@ -186,7 +188,24 @@ const navMapSlice = createSlice({
 });
 
 // Export the actions
-export const {addNode_Dev, addNode, addNodeWithCoord, removeNode, updateNodeCoords, addEdge, removeEdge } = navMapSlice.actions;
+export const {addNode_Dev, addNode, 
+              addNodeWithCoord, removeNode, 
+              updateNodeCoords, addEdge, removeEdge } = navMapSlice.actions;
+
+export const addNodeCoordandSelect = (coords: Coordinate) => (dispatch: AppDispatch) => {
+  const newId = Math.random().toString().slice(2, 8);
+  const newNode: NavNodeType = { 
+    name: "node-" + newId,
+    id: newId,
+    tag: "",
+    coords: coords,
+    description: ""
+  }
+  {
+    dispatch(addNode({node: newNode}));
+    dispatch(pressNode({nodeID: newNode.id}));
+  }
+}
 
 // Export the reducer
 export default navMapSlice.reducer;
