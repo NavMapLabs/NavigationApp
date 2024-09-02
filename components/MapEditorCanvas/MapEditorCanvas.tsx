@@ -44,6 +44,7 @@ const MapCanvas = (props: MapCanvasProps) => {
     const addNodeEvent = (x:number, y:number) => {
         const coords:Coordinate = {x:x, y:y}
         dispatch(addNodeCoordandSelect(coords));
+        //TODO: fix bug where edge is added to the previous 2 nodes
         if (pastNodeId !== "") {
             dispatch(addEdge({nodeID_1:pastNodeId, nodeID_2:currentNodeId}));
             console.log("added edges between " + pastNodeId + " and " + currentNodeId);
