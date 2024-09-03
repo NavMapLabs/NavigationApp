@@ -23,33 +23,55 @@ type MapCanvasProps = {
 // will be moved and resize for the zoom-in features
 const MapCanvas = (props: MapCanvasProps) => {
     const dispatch = useDispatch<AppDispatch>();
+    // const [nodeID, setNodeID] = useState("");
 
     const pastNodeId = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
     const currentNodeId = useSelector((state: RootState) => state.navState.selectedNodeId);
 
+    useEffect(() => {
+        const connectingNodes = true; // replace with actual control
+        if (connectingNodes && pastNodeId != "") {
+            connectSelectedNode();
+        }
+    }, [pastNodeId]);
+
+
     const handlePress = (event: GestureResponderEvent) => {
-        console.log("===== pressed =====");
-        console.log(event.nativeEvent);
+        console.log("===== pressed canvas =====");
+        // console.log(event.nativeEvent);
         
         // false error from VS Code, it will work
         const { offsetX, offsetY } = event.nativeEvent;
         // false error from VS Code, it will work
 
-        console.log(offsetX, offsetY);
-        console.log("===== offsetted =====");
-        console.log(offsetX - props.dimension.width/2, offsetY);
-        addNodeEvent(offsetX - props.dimension.width/2, offsetY)
+        // console.log(offsetX, offsetY);
+        // console.log("===== offsetted =====");
+        // console.log(offsetX - props.dimension.width/2, offsetY);
+        addNodeEvent(offsetX - props.dimension.width/2, offsetY);
     };
 
     const addNodeEvent = (x:number, y:number) => {
         const coords:Coordinate = {x:x, y:y}
-        dispatch(addNodeCoordandSelect(coords));
+        const newId = Math.random().toString().slice(2, 8);
+        const newNode: NavNodeType = { 
+            name: "node-" + newId,
+            id: newId,
+            tag: "",
+            coords: coords,
+            description: ""
+        }
+        dispatch(addNode({node: newNode}));
+        dispatch(pressNode({nodeID: newNode.id}));
+    };
+
+    const connectSelectedNode = () => {
         //TODO: fix bug where edge is added to the previous 2 nodes
+        console.log("selected ID", currentNodeId, pastNodeId)
         if (pastNodeId !== "") {
             dispatch(addEdge({nodeID_1:pastNodeId, nodeID_2:currentNodeId}));
-            console.log("added edges between " + pastNodeId + " and " + currentNodeId);
+            console.log("=> added edges between " + pastNodeId + " and " + currentNodeId);
         }
-      };
+    }
 
     return (
         <Pressable onPress={handlePress} disabled={!props.canAddNode} style={[styles.canvas, 

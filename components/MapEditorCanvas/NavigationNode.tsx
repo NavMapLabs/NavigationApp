@@ -13,9 +13,9 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
   const NavigationNode = ({name, id, coords, dimension}: {name:string, id:string, coords:Coordinate, dimension:Dimension}) => {
     const x = coords.x;
     const y = coords.y;
-    const selectedid = useSelector((state: RootState) => state.navState.selectedNodeId);
-    const pastSelectedid = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
-    const isPressed = is(selectedid, id);
+    const selectedID = useSelector((state: RootState) => state.navState.selectedNodeId);
+    const pastSelectedID = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
+    const isPressed = is(selectedID, id);
     const dispatch = useDispatch<AppDispatch>();
 
     const handleClick = () => {
@@ -26,9 +26,9 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
       else {
         dispatch(pressNode({nodeID: id}));
         console.log("pressed node" + id);
-        //if (pastSelectedid !== "") {
-        //  dispatch(addEdge({nodeID_1:pastSelectedid, nodeID_2:id}));
-        //  console.log("added edges between " + pastSelectedid + " and " + id);
+        //if (pastSelectedID !== "") {
+        //  dispatch(addEdge({nodeID_1:pastSelectedID, nodeID_2:id}));
+        //  console.log("added edges between " + pastSelectedID + " and " + id);
         //}
       }
     }

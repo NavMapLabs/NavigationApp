@@ -207,6 +207,7 @@ export const addNodeCoordandSelect = (coords: Coordinate) => (dispatch: AppDispa
     description: ""
   }
   {
+    console.log("**** added node " + newId);
     dispatch(addNode({node: newNode}));
     dispatch(pressNode({nodeID: newNode.id}));
   }

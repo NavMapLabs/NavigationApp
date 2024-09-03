@@ -21,9 +21,15 @@ const navStateSlice = createSlice({
   initialState,
   reducers: {
     pressNode: (state, action: PayloadAction<{ nodeID: string }>) => {
+        console.log("============= pre press state =============")
+        console.log(state.selectedNodeId, state.pastSelectedNodeId)
+
         state.pastSelectedNodeId = state.selectedNodeId;
         state.pressed = true;
         state.selectedNodeId = action.payload.nodeID;
+        
+        console.log("============= post press state =============")
+        console.log(state.selectedNodeId, state.pastSelectedNodeId)
     },
     unpressNode: (state) => {
         state.pressed = false;
