@@ -1,15 +1,15 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack' 
 import { RootStackParamList } from './constants/types';
 import datastore from './store/datastore';
+import Homepage from './app/(Home)/Homepage'
 import Homepage from './app/(Home)/Homepage'
 import MapEditor from './app/(Editor)/MapEditor';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const App: React.FC = () => {
+const App = () => {
     return (
         <Provider store={datastore}>
             <Stack.Navigator

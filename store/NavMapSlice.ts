@@ -14,11 +14,13 @@ interface AdjacencyList {
 interface NavMapState {
   nodes: Map_I<string, NavNodeType>;
   graph: Map_I<string, AdjacencyList>;
+  graphModifiedFlag: number;
 }
 
 const initialState: NavMapState = {
   nodes: Map_I<string, NavNodeType>(),
   graph: Map_I<string, AdjacencyList>(),
+  graphModifiedFlag: 0,
 };
 
 // Create the slice
@@ -61,7 +63,7 @@ const navMapSlice = createSlice({
     },
     removeNode: (state, action: PayloadAction<{ key: string }>) => {
       // If it shows error is Microsoft's error, it will work
-      // the delete function from immutable should return a new Map not like the "go to defenition"
+      // the delete function from immutable should return a new Map not like the "go to definition"
       // weird issue from VS code or something
       // if see error, install "JavaScript and TypeScript Nightly" extension, fixed linking issue
       state.nodes = state.nodes.delete(action.payload.key);
@@ -102,8 +104,8 @@ const navMapSlice = createSlice({
       const nodeID_1: string = action.payload.nodeID_1;
       const nodeID_2: string = action.payload.nodeID_2;
       
-      console.log("====== before addEdge =====")
-      console.log(state.graph)
+      // console.log("====== before addEdge =====")
+      // console.log(state.graph)
 
       let draftGraph = state.graph;
 
@@ -129,7 +131,7 @@ const navMapSlice = createSlice({
        backwardList = [...backwardList, nodeID_1]
       }
 
-      // type graud for [Object is possibly 'undefined'] issue
+      // type guard for [Object is possibly 'undefined'] issue
       let node_1 = draftGraph.get(nodeID_1)
       let node_2 = draftGraph.get(nodeID_2)
       if (node_1 != undefined && node_2 != undefined) {
@@ -137,11 +139,14 @@ const navMapSlice = createSlice({
         node_2.backwardList = backwardList;
       }
 
+
       // assign back the state's graph in redux store
+      // "mark" the graph state as updated using set and delete
       state.graph = draftGraph
-      console.log("====== after =====")
-      console.log(state.graph)
-      console.log(state.nodes)
+      state.graphModifiedFlag = (state.graphModifiedFlag + 1) % 100
+      // console.log("====== after =====")
+      // console.log(state.graph)
+      // console.log(state.nodes)
     },
     removeEdge: (state, action:PayloadAction<{nodeID_1: string, nodeID_2:string}>) => {
       const nodeID_1: string = action.payload.nodeID_1;
@@ -153,10 +158,10 @@ const navMapSlice = createSlice({
       let draftGraph = state.graph;
 
       if (!draftGraph.has(nodeID_1)) {
-        console.log("Node not exsisting: ", nodeID_1)
+        console.log("Node not existing: ", nodeID_1)
       }
       if (!draftGraph.has(nodeID_2)) {
-        console.log("Node not exsisting: ", nodeID_2)
+        console.log("Node not existing: ", nodeID_2)
       }
 
 

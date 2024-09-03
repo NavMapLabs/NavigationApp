@@ -10,7 +10,6 @@ import { is } from "immutable";
 
 const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
 
-// const NavigationNode = ({coor} : {coor: Coordinate}) => {
   const NavigationNode = ({name, id, coords, dimension}: {name:string, id:string, coords:Coordinate, dimension:Dimension}) => {
     const x = coords.x;
     const y = coords.y;

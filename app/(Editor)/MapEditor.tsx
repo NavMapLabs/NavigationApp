@@ -6,6 +6,8 @@ import MapEditorCanvas from "../../components/MapEditorCanvas/MapEditorCanvas";
 import FloorMenu from "../../components/FloorMenu";
 import FilterMenu from '../../components/FilterMenu';
 import SubMenu from "@/components/SubMenu";
+import { MapEditorNavigationProp } from "@/constants/types";
+import { useNavigation } from "@react-navigation/native"
 
 
 

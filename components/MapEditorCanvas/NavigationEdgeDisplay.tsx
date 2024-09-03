@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { View } from "react-native"
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/datastore';
@@ -13,6 +13,8 @@ import { NavNodeType } from "@/constants/NavigationNode";
 const NavigationEdgeDisplay = () => {
     const nodes = useSelector((state: RootState) => state.NavMapState.nodes);
     const graph = useSelector((state: RootState) => state.NavMapState.graph);
+    // use graphModifiedFlag for sometime react don't recognized graph is updated (detail related to redux store state update rules...)
+    const graphModifiedFlag = useSelector((state: RootState) => state.NavMapState.graphModifiedFlag);
     const emptyCoords:Coordinate = {x:0, y:0}
     const emptyNode:NavNodeType = {
         name:"empty",
@@ -21,6 +23,11 @@ const NavigationEdgeDisplay = () => {
         description:"empty",
         coords: emptyCoords
     }
+
+    useEffect(() => {
+        console.log("=== graph updated ===")
+        console.log(graph)
+    }, [graph])
     return (
         <>
         {
