@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootStackParamList } from './constants/types';
 import datastore from './store/datastore';
 import Homepage from './app/(Home)/Homepage'
-import Homepage from './app/(Home)/Homepage'
 import MapEditor from './app/(Editor)/MapEditor';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
