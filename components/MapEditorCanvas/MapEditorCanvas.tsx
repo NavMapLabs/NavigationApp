@@ -35,7 +35,6 @@ const MapCanvas = (props: MapCanvasProps) => {
         }
     }, [pastNodeId]);
 
-
     const handlePress = (event: GestureResponderEvent) => {
         console.log("===== pressed canvas =====");
         // console.log(event.nativeEvent);
