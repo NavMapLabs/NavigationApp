@@ -28,7 +28,7 @@ const MapEditor = () => {
         console.log(isFilterMenuVisible)
         console.log('filter menu toggled')
     }
-
+    
     const toggleFloorMenu = () => {
         setIsFloorMenuVisible(!isFloorMenuVisible);
         console.log(isFloorMenuVisible)
@@ -49,11 +49,8 @@ const MapEditor = () => {
     const enableAddNode = () => {
         setCanAddNode(true);
         console.log('node enabled')
-    const toggleFloorMenu = () => {
-        setIsFloorMenuVisible(!isFloorMenuVisible);
-        console.log(isFloorMenuVisible)
-        console.log('floor menu toggled')
     }
+    
 
     const filterOptions = ['Filter 1', 'Filter 2', 'Filter 3', 'Filter 4', 'Filter 5'];
 
@@ -73,8 +70,9 @@ const MapEditor = () => {
             <NavigationBar  navBarStyle={styles.ui} 
                             toggleSubMenu={toggleSubMenu} 
                             toggleFilterMenu={toggleFilterMenu}
-                            canAddNode={toggleAddNode}/>
-            <MapEditorCanvas canvasStyle = {styles.canvas} canAddNode ={canAddNode} toggleFloorMenu={toggleFloorMenu}/>
+                            canAddNode={toggleAddNode}
+                            toggleFloorMenu={toggleFloorMenu}/>
+            <MapEditorCanvas canvasStyle = {styles.canvas} canAddNode ={canAddNode}/>
             <EditBar editBarStyle={styles.ui} canAddNode={enableAddNode}/>
         </View>
     )
