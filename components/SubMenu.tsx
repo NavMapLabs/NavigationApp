@@ -1,7 +1,9 @@
-import { Modal, View, StyleSheet, Pressable} from "react-native";
+import { Modal, View, StyleSheet, Pressable } from "react-native";
 import { Drawer } from 'react-native-paper';
-import { SubMenuNavigationProp } from "@/constants/types"; // this is the identity
 import { useNavigation } from '@react-navigation/native';
+import React, { useState } from "react";
+import LogInModal from "@/app/(Auth)/LogInModal";
+import SignUpModal from "@/app/(Auth)/SignUpModal";
 
 type SubMenuProps = {
     isVisible: boolean,
@@ -9,58 +11,82 @@ type SubMenuProps = {
 }
 
 // make this sub menu be set to the left side of the screen 
-const SubMenu= (props : SubMenuProps) => {
-    const navigation = useNavigation<SubMenuNavigationProp>(); // this gives you access to the hook
+const SubMenu = (props: SubMenuProps) => {
+    const [isLogInVisible, setLogInVisible] = useState(false);
+    const [isSignUpVisible, setSignUpVisible] = useState(false);
+
+    const toggleLogIn = () => {
+        setLogInVisible(!isLogInVisible);
+    }
+
+    const toggleSignUp = () => {
+        setSignUpVisible(!isSignUpVisible);
+    }
+
 
     return (
         <Modal
-          transparent={true}
-          animationType="none"
-          visible={props.isVisible}
-          onRequestClose={props.onClose}
+            transparent={true}
+            animationType="none"
+            visible={props.isVisible}
+            onRequestClose={props.onClose}
         >
             <Pressable style={styles.container} onPress={props.onClose}>
-                    <Pressable style={styles.left_side} onPress={(e) => e.stopPropagation()}>
-                            <Drawer.Section title="MENU">
-                                <Drawer.Item
-                                    style={[styles.box, styles.TextSpace]}
-                                    label="Log in"
-                                    onPress={() => {
-                                        navigation.navigate('LogInScreen')
-                                        console.log("Pressed")
-                                    }}
-                                />
-                                <Drawer.Item
-                                    style={[styles.box, styles.BigSpace]}
-                                    label="Sign up"
-                                    onPress={() => {
-                                        navigation.navigate('SignUpScreen')
-                                        console.log("Pressed")
-                                    }}
-                                />
-                                <Drawer.Item
-                                    style={[styles.box, styles.TextSpace]}
-                                    label="New"
-                                    onPress={() => { }}
-                                />
-                                <Drawer.Item
-                                    style={[styles.box, styles.TextSpace]}
-                                    label="Save"
-                                    onPress={() => { }}
-                                />
-                                <Drawer.Item
-                                    style={[styles.box, styles.TextSpace]}
-                                    label="Save & Exit"
-                                    onPress={() => { }}
-                                />
-                                <Drawer.Item
-                                    style={[styles.box, styles.TextSpace]}
-                                    label="Exit"
-                                    onPress={() => { }}
-                                />
-                            </Drawer.Section>
-                    </Pressable>
+                <Pressable style={styles.left_side} onPress={(e) => e.stopPropagation()}>
+                    <Drawer.Section title="MENU">
+                        <Drawer.Item
+                            style={[styles.box, styles.TextSpace]}
+                            label="Log in"
+                            onPress={() => {
+                                toggleLogIn();
+                                console.log("Login Pressed")
+                            }}
+                        />
+                        <Drawer.Item
+                            style={[styles.box, styles.BigSpace]}
+                            label="Sign up"
+                            onPress={() => {
+                                toggleSignUp();
+                                console.log("Signup Pressed")
+                            }}
+                        />
+                        <Drawer.Item
+                            style={[styles.box, styles.TextSpace]}
+                            label="New"
+                            onPress={() => { }}
+                        />
+                        <Drawer.Item
+                            style={[styles.box, styles.TextSpace]}
+                            label="Save"
+                            onPress={() => { }}
+                        />
+                        <Drawer.Item
+                            style={[styles.box, styles.TextSpace]}
+                            label="Save & Exit"
+                            onPress={() => { }}
+                        />
+                        <Drawer.Item
+                            style={[styles.box, styles.TextSpace]}
+                            label="Exit"
+                            onPress={() => { }}
+                        />
+                    </Drawer.Section>
+                </Pressable>
             </Pressable>
+
+            {/* LogInScreen Modal */}
+            <LogInModal
+                isVisible={isLogInVisible}
+                onClose={toggleLogIn}
+                toggleSignUp={toggleSignUp}
+            />
+
+            {/* SignUpScreen Modal */}
+            <SignUpModal
+                isVisible={isSignUpVisible}
+                onClose={toggleSignUp}
+                toggleLogIn={toggleLogIn}
+            />
         </Modal>
     );
 };
@@ -97,7 +123,3 @@ const styles = StyleSheet.create({
 });
 
 export default SubMenu;
-/*
-Self-Note:
-change the font size smaller(?)
-*/

@@ -1,64 +1,108 @@
-import { View, StyleSheet,StyleProp, ViewStyle, Pressable, GestureResponderEvent  } from "react-native"
-import React, { ReactNode, useEffect, useState } from "react"
-import MapBackgroud from './MapBackgroud'
-import NavigationNodeDisplay from './NavigationNodeDisplay'
-import NavigationEdgeDisplay from './NavigationEdgeDisplay'
+import { View, StyleSheet,StyleProp, ViewStyle, Pressable, GestureResponderEvent  } from "react-native";
+import React, { ReactNode, useEffect, useState } from "react";
+import MapBackgroud from './MapBackgroud';
+import NavigationNodeDisplay from './NavigationNodeDisplay';
+import NavigationEdgeDisplay from './NavigationEdgeDisplay';
 import { Coordinate } from "@/constants/Coordinate";
 import { Dimension } from "@/constants/Dimension";
-import AddNodeButton from "./AddNodeButton"
-import { useDispatch } from "react-redux"
-import { AppDispatch } from "@/store/datastore"
-import { NavNodeType } from "@/constants/NavigationNode"
-import { addNode, addNodeWithCoord } from "@/store/NavMapSlice";
-import NavigationEdge from "./NavigationEdge"
+import AddNodeButton from "./AddNodeButton";
+import { useDispatch, useSelector} from "react-redux";
+import { AppDispatch, RootState } from "@/store/datastore";
+import { NavNodeType } from "@/constants/NavigationNode";
+import { addNode, addNodeWithCoord, addEdge, addNodeCoordandSelect} from "@/store/NavMapSlice";
+import { pressNode } from "@/store/NavStateSlice";
+import NavigationEdge from "./NavigationEdge";
 
+type MapCanvasProps = {
+    children: ReactNode,
+    offsetCoor:Coordinate,
+    dimension: Dimension,
+    canAddNode: boolean
+}
 // define the dynamic canvas view containing all canvas element in screen
 // will be moved and resize for the zoom-in features
-const MapCanvas = ({children, offsetCoor, dimension}: 
-    {children: ReactNode, offsetCoor:Coordinate, dimension: Dimension}) => {
+const MapCanvas = (props: MapCanvasProps) => {
     const dispatch = useDispatch<AppDispatch>();
+    // const [nodeID, setNodeID] = useState("");
 
+    const pastNodeId = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
+    const currentNodeId = useSelector((state: RootState) => state.navState.selectedNodeId);
+    const nodes = useSelector((state: RootState) => state.NavMapState.nodes);
+
+    useEffect(() => {
+        const connectingNodes = true; // replace with actual control
+        if (connectingNodes && pastNodeId != "") {
+            connectSelectedNode();
+        }
+    }, [pastNodeId]);
 
     const handlePress = (event: GestureResponderEvent) => {
-        console.log("===== pressed =====");
-        console.log(event.nativeEvent);
+        console.log("===== pressed canvas =====");
+        // console.log(event.nativeEvent);
         
         // false error from VS Code, it will work
         const { offsetX, offsetY } = event.nativeEvent;
         // false error from VS Code, it will work
 
-        console.log(offsetX, offsetY);
-        console.log("===== offsetted =====");
-        console.log(offsetX - dimension.width/2, offsetY);
-        addNodeEvent(offsetX - dimension.width/2, offsetY)
+        // console.log(offsetX, offsetY);
+        // console.log("===== offsetted =====");
+        // console.log(offsetX - props.dimension.width/2, offsetY);
+        addNodeEvent(offsetX - props.dimension.width/2, offsetY);
     };
 
     const addNodeEvent = (x:number, y:number) => {
         const coords:Coordinate = {x:x, y:y}
-        dispatch(addNodeWithCoord({coords:coords}));
-      };
+        let newId = Math.random().toString().slice(2, 8);
+        while (nodes.has(newId)) {
+            newId = Math.random().toString().slice(2, 8);
+        }
+        const newNode: NavNodeType = { 
+            name: "node-" + newId,
+            id: newId,
+            tag: "",
+            coords: coords,
+            description: ""
+        }
+        dispatch(addNode({node: newNode}));
+        dispatch(pressNode({nodeID: newNode.id}));
+    };
+
+    const connectSelectedNode = () => {
+        console.log("selected ID", currentNodeId, pastNodeId)
+        dispatch(addEdge({nodeID_1:pastNodeId, nodeID_2:currentNodeId}));
+        console.log("=> added edges between " + pastNodeId + " and " + currentNodeId);
+    }
 
     return (
-        <Pressable onPress={handlePress} style={[styles.canvas, 
+        <Pressable onPress={handlePress} disabled={!props.canAddNode} style={[styles.canvas, 
             { 
-                marginLeft: -dimension.width/2 + offsetCoor.x,
-                marginTop: -dimension.height/2 + offsetCoor.y,
-                height: dimension.height,
-                width: dimension.width,
+                marginLeft: -props.dimension.width/2 + props.offsetCoor.x,
+                marginTop: -props.dimension.height/2 + props.offsetCoor.y,
+                height: props.dimension.height,
+                width: props.dimension.width,
             }]} >
-                {children}
+                {props.children}
         </Pressable>
     )
 }
 
+type MapCanvasWrapperProps = {
+    children: ReactNode,
+    canvasStyle: StyleProp<ViewStyle>,
+    offsetCoor:Coordinate,
+    dimension: Dimension,
+    canAddNode: boolean
+}
+
 // define the static canvas view wrapper in screen
-const MapCanvasWrapper = ({children, canvasStyle, offsetCoor, dimension}: 
-    {children: ReactNode, canvasStyle: StyleProp<ViewStyle>, offsetCoor:Coordinate, dimension: Dimension}) => {
+const MapCanvasWrapper = (props: MapCanvasWrapperProps) => {
     return (
-        <View style={canvasStyle} >
+        <View style={props.canvasStyle} >
             <AddNodeButton/>
-            <MapCanvas offsetCoor={offsetCoor}  dimension={dimension}>
-                {children} 
+            <MapCanvas offsetCoor={props.offsetCoor}  
+                       dimension={props.dimension}
+                       canAddNode={props.canAddNode}>
+                {props.children} 
             </MapCanvas>
         </View>
     )
@@ -71,7 +115,12 @@ const aspectRatio = 16/9;
 const defultImage:string = '@/assets/images/sampleMap.png';
 const defaultNodeDimention:Dimension = {height:30, width: 30}
 
-const MapEditorCanvas = ({canvasStyle}: {canvasStyle: StyleProp<ViewStyle>}) => {
+type MapEditorCanvasProps = {
+    canvasStyle: StyleProp<ViewStyle>
+    canAddNode: boolean
+}
+
+const MapEditorCanvas = (props: MapEditorCanvasProps) => {
     const [canvasDimensions, setCanvasDimensions] = useState({ height: 0,  width: 0 });
 
     useEffect(() => {
@@ -83,7 +132,10 @@ const MapEditorCanvas = ({canvasStyle}: {canvasStyle: StyleProp<ViewStyle>}) => 
     }, [aspectRatio]);
     
     return (
-        <MapCanvasWrapper canvasStyle = {canvasStyle} offsetCoor={centerCoor}  dimension={canvasDimensions}>
+        <MapCanvasWrapper canvasStyle = {props.canvasStyle} 
+                          offsetCoor={centerCoor}  
+                          dimension={canvasDimensions}
+                          canAddNode={props.canAddNode}>
             <MapBackgroud imageURL={defultImage} canvasDimension={canvasDimensions}/>
             <NavigationNodeDisplay dimension={defaultNodeDimention}/>
             <NavigationEdgeDisplay />

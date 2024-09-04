@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppDispatch, RootState } from './datastore';
 import { Map as Map_I } from 'immutable';
 import { NavNodeType } from '@/constants/NavigationNode';
 import { Coordinate } from '@/constants/Coordinate';
+import { pressNode } from './NavStateSlice';
 
 interface AdjacencyList {
   forwardList: string[],
-  backwardList: string[],
+  backwardList: string[]
 }
 
 // Define the initial state using an Immutable.js Map
@@ -37,10 +39,11 @@ const navMapSlice = createSlice({
       state.nodes = state.nodes.set(action.payload.id, newNode);
     },
     addNode: (state, action: PayloadAction<{ node: NavNodeType }>) => {
-      let id:string = Math.random().toString().slice(2, 8);
-      while (state.nodes.has(id)) { 
-        id = Math.random().toString().slice(2, 8);
-      };
+      //let id:string = Math.random().toString().slice(2, 8);
+      //while (state.nodes.has(id)) { 
+      //  id = Math.random().toString().slice(2, 8);
+      //};
+      let id = action.payload.node.id;
       state.nodes = state.nodes.set(id, action.payload.node);
     },
     addNodeWithCoord: (state, action: PayloadAction<{ coords:Coordinate }>) => {
@@ -56,7 +59,6 @@ const navMapSlice = createSlice({
         coords: action.payload.coords,
         description: ""
       }
-
       state.nodes = state.nodes.set(id, newNode);
     },
     removeNode: (state, action: PayloadAction<{ key: string }>) => {
@@ -119,13 +121,15 @@ const navMapSlice = createSlice({
       // If it shows error is fine, it will work
       let forwardList = draftGraph.get(nodeID_1)?.forwardList ?? [];
       let backwardList = draftGraph.get(nodeID_2)?.backwardList ?? [];
-
-
-      if (!forwardList.includes(nodeID_2)) {
+      // need to check if the edge already exists in the other direction
+      let forwardList_2 = draftGraph.get(nodeID_2)?.forwardList ?? [];
+      let backwardList_2 = draftGraph.get(nodeID_1)?.backwardList ?? [];
+      
+      if (!forwardList.includes(nodeID_2) && !forwardList_2.includes(nodeID_1)) {
         forwardList = [...forwardList, nodeID_2]
       }
 
-      if (!backwardList.includes(nodeID_1)) {
+      if (!backwardList.includes(nodeID_1) && !backwardList_2.includes(nodeID_2)) {
        backwardList = [...backwardList, nodeID_1]
       }
 
@@ -184,6 +188,7 @@ const navMapSlice = createSlice({
 
       // assign back the state's graph in redux store
       state.graph = draftGraph
+      state.graphModifiedFlag = (state.graphModifiedFlag + 1) % 100
       // console.log("====== after =====")
       // console.log(state.graph)
     }
@@ -191,7 +196,25 @@ const navMapSlice = createSlice({
 });
 
 // Export the actions
-export const {addNode_Dev, addNode, addNodeWithCoord, removeNode, updateNodeCoords, addEdge, removeEdge } = navMapSlice.actions;
+export const {addNode_Dev, addNode, 
+              addNodeWithCoord, removeNode, 
+              updateNodeCoords, addEdge, removeEdge } = navMapSlice.actions;
+
+export const addNodeCoordandSelect = (coords: Coordinate) => (dispatch: AppDispatch) => {
+  const newId = Math.random().toString().slice(2, 8);
+  const newNode: NavNodeType = { 
+    name: "node-" + newId,
+    id: newId,
+    tag: "",
+    coords: coords,
+    description: ""
+  }
+  {
+    console.log("**** added node " + newId);
+    dispatch(addNode({node: newNode}));
+    dispatch(pressNode({nodeID: newNode.id}));
+  }
+}
 
 // Export the reducer
 export default navMapSlice.reducer;

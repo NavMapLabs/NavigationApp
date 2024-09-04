@@ -44,7 +44,9 @@ const NavigationEdgeDisplay = () => {
                         }
 
                         return (
-                            <NavigationEdge key={edge_id} coords_1={node_1.coords} coords_2={node_2.coords}/>
+                            <NavigationEdge key={edge_id} coords_1={node_1.coords} 
+                                            coords_2={node_2.coords} 
+                                            id1={ID_1} id2={ID_2}/>
                         )
                     })
     

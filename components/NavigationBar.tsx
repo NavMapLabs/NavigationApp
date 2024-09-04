@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Appbar } from 'react-native-paper';
 import { View, StyleProp, ViewStyle,  Dimensions} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { MapEditorNavigationProp } from "@/constants/types";
+import { useSelector } from "react-redux";
+import { unpressNode } from "@/store/NavStateSlice";
+import { AppDispatch, RootState } from '../store/datastore';
+import { useDispatch } from 'react-redux';
 
 type NavBarProps = {
     navBarStyle: StyleProp<ViewStyle>,
-    toggleSubMenu: () => void
-    toggleFilterMenu: () => void
+    toggleSubMenu: () => void,
+    toggleFilterMenu: () => void,
+    canAddNode: () => void,
 }
 
 const NavTitle = ({title}: {title: string}) =>(
@@ -17,10 +20,13 @@ const NavTitle = ({title}: {title: string}) =>(
 )
 
 const NavigationBar = (props: NavBarProps) => {
-    const navigation = useNavigation<MapEditorNavigationProp>();
     const screenWidth = useState(Dimensions.get('window').width);
     const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
     const [filters, setFilters] = useState<string[]>([]);
+    const isSelected = useSelector((state: any) => state.navState.pressed);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const [selectedAction, setSelectedAction] = useState(null);
 
     useEffect(() => {
         const updateWidth = () => {
@@ -41,6 +47,13 @@ const NavigationBar = (props: NavBarProps) => {
         return ''
     }
 
+    const enableAddNode = () => {
+        props.canAddNode();
+        if(isSelected){
+            dispatch(unpressNode());
+        }
+    }
+
 
     return (
         //change color of the header
@@ -49,7 +62,7 @@ const NavigationBar = (props: NavBarProps) => {
                 <Appbar.Action icon={require('../assets/icons/submenu.png')} onPress={props.toggleSubMenu} />
                 <NavTitle title={updateTitle()} />
                 <Appbar.Content title='' /> 
-                <Appbar.Action icon={require('../assets/icons/node.png')} onPress={() => {}} />
+                <Appbar.Action icon={require('../assets/icons/node.png')} onPress={enableAddNode} />
                 <Appbar.Action icon={require('../assets/icons/move.png')} onPress={() => {}} />
                 <Appbar.Action icon= 'grid' onPress={() => {}} />
                 <Appbar.Action icon={require('../assets/icons/search.png')} onPress={props.toggleFilterMenu} />

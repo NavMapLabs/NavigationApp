@@ -1,5 +1,5 @@
 import React, { useState }  from "react";
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import NavigationBar from "../../components/NavigationBar";
 import EditBar from "../../components/EditBar";
 import MapEditorCanvas from "../../components/MapEditorCanvas/MapEditorCanvas";
@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native"
 const MapEditor = () => {
     const [isSubMenuVisible, setIsSubMenuVisible] = useState(false);
     const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
+    const [canAddNode, setCanAddNode] = useState(false);
     const [filters, setFilters] = useState<string[]>([]);
 
     const toggleSubMenu = () => {
@@ -33,7 +34,15 @@ const MapEditor = () => {
         console.log(filters)
     }
 
-    const navigation = useNavigation<MapEditorNavigationProp>();
+    const toggleAddNode = () => {
+        setCanAddNode(!canAddNode);
+        console.log('node toggled')
+    }
+
+    const enableAddNode = () => {
+        setCanAddNode(true);
+        console.log('node enabled')
+    }
 
     const filterOptions = ['Filter 1', 'Filter 2', 'Filter 3', 'Filter 4', 'Filter 5'];
 
@@ -48,9 +57,10 @@ const MapEditor = () => {
             />
             <NavigationBar  navBarStyle={styles.ui} 
                             toggleSubMenu={toggleSubMenu} 
-                            toggleFilterMenu={toggleFilterMenu}/>
-            <MapEditorCanvas canvasStyle = {styles.canvas}/>
-            <EditBar editBarStyle={styles.ui} clickedNode={false} />
+                            toggleFilterMenu={toggleFilterMenu}
+                            canAddNode={toggleAddNode}/>
+            <MapEditorCanvas canvasStyle = {styles.canvas} canAddNode ={canAddNode}/>
+            <EditBar editBarStyle={styles.ui} canAddNode={enableAddNode}/>
         </View>
     )
 }
