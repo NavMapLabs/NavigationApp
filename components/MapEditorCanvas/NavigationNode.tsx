@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, Image, ImageProps } from "react-native"
+import { Pressable, StyleSheet, Image, ImageProps } from "react-native"
 import { AppDispatch, RootState } from '../../store/datastore';
 import { useDispatch, useSelector } from 'react-redux';
 import { pressNode, unpressNode } from "@/store/NavStateSlice";
@@ -30,7 +30,7 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
     }
 
     return (
-      <TouchableOpacity onPress={handleClick} style={{zIndex:10}}>
+      <Pressable onPress={handleClick} style={{zIndex:10}}>
         <Image 
           source={defaultImage} 
           style={[styles.image, { 
@@ -44,7 +44,7 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
         ]}
           z-index={10}
         />
-      </TouchableOpacity>
+      </Pressable>
     );
 };
 

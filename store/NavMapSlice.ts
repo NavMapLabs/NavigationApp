@@ -121,13 +121,15 @@ const navMapSlice = createSlice({
       // If it shows error is fine, it will work
       let forwardList = draftGraph.get(nodeID_1)?.forwardList ?? [];
       let backwardList = draftGraph.get(nodeID_2)?.backwardList ?? [];
-
-
-      if (!forwardList.includes(nodeID_2)) {
+      // need to check if the edge already exists in the other direction
+      let forwardList_2 = draftGraph.get(nodeID_2)?.forwardList ?? [];
+      let backwardList_2 = draftGraph.get(nodeID_1)?.backwardList ?? [];
+      
+      if (!forwardList.includes(nodeID_2) && !forwardList_2.includes(nodeID_1)) {
         forwardList = [...forwardList, nodeID_2]
       }
 
-      if (!backwardList.includes(nodeID_1)) {
+      if (!backwardList.includes(nodeID_1) && !backwardList_2.includes(nodeID_2)) {
        backwardList = [...backwardList, nodeID_1]
       }
 
