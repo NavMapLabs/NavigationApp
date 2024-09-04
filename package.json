@@ -19,7 +19,18 @@
     "preset": "jest-expo",
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|react-redux|@react-native|react-native|@react-navigation/native-stack|@firebase/auth)"
-    ]
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
@@ -72,6 +83,7 @@
     "@types/jest": "^29.5.12",
     "@types/react": "~18.2.45",
     "@types/react-native-canvas": "^0.1.13",
+    "@types/react-test-renderer": "^18.3.0",
     "babel-jest": "^29.7.0",
     "gh-pages": "^6.1.1",
     "jest": "^29.7.0",

@@ -7,7 +7,7 @@
         "./*"
       ]
     },
-    "types": ["@types/immutable"]
+    "types": ["@types/immutable", "jest"]
   },
   "include": [
     "**/*.ts",
