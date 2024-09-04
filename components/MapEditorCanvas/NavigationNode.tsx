@@ -26,10 +26,6 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
       else {
         dispatch(pressNode({nodeID: id}));
         console.log("pressed node" + id);
-        //if (pastSelectedID !== "") {
-        //  dispatch(addEdge({nodeID_1:pastSelectedID, nodeID_2:id}));
-        //  console.log("added edges between " + pastSelectedID + " and " + id);
-        //}
       }
     }
 

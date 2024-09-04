@@ -2,7 +2,16 @@ import { TouchableOpacity, View, StyleSheet } from "react-native"
 import React from 'react';
 import { Coordinate } from '@/constants/Coordinate';
 import { NavNodeType } from '@/constants/NavigationNode';
+import { AppDispatch } from '@/store/datastore';
+import { useDispatch } from 'react-redux';
+import { removeEdge } from "@/store/NavMapSlice";
 
+type NavigationEdgeProps = {
+    coords_1: Coordinate,
+    coords_2: Coordinate,
+    id1: string,
+    id2: string
+}
 
 const calculateLineProperties = (coords_1:Coordinate, coords_2:Coordinate) => {
     const dx = coords_2.x - coords_1.x;
@@ -13,12 +22,13 @@ const calculateLineProperties = (coords_1:Coordinate, coords_2:Coordinate) => {
     return { length, angle };
   };
 
-  
-const NavigationEdge = ({coords_1, coords_2}:{coords_1:Coordinate, coords_2:Coordinate}) => {
-    const { length, angle } = calculateLineProperties(coords_1, coords_2);
+const NavigationEdge = (props: NavigationEdgeProps) => {
+    const { length, angle } = calculateLineProperties(props.coords_1, props.coords_2);
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleClick = () => {
         console.log("clicked Edge");
+        dispatch(removeEdge({nodeID_1: props.id1, nodeID_2: props.id2}));
     };
 
     return (
@@ -28,8 +38,8 @@ const NavigationEdge = ({coords_1, coords_2}:{coords_1:Coordinate, coords_2:Coor
                     styles.line,
                     {
                     width: length,
-                    marginLeft: coords_1.x,
-                    marginTop: coords_1.y,
+                    marginLeft: props.coords_1.x,
+                    marginTop: props.coords_1.y,
                     transform: [{ rotate: `${angle}deg` }],
                     transformOrigin: 'left top',
                     zIndex:5

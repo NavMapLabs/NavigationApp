@@ -186,6 +186,7 @@ const navMapSlice = createSlice({
 
       // assign back the state's graph in redux store
       state.graph = draftGraph
+      state.graphModifiedFlag = (state.graphModifiedFlag + 1) % 100
       // console.log("====== after =====")
       // console.log(state.graph)
     }

@@ -64,12 +64,9 @@ const MapCanvas = (props: MapCanvasProps) => {
     };
 
     const connectSelectedNode = () => {
-        //TODO: fix bug where edge is added to the previous 2 nodes
         console.log("selected ID", currentNodeId, pastNodeId)
-        if (pastNodeId !== "") {
-            dispatch(addEdge({nodeID_1:pastNodeId, nodeID_2:currentNodeId}));
-            console.log("=> added edges between " + pastNodeId + " and " + currentNodeId);
-        }
+        dispatch(addEdge({nodeID_1:pastNodeId, nodeID_2:currentNodeId}));
+        console.log("=> added edges between " + pastNodeId + " and " + currentNodeId);
     }
 
     return (
