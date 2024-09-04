@@ -11,6 +11,7 @@ type NavBarProps = {
     toggleSubMenu: () => void,
     toggleFilterMenu: () => void,
     canAddNode: () => void,
+    toggleFloorMenu: () => void
 }
 
 const NavTitle = ({title}: {title: string}) =>(
@@ -66,7 +67,7 @@ const NavigationBar = (props: NavBarProps) => {
                 <Appbar.Action icon={require('../assets/icons/move.png')} onPress={() => {}} />
                 <Appbar.Action icon= 'grid' onPress={() => {}} />
                 <Appbar.Action icon={require('../assets/icons/search.png')} onPress={props.toggleFilterMenu} />
-                <Appbar.Action icon={require('../assets/icons/layer.png')} onPress={() => {}} />
+                <Appbar.Action icon={require('../assets/icons/layer.png')} onPress={props.toggleFloorMenu} />
             </Appbar.Header>
         </View>
     )
