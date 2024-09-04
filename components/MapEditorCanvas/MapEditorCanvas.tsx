@@ -27,6 +27,7 @@ const MapCanvas = (props: MapCanvasProps) => {
 
     const pastNodeId = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
     const currentNodeId = useSelector((state: RootState) => state.navState.selectedNodeId);
+    const nodes = useSelector((state: RootState) => state.NavMapState.nodes);
 
     useEffect(() => {
         const connectingNodes = true; // replace with actual control
@@ -51,7 +52,10 @@ const MapCanvas = (props: MapCanvasProps) => {
 
     const addNodeEvent = (x:number, y:number) => {
         const coords:Coordinate = {x:x, y:y}
-        const newId = Math.random().toString().slice(2, 8);
+        let newId = Math.random().toString().slice(2, 8);
+        while (nodes.has(newId)) {
+            newId = Math.random().toString().slice(2, 8);
+        }
         const newNode: NavNodeType = { 
             name: "node-" + newId,
             id: newId,
