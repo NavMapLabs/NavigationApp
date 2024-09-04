@@ -1,6 +1,6 @@
 import { Text, View, TextInput, StyleSheet, Pressable, Modal } from "react-native"
 import React, { useState } from "react";
-import { TextInput as PaperTextInput } from 'react-native-paper';
+import { TextInput as PaperTextInput, IconButton } from 'react-native-paper';
 
 type SignUpProps = {
     isVisible: boolean,
@@ -29,6 +29,9 @@ const SignUpModal = (props: SignUpProps) => {
         >
             <Pressable style={styles.container} onPress={props.onClose}>
                 <Pressable style={styles.box} onPress={(e) => e.stopPropagation()}>
+                    <View style={styles.header}>
+                        <IconButton icon="close" size={24} onPress={props.onClose} />
+                    </View>
                     <Text style={styles.label}>Email</Text>
                     <PaperTextInput
                         style={[styles.paperInput, { borderColor: emailBorderColor }]}
@@ -166,6 +169,13 @@ const styles = StyleSheet.create({
     textSpace: {
         marginTop: 3, // Space before text
     },
+    header: {
+        width: '100%',
+        height: 15,
+        alignItems: "flex-end",
+        justifyContent: 'center',
+        marginLeft: 30,
+    }
 });
 
 export default SignUpModal;

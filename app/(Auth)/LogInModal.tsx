@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, Pressable, Modal } from "react-native"
 import React, { useState } from "react";
-import { TextInput as PaperTextInput } from 'react-native-paper';
+import { TextInput as PaperTextInput, IconButton } from 'react-native-paper';
 
 type LogInProps = {
     isVisible: boolean,
@@ -26,6 +26,9 @@ const LogInModal = (props: LogInProps) => {
         >
             <Pressable style={styles.container} onPress={props.onClose}>
                 <Pressable style={styles.box} onPress={(e) => e.stopPropagation()} >
+                    <View style={styles.header}>
+                        <IconButton icon="close" size={24} onPress={props.onClose} />
+                    </View>
                     <Text style={styles.label}>Email</Text>
                     <PaperTextInput
                         style={[styles.paperInput, { borderColor: emailBorderColor }]}
@@ -152,6 +155,13 @@ const styles = StyleSheet.create({
         height: 23,
         // this adjust font size and line height to the standard
         fontSize: 14,
+    },
+    header: {
+        width: '100%',
+        height: 15,
+        alignItems: "flex-end",
+        justifyContent: 'center',
+        marginLeft: 30,
     },
 });
 
