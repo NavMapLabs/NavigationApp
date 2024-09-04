@@ -3,9 +3,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ Deployment/CI-CD ]
+    branches: [ Deployment/CI-CD ] # before we fix or give up unit-test, don't enable workflow for other branch
   pull_request:
-    branches: [ Deployment/CI-CD  ]
+    branches: [ Deployment/CI-CD  ] # before we fix or give up unit-test, don't enable workflow for other branch
 
 # Grant the necessary permission to workflow
 permissions:
