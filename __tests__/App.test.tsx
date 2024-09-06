@@ -14,7 +14,7 @@ describe("<APP />", () => {
       <NavigationContainer>
         <App />
       </NavigationContainer>
-    ); //.toJSON()
+    );
     expect(1).toBe(1);
   });
 });
