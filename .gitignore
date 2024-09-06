@@ -21,3 +21,6 @@ secret/
 expo-env.d.ts
 # @end expo-cli
 secret/firebaseConfig.js
+
+
+yarn.lock

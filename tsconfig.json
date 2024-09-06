@@ -7,12 +7,25 @@
         "./*"
       ]
     },
-    "types": ["@types/immutable"]
+    "types": ["@types/immutable", "jest", "react-native"], // Add Jest and React Native types
+    "jsx": "react-native", // Ensure JSX is set for React Native
+    "esModuleInterop": true, // Ensure ES module interoperability for Jest
+    "skipLibCheck": true, // Skip type checks on declaration files
+    "allowSyntheticDefaultImports": true, // Allow default imports for modules without default export
+    "module": "commonjs", // Set module to commonjs for Jest compatibility
+    "resolveJsonModule": true, // Allow importing JSON modules
+    "noEmit": true, // Prevent emitting output files during testing
+    "isolatedModules": true // Ensure each file can be transpiled in isolation
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "android",
+    "ios"
   ]
 }
