@@ -55,7 +55,7 @@ const MapEditor = () => {
     const filterOptions = ['Filter 1', 'Filter 2', 'Filter 3', 'Filter 4', 'Filter 5'];
 
     return (
-        <View style={styles.main}>
+        <View style={styles.main} testID="MapEditor">
             <SubMenu isVisible={isSubMenuVisible} onClose={toggleSubMenu}/>
             <FilterMenu 
                 isVisible={isFilterMenuVisible} 

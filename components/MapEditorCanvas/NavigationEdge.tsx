@@ -32,7 +32,7 @@ const NavigationEdge = (props: NavigationEdgeProps) => {
     };
 
     return (
-        <TouchableOpacity onPress={handleClick} style={{zIndex:5}}>
+        <TouchableOpacity onPress={handleClick} style={{zIndex:5}} testID="NavigationEdge">
             <View
                 style={[
                     styles.line,

@@ -30,7 +30,7 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
     }
 
     return (
-      <Pressable onPress={handleClick} style={{zIndex:10}}>
+      <Pressable onPress={handleClick} style={{zIndex:10}}  testID="NavigationNode">
         <Image 
           source={defaultImage} 
           style={[styles.image, { 
