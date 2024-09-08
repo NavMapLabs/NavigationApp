@@ -1,4 +1,6 @@
 import React from "react";
+import App from "@/App";
+import { NavigationContainer } from "@react-navigation/native";
 import {
   fireEvent,
   render,
@@ -6,27 +8,29 @@ import {
   waitFor,
 } from "@testing-library/react-native";
 
-import App from "@/App";
-import { NavigationContainer } from "@react-navigation/native";
+// Documentation on react-native-testing lib
+// - https://testing-library.com/docs/queries/about/
+// Documentation on Jest Expect function
+// - https://jestjs.io/docs/expect
+
 
 describe("<APP />", () => {
-  it("simple test to renderer", async () => {
+  it("example test to renderer\n remove this test after remove the \"Add Node Tester (star)\" test", () => {
+    // remove this test after remove the "Add Node Tester (star)" test
     const tree = render(
       <NavigationContainer>
         <App />
       </NavigationContainer>
     );
 
+    // locate button
     const goToEditorButton = screen.getByText("Go to Editor");
-
     // Ensure the button is in the document
     expect(goToEditorButton).toBeTruthy();
-    fireEvent.press(goToEditorButton);
 
-    await waitFor(() => {
-      // Check if the Details screen content is rendered
-      expect(screen.getByTestId("MapEditor")).toBeTruthy();
-    });
+
+    fireEvent.press(goToEditorButton);
+    expect(screen.getByTestId("MapEditor")).toBeTruthy();
 
     const testerButton = screen.getByText("Add Node Tester (star)");
     expect(testerButton).toBeTruthy();
@@ -39,7 +43,7 @@ describe("<APP />", () => {
     let nodes = screen.queryAllByTestId("NavigationNode")
     let edges = screen.queryAllByTestId("NavigationEdge")
 
-    // 0) 
+    // 0) start with no nodes
     expect(nodes.length).toBe(0);
     expect(edges.length).toBe(0);
 
@@ -72,5 +76,10 @@ describe("<APP />", () => {
     edges = screen.queryAllByTestId("NavigationEdge")
     expect(nodes.length).toBe(0);
     expect(edges.length).toBe(0);
+  });
+
+  
+  it("More test could be in same \'describe\'", () => {
+    expect(1).toBe(1);
   });
 });
