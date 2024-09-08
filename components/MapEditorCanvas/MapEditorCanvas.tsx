@@ -41,6 +41,7 @@ const MapCanvas = (props: MapCanvasProps) => {
         // console.log(event.nativeEvent);
         
         // false error from VS Code, it will work
+        // @ts-ignore // ignore the false Error
         const { offsetX, offsetY } = event.nativeEvent;
         // false error from VS Code, it will work
 

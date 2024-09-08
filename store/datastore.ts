@@ -19,9 +19,10 @@ const store = configureStore({
 export default store;
 
 export type AppDispatch = typeof store.dispatch;
-// export type RootState = ReturnType<typeof store.getState>;
-// export const selectNodeByKey = (key: string) =>
-//   createSelector(
-//     (state: RootState) => state.NavMapState.nodes,
-//     (nodes) => nodes.get(key)
-//   );
+
+export type RootState = ReturnType<typeof store.getState>;
+export const selectNodeByKey = (key: string) =>
+  createSelector(
+    (state: RootState) => state.NavMapState.nodes,
+    (nodes) => nodes.get(key)
+  );
