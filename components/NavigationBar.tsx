@@ -34,10 +34,10 @@ const NavigationBar = (props: NavBarProps) => {
             screenWidth[1](Dimensions.get('window').width);
         }
 
-        Dimensions.addEventListener('change', updateWidth);
+        const dimensionListener = Dimensions.addEventListener('change', updateWidth);
 
         return () => {
-            (Dimensions as any).removeEventListener('change', updateWidth);
+            dimensionListener.remove();
         }
     },   [screenWidth])
 
