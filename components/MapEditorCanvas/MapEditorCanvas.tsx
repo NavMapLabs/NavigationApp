@@ -27,7 +27,7 @@ const MapCanvas = (props: MapCanvasProps) => {
 
     const pastNodeId = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
     const currentNodeId = useSelector((state: RootState) => state.navState.selectedNodeId);
-    const nodes = useSelector((state: RootState) => state.NavMapState.nodes);
+    const nodes = useSelector((state: RootState) => state.NavMapState.present.nodes);
 
     useEffect(() => {
         const connectingNodes = true; // replace with actual control

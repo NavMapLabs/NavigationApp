@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from '../store/datastore';
 import { removeNode, addEdge } from "@/store/NavMapSlice";
 import { unpressNode } from "@/store/NavStateSlice";
-
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 
 
 type EditBarProps = {
@@ -43,8 +43,8 @@ const EditBar = (props: EditBarProps) => {
                             <IconButton icon="minus" size={24} onPress={removeNodeEvent} />
                         </>
                     )}
-                    <IconButton icon="undo" size={24} onPress={() => console.log('undo')} />
-                    <IconButton icon="redo" size={24} onPress={() => console.log('redo')} />
+                    <IconButton icon="undo" size={24} onPress={() => dispatch(UndoActionCreators.undo())} />
+                    <IconButton icon="redo" size={24} onPress={() => dispatch(UndoActionCreators.redo())} />
                 </View>
             </SafeAreaView>
         </View>

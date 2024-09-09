@@ -9,7 +9,7 @@ import NavigationNode from "@/components/MapEditorCanvas/NavigationNode"
 //just testing this format out
 //make map component an empty component for now that takes up the whole screen using flex
 const NavigationNodeDisplay = ({dimension}: {dimension:Dimension}) => {
-    const nodes = useSelector((state: RootState) => state.NavMapState.nodes);
+    const nodes = useSelector((state: RootState) => state.NavMapState.present.nodes);
 
     return (
       <>
