@@ -29,7 +29,7 @@ const LogInModal = (props: LogInProps) => {
           <View style={styles.header}>
             <IconButton icon="close" size={24} onPress={props.onClose} />
           </View>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label} testID={"email.text"}>Email</Text>
           <PaperTextInput
             style={[styles.paperInput, { borderColor: emailBorderColor }]}
             onFocus={() => setEmailBorderColor("black")} // border color on focus
@@ -40,9 +40,10 @@ const LogInModal = (props: LogInProps) => {
             onChangeText={setEmailText}
             theme={{ colors: { primary: "transparent" } }} // this removes the underline
             underlineColor="transparent" // this removes the any extra underline
+            testID={"email.input"}
             /* obtain data here */
           />
-          <Text style={styles.label}>Password</Text>
+          <Text style={styles.label} testID={"pwd.text"}>Password</Text>
           <PaperTextInput
             style={[styles.paperInput, { borderColor: PasswordBorderColor }]}
             onFocus={() => setPasswordBorderColor("black")} // border color on focus
@@ -61,6 +62,7 @@ const LogInModal = (props: LogInProps) => {
             }
             theme={{ colors: { primary: "transparent" } }} // this removes the underline
             underlineColor="transparent" // this removes any extra underline
+            testID={"pwd.input"}
             /* obtain data here */
           />
           <Pressable
@@ -68,6 +70,7 @@ const LogInModal = (props: LogInProps) => {
             onPress={() => {
               /* handle action here */
             }}
+            testID={"sign-in-button"}
           >
             <Text style={styles.buttonText}>Sign In</Text>
           </Pressable>
@@ -77,6 +80,7 @@ const LogInModal = (props: LogInProps) => {
               onPress={() => {
                 /* handle action here */
               }}
+              testID={"forgot-password"}
             >
               Forgot password?
             </Text>
@@ -88,6 +92,7 @@ const LogInModal = (props: LogInProps) => {
               console.log("Signup Pressed");
               props.onClose();
             }}
+            testID={"sign-up-button"}
           >
             Need an account? Sign-up here.
           </Text>
