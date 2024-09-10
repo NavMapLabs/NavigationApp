@@ -23,6 +23,7 @@ const LogInModal = (props: LogInProps) => {
       animationType="none"
       visible={props.isVisible}
       onRequestClose={props.onClose}
+      testID="log-in-modal"
     >
       <Pressable style={styles.container} onPress={props.onClose}>
         <Pressable style={styles.box} onPress={(e) => e.stopPropagation()}>

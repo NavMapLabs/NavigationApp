@@ -26,6 +26,7 @@ const SignUpModal = (props: SignUpProps) => {
             animationType="none"
             visible={props.isVisible}
             onRequestClose={props.onClose}
+            testID="sign-up-modal"
         >
             <Pressable style={styles.container} onPress={props.onClose}>
                 <Pressable style={styles.box} onPress={(e) => e.stopPropagation()}>
