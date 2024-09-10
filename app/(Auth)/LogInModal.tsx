@@ -1,6 +1,9 @@
 import { Text, View, StyleSheet, Pressable, Modal } from "react-native";
 import React, { useState } from "react";
 import { TextInput as PaperTextInput, IconButton } from "react-native-paper";
+import { AuthError, User } from "firebase/auth";
+
+import { emailVerification, logIn, logOut } from "./firebaseAuth";
 
 type LogInProps = {
   isVisible: boolean;
@@ -16,6 +19,25 @@ const LogInModal = (props: LogInProps) => {
 
   const [emailBorderColor, setEmailBorderColor] = useState("gray");
   const [PasswordBorderColor, setPasswordBorderColor] = useState("gray");
+
+  const handleLogIn = async () => {
+    try {
+        const user = await logIn(emailText, passwordText)
+        await checkIfEmailVerified(user)
+
+    } catch (error: unknown) {
+        if (
+            (error as AuthError).code === "auth/user-not-found" ||
+            (error as AuthError).code === "auth/wrong-password"
+        ) {
+            alert('Email already in use');
+        } else if ((error as AuthError).code === "auth/too-many-request") {
+            alert("Too many unsuccessful login attempts. Please try again later.")
+        } else {
+            alert("Sign In error: " + (error as Error).message)
+        }
+    }
+}
 
   return (
     <Modal
@@ -69,7 +91,7 @@ const LogInModal = (props: LogInProps) => {
           <Pressable
             style={styles.button}
             onPress={() => {
-              /* handle action here */
+              handleLogIn();
             }}
             testID={"sign-in-button"}
           >
@@ -167,6 +189,22 @@ const styles = StyleSheet.create({
   },
 });
 
+const checkIfEmailVerified = async (user: User) => {
+  if(user) {
+      if(!user.emailVerified) {
+        // means that user is still not verified yet, need them to be verified
+        await emailVerification()
+        await logOut();
+        console.log("Not Verified, I'll navigate you later")
+
+      }
+      //If verified, navigate to other place
+      console.log("Woo Verified, I'll navigate you later")
+  } else {
+      throw new Error("Failed to check User")
+  }
+}
+
 export default LogInModal;
 
 /* self-note:
@@ -174,3 +212,4 @@ when clocking the navigation 'link',
 it erases the most components from the main background. figure out how to prevent that.
 setvisible prolly would work for the 'link' (?)
 */
+
