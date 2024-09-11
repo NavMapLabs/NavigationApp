@@ -41,6 +41,7 @@ const navMapSlice = createSlice({
     addNode: (state, action: PayloadAction<{ node: NavNodeType }>) => {
       let id = action.payload.node.id;
       state.nodes = state.nodes.set(id, action.payload.node);
+      console.log("added node");
     },
     addNodeWithCoord: (state, action: PayloadAction<{ coords:Coordinate }>) => {
       let id:string = Math.random().toString().slice(2, 8);
@@ -145,6 +146,7 @@ const navMapSlice = createSlice({
       // console.log("====== after =====")
       // console.log(state.graph)
       // console.log(state.nodes)
+      console.log("added edge");
     },
     removeEdge: (state, action:PayloadAction<{nodeID_1: string, nodeID_2:string}>) => {
       const nodeID_1: string = action.payload.nodeID_1;

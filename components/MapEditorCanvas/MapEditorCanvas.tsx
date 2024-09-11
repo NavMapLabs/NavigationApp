@@ -40,11 +40,11 @@ const MapCanvas = (props: MapCanvasProps) => {
         const undoEvent = (event: KeyboardEvent) => {
             if (event.ctrlKey && event.key === 'z') {
                 dispatch(UndoActionCreators.undo());
-                dispatch(UndoActionCreators.undo());
+                // dispatch(UndoActionCreators.undo());
             }
             if (event.ctrlKey && event.key === 'y') {
                 dispatch(UndoActionCreators.redo());
-                dispatch(UndoActionCreators.redo());
+                // dispatch(UndoActionCreators.redo());
             }
         }
         window.addEventListener('keydown', undoEvent);
