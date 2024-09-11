@@ -20,12 +20,12 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
     const handleClick = () => {
       if(isPressed){
         dispatch(unpressNode());
-        console.log("unpressed node" + id);
+        // console.log("unpressed node" + id);
       } 
       else {
         dispatch(pressNode({nodeID: id}));
-        console.log("pressed node" + id);
-        console.log("current coords: " + x + ", " + y);
+        // console.log("pressed node" + id);
+        // console.log("current coords: " + x + ", " + y);
       }
     }
 

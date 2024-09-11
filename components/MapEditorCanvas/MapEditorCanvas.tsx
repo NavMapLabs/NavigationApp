@@ -54,7 +54,7 @@ const MapCanvas = (props: MapCanvasProps) => {
     }, []);
 
     const handlePress = (event: GestureResponderEvent) => {
-        console.log("===== pressed canvas =====");
+        // console.log("===== pressed canvas =====");
         // console.log(event.nativeEvent);
         
         // false error from VS Code, it will work
@@ -65,7 +65,7 @@ const MapCanvas = (props: MapCanvasProps) => {
         // console.log("===== offsetted =====");
         // console.log(offsetX - props.dimension.width/2, offsetY);
         addNodeEvent(offsetX - props.dimension.width/2, offsetY);
-        console.log("node in canvas at" + offsetX + ", " + offsetY);
+        // console.log("node in canvas at" + offsetX + ", " + offsetY);
     };
 
     const addNodeEvent = (x:number, y:number) => {
@@ -86,7 +86,7 @@ const MapCanvas = (props: MapCanvasProps) => {
     };
 
     const connectSelectedNode = () => {
-        console.log("selected ID", currentNodeId, pastNodeId)
+        // console.log("selected ID", currentNodeId, pastNodeId)
         dispatch(addEdge({nodeID_1:pastNodeId, nodeID_2:currentNodeId}));
         console.log("=> added edges between " + pastNodeId + " and " + currentNodeId);
     }
@@ -145,8 +145,8 @@ const MapEditorCanvas = (props: MapEditorCanvasProps) => {
         const canvasWidth:number = convaseHeightState* aspectRatio;
         const canvasHeight:number = convaseHeightState;
         setCanvasDimensions({ height:canvasHeight, width:canvasWidth });
-        console.log("updating canvas dimension")
-        console.log(canvasDimensions)
+        // console.log("updating canvas dimension")
+        // console.log(canvasDimensions)
     }, [aspectRatio]);
     
     return (

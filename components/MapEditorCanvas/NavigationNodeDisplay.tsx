@@ -19,11 +19,6 @@ const NavigationNodeDisplay = ({dimension}: {dimension:Dimension}) => {
         ))
       }
       </>
-        // <G>
-        //   {nodes.map(node => (
-        //     <NodeComponent key={node.id} {...node} />
-        //   ))}
-        // </G>
       );
 }
 
