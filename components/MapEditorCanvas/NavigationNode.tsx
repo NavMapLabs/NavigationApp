@@ -14,7 +14,6 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
     const x = coords.x;
     const y = coords.y;
     const selectedID = useSelector((state: RootState) => state.navState.selectedNodeId);
-    const pastSelectedID = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
     const isPressed = is(selectedID, id);
     const dispatch = useDispatch<AppDispatch>();
 
@@ -26,6 +25,7 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
       else {
         dispatch(pressNode({nodeID: id}));
         console.log("pressed node" + id);
+        console.log("current coords: " + x + ", " + y);
       }
     }
 

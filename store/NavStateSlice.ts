@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addNode } from './NavMapSlice';
 
 //create the initial state, pressed on a node
 
@@ -7,12 +6,14 @@ interface NavStateState {
   pressed: boolean;
   selectedNodeId: string;
   pastSelectedNodeId: string;
+  selectedNodes: string[];
 }
 
 const initialState: NavStateState = {
   pressed: false,
   selectedNodeId: "",
-  pastSelectedNodeId: ""
+  pastSelectedNodeId: "",
+  selectedNodes: []
 };
 
 //create the slice
@@ -21,28 +22,29 @@ const navStateSlice = createSlice({
   initialState,
   reducers: {
     pressNode: (state, action: PayloadAction<{ nodeID: string }>) => {
-        console.log("============= pre press state =============")
-        console.log(state.selectedNodeId, state.pastSelectedNodeId)
-
+        state.selectedNodes = [];
         state.pastSelectedNodeId = state.selectedNodeId;
         state.pressed = true;
         state.selectedNodeId = action.payload.nodeID;
-        
-        console.log("============= post press state =============")
-        console.log(state.selectedNodeId, state.pastSelectedNodeId)
     },
     unpressNode: (state) => {
+        state.selectedNodes = [];
         state.pressed = false;
         state.selectedNodeId = "";
-        state.pastSelectedNodeId = "";
+        state.pastSelectedNodeId = state.selectedNodeId;
     },
-    resetPreviousNode: (state) => {
-        state.selectedNodeId = "";
+    pressSelectedNode: (state, action: PayloadAction<{ nodeID: string }>) => {
+        state.selectedNodes.push(action.payload.nodeID);
+    },
+    unpressSelectedNode: (state, action: PayloadAction<{ nodeID: string }>) => {
+        state.selectedNodes = state.selectedNodes.filter(id => id !== action.payload.nodeID);
+    },
+    resetSelectedNodes: (state) => {
+        state.selectedNodes = [];
     }
   }
-
 });
 
-export const { pressNode, unpressNode, resetPreviousNode } = navStateSlice.actions;
+export const { pressNode, unpressNode, pressSelectedNode, unpressSelectedNode, resetSelectedNodes } = navStateSlice.actions;
 
 export default navStateSlice.reducer;

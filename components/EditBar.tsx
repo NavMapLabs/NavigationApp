@@ -18,9 +18,8 @@ type EditBarProps = {
 // EditBar component, accepts a boolean value to determine if the node is clicked, add a style prop
 const EditBar = (props: EditBarProps) => {
     // isVisible state to determine if the edit bar is visible, default is false
-    const isVisible = useSelector((state: any) => state.navState.pressed);
+    const isVisible = useSelector((state: RootState) => state.navState.pressed);
     const NodeId = useSelector((state: RootState) => state.navState.selectedNodeId);
-    const isSelected = useSelector((state: RootState) => state.navState.pressed);
     const dispatch = useDispatch<AppDispatch>();
 
     const removeNodeEvent = () => {
@@ -31,6 +30,17 @@ const EditBar = (props: EditBarProps) => {
     const enableAddNode = () => {
         props.canAddNode();
     }
+
+    const undoEvent = () => {
+        dispatch(UndoActionCreators.undo());
+        dispatch(UndoActionCreators.undo());
+    }
+
+    const redoEvent = () => {
+        dispatch(UndoActionCreators.redo());
+        dispatch(UndoActionCreators.redo());
+    }
+
 
     return (
         <View style={props.editBarStyle}>
@@ -43,8 +53,8 @@ const EditBar = (props: EditBarProps) => {
                             <IconButton icon="minus" size={24} onPress={removeNodeEvent} />
                         </>
                     )}
-                    <IconButton icon="undo" size={24} onPress={() => dispatch(UndoActionCreators.undo())} />
-                    <IconButton icon="redo" size={24} onPress={() => dispatch(UndoActionCreators.redo())} />
+                    <IconButton icon="undo" size={24} onPress={undoEvent} />
+                    <IconButton icon="redo" size={24} onPress={redoEvent} />
                 </View>
             </SafeAreaView>
         </View>

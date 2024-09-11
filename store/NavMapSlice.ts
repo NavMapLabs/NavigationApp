@@ -39,10 +39,6 @@ const navMapSlice = createSlice({
       state.nodes = state.nodes.set(action.payload.id, newNode);
     },
     addNode: (state, action: PayloadAction<{ node: NavNodeType }>) => {
-      //let id:string = Math.random().toString().slice(2, 8);
-      //while (state.nodes.has(id)) { 
-      //  id = Math.random().toString().slice(2, 8);
-      //};
       let id = action.payload.node.id;
       state.nodes = state.nodes.set(id, action.payload.node);
     },

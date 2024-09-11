@@ -9,9 +9,9 @@ import AddNodeButton from "./AddNodeButton";
 import { useDispatch, useSelector} from "react-redux";
 import { AppDispatch, RootState } from "@/store/datastore";
 import { NavNodeType } from "@/constants/NavigationNode";
-import { addNode, addNodeWithCoord, addEdge, addNodeCoordandSelect} from "@/store/NavMapSlice";
+import { addNode, addEdge} from "@/store/NavMapSlice";
 import { pressNode } from "@/store/NavStateSlice";
-import NavigationEdge from "./NavigationEdge";
+import { ActionCreators as UndoActionCreators } from 'redux-undo';
 
 type MapCanvasProps = {
     children: ReactNode,
@@ -36,6 +36,23 @@ const MapCanvas = (props: MapCanvasProps) => {
         }
     }, [pastNodeId]);
 
+    useEffect(() => {
+        const undoEvent = (event: KeyboardEvent) => {
+            if (event.ctrlKey && event.key === 'z') {
+                dispatch(UndoActionCreators.undo());
+                dispatch(UndoActionCreators.undo());
+            }
+            if (event.ctrlKey && event.key === 'y') {
+                dispatch(UndoActionCreators.redo());
+                dispatch(UndoActionCreators.redo());
+            }
+        }
+        window.addEventListener('keydown', undoEvent);
+        return () => {
+            window.removeEventListener('keydown', undoEvent);
+        }
+    }, []);
+
     const handlePress = (event: GestureResponderEvent) => {
         console.log("===== pressed canvas =====");
         // console.log(event.nativeEvent);
@@ -48,6 +65,7 @@ const MapCanvas = (props: MapCanvasProps) => {
         // console.log("===== offsetted =====");
         // console.log(offsetX - props.dimension.width/2, offsetY);
         addNodeEvent(offsetX - props.dimension.width/2, offsetY);
+        console.log("node in canvas at" + offsetX + ", " + offsetY);
     };
 
     const addNodeEvent = (x:number, y:number) => {
