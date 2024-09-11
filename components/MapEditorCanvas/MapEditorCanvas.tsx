@@ -37,7 +37,7 @@ const MapCanvas = (props: MapCanvasProps) => {
     }, [pastNodeId]);
 
     const handlePress = (event: GestureResponderEvent) => {
-        console.log("===== pressed canvas =====");
+        // console.log("===== pressed canvas =====");
         // console.log(event.nativeEvent);
         
         // false error from VS Code, it will work
@@ -128,8 +128,8 @@ const MapEditorCanvas = (props: MapEditorCanvasProps) => {
         const canvasWidth:number = convaseHeightState* aspectRatio;
         const canvasHeight:number = convaseHeightState;
         setCanvasDimensions({ height:canvasHeight, width:canvasWidth });
-        console.log("updating canvas dimension")
-        console.log(canvasDimensions)
+        // console.log("updating canvas dimension")
+        // console.log(canvasDimensions)
     }, [aspectRatio]);
     
     return (

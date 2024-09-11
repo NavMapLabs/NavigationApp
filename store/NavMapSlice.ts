@@ -159,6 +159,7 @@ const navMapSlice = createSlice({
 
       let draftGraph = state.graph;
 
+      // Need checking, would it return inside here
       if (!draftGraph.has(nodeID_1)) {
         console.log("Node not existing: ", nodeID_1)
       }
@@ -210,7 +211,7 @@ export const addNodeCoordandSelect = (coords: Coordinate) => (dispatch: AppDispa
     description: ""
   }
   {
-    console.log("**** added node " + newId);
+    // console.log("**** added node " + newId);
     dispatch(addNode({node: newNode}));
     dispatch(pressNode({nodeID: newNode.id}));
   }
