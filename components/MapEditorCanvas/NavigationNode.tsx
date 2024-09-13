@@ -1,9 +1,9 @@
-import { Pressable, StyleSheet, Image, ImageProps } from "react-native"
+import { Pressable, StyleSheet, Image, ImageProps } from "react-native";
 import { AppDispatch, RootState } from '../../store/datastore';
 import { useDispatch, useSelector } from 'react-redux';
-import { pressNode, unpressNode } from "@/store/NavStateSlice";
+import { pressNode, unpressNode, addPressedNode, removePressedNode } from "@/store/NavStateSlice";
 import { addEdge } from "@/store/NavMapSlice";
-import React from "react"
+import React, { useEffect } from "react";
 import { Coordinate } from "../../constants/Coordinate"
 import { Dimension } from "@/constants/Dimension";
 import { is } from "immutable";
@@ -14,18 +14,31 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
     const x = coords.x;
     const y = coords.y;
     const selectedID = useSelector((state: RootState) => state.navState.selectedNodeId);
+    const selectedNodeIDs = useSelector((state: RootState) => state.navState.selectedNodes);
     const isPressed = is(selectedID, id);
     const dispatch = useDispatch<AppDispatch>();
+    const isBatchPressed = selectedNodeIDs.includes(id);
+    const mode = useSelector((state: RootState) => state.navState.mode);
 
     const handleClick = () => {
-      if(isPressed){
-        dispatch(unpressNode());
-        // console.log("unpressed node" + id);
-      } 
-      else {
-        dispatch(pressNode({nodeID: id}));
-        // console.log("pressed node" + id);
-        // console.log("current coords: " + x + ", " + y);
+      if(mode === 'add-node'){
+        if(isPressed){
+          dispatch(unpressNode());
+        } 
+        else {
+          dispatch(pressNode({nodeID: id}));
+        }
+      }
+      else if(mode === 'multi-select'){
+        if(isBatchPressed){
+          dispatch(removePressedNode({nodeID: id}));
+          if(selectedNodeIDs.length === 1){
+            dispatch(unpressNode());
+          }
+        }
+        else {
+          dispatch(addPressedNode({nodeID: id}));
+        }
       }
     }
 
@@ -40,7 +53,7 @@ const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
             height: dimension.height,
             zIndex:10,
           },
-          isPressed && styles.imagePressed
+          (isPressed || isBatchPressed) && styles.imagePressed
         ]}
           z-index={10}
         />

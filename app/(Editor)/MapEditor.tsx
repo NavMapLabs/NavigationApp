@@ -15,6 +15,7 @@ const MapEditor = () => {
     const [isSubMenuVisible, setIsSubMenuVisible] = useState(false);
     const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
     const [canAddNode, setCanAddNode] = useState(false);
+    const [enableSelectionTool, setEnableSelectionTool] = useState(false);
     const [isFloorMenuVisible, setIsFloorMenuVisible] = useState(false);
     const [filters, setFilters] = useState<string[]>([]);
 
@@ -40,18 +41,7 @@ const MapEditor = () => {
         console.log('filters applied')
         console.log(filters)
     }
-
-    const toggleAddNode = () => {
-        setCanAddNode(!canAddNode);
-        console.log('node toggled')
-    }
-
-    const enableAddNode = () => {
-        setCanAddNode(true);
-        console.log('node enabled')
-    }
     
-
     const filterOptions = ['Filter 1', 'Filter 2', 'Filter 3', 'Filter 4', 'Filter 5'];
 
     return (
@@ -70,10 +60,10 @@ const MapEditor = () => {
             <NavigationBar  navBarStyle={styles.ui} 
                             toggleSubMenu={toggleSubMenu} 
                             toggleFilterMenu={toggleFilterMenu}
-                            canAddNode={toggleAddNode}
-                            toggleFloorMenu={toggleFloorMenu}/>
-            <MapEditorCanvas canvasStyle = {styles.canvas} canAddNode ={canAddNode}/>
-            <EditBar editBarStyle={styles.ui} canAddNode={enableAddNode}/>
+                            toggleFloorMenu={toggleFloorMenu}
+                            overrideSelectedAction={canAddNode === true ? 'add-node' : ''}/>
+            <MapEditorCanvas canvasStyle = {styles.canvas} />
+            <EditBar editBarStyle={styles.ui} />
         </View>
     )
 }

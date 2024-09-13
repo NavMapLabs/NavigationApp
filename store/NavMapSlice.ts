@@ -198,21 +198,5 @@ export const {addNode_Dev, addNode,
               addNodeWithCoord, removeNode, 
               updateNodeCoords, addEdge, removeEdge } = navMapSlice.actions;
 
-export const addNodeCoordandSelect = (coords: Coordinate) => (dispatch: AppDispatch) => {
-  const newId = Math.random().toString().slice(2, 8);
-  const newNode: NavNodeType = { 
-    name: "node-" + newId,
-    id: newId,
-    tag: "",
-    coords: coords,
-    description: ""
-  }
-  {
-    console.log("**** added node " + newId);
-    dispatch(addNode({node: newNode}));
-    dispatch(pressNode({nodeID: newNode.id}));
-  }
-}
-
 // Export the reducer
 export default navMapSlice.reducer;

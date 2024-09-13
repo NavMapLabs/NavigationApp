@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Appbar } from 'react-native-paper';
 import { View, StyleProp, ViewStyle,  Dimensions} from 'react-native';
 import { useSelector } from "react-redux";
-import { unpressNode } from "@/store/NavStateSlice";
+import { unpressNode, changeMode } from "@/store/NavStateSlice";
 import { AppDispatch, RootState } from '../store/datastore';
 import { useDispatch } from 'react-redux';
 
@@ -10,8 +10,8 @@ type NavBarProps = {
     navBarStyle: StyleProp<ViewStyle>,
     toggleSubMenu: () => void,
     toggleFilterMenu: () => void,
-    canAddNode: () => void,
-    toggleFloorMenu: () => void
+    toggleFloorMenu: () => void,
+    overrideSelectedAction?: string
 }
 
 const NavTitle = ({title}: {title: string}) =>(
@@ -27,19 +27,26 @@ const NavigationBar = (props: NavBarProps) => {
     const isSelected = useSelector((state: any) => state.navState.pressed);
     const dispatch = useDispatch<AppDispatch>();
 
-    const [selectedAction, setSelectedAction] = useState(null);
+    const [selectedAction, setSelectedAction] = useState('');
 
     useEffect(() => {
         const updateWidth = () => {
             screenWidth[1](Dimensions.get('window').width);
         }
 
-        Dimensions.addEventListener('change', updateWidth);
+        const dimensionHandler = Dimensions.addEventListener('change', updateWidth);
 
         return () => {
-            (Dimensions as any).removeEventListener('change', updateWidth);
+            dimensionHandler.remove();
         }
     },   [screenWidth])
+
+    useEffect(() => {
+        if(props.overrideSelectedAction === 'add-node'){
+            setSelectedAction(props.overrideSelectedAction);
+            dispatch(changeMode({mode: 'add-node'}));
+        }
+    }, [props.overrideSelectedAction])
 
     const updateTitle = () => {
         if(screenWidth[0] > 1000){
@@ -48,13 +55,16 @@ const NavigationBar = (props: NavBarProps) => {
         return ''
     }
 
-    const enableAddNode = () => {
-        props.canAddNode();
-        if(isSelected){
-            dispatch(unpressNode());
+    const enableTool = (tool: string) => {
+        if(selectedAction === tool){
+            setSelectedAction('');
+            dispatch(changeMode({mode: 'default'}));
+        }
+        else {
+            setSelectedAction(tool);
+            dispatch(changeMode({mode: tool}));
         }
     }
-
 
     return (
         //change color of the header
@@ -63,9 +73,16 @@ const NavigationBar = (props: NavBarProps) => {
                 <Appbar.Action icon={require('../assets/icons/submenu.png')} onPress={props.toggleSubMenu} />
                 <NavTitle title={updateTitle()} />
                 <Appbar.Content title='' /> 
-                <Appbar.Action icon={require('../assets/icons/node.png')} onPress={enableAddNode} />
+                <Appbar.Action icon={require('../assets/icons/node.png')} onPress={() => enableTool('add-node')} color={
+                    selectedAction === 'add-node' ? 'red' : 'black'
+                }/>
                 <Appbar.Action icon={require('../assets/icons/move.png')} onPress={() => {}} />
-                <Appbar.Action icon= 'grid' onPress={() => {}} />
+                <Appbar.Action icon='dots-grid' onPress={() => enableTool('multi-select')} color={
+                    selectedAction === 'multi-select' ? 'red' : 'black'
+                }/>
+                <Appbar.Action icon= 'selection-drag' onPress={() => enableTool('selection-drag')}  color={
+                    selectedAction === 'selection-drag' ? 'red' : 'black'
+                }/>
                 <Appbar.Action icon={require('../assets/icons/search.png')} onPress={props.toggleFilterMenu} />
                 <Appbar.Action icon={require('../assets/icons/layer.png')} onPress={props.toggleFloorMenu} />
             </Appbar.Header>

@@ -1,4 +1,4 @@
-import { View, StyleSheet,StyleProp, ViewStyle, Pressable, GestureResponderEvent  } from "react-native";
+import { View, StyleSheet,StyleProp, ViewStyle, Pressable, GestureResponderEvent, PanResponder, ScrollView  } from "react-native";
 import React, { ReactNode, useEffect, useState } from "react";
 import MapBackgroud from './MapBackgroud';
 import NavigationNodeDisplay from './NavigationNodeDisplay';
@@ -10,15 +10,17 @@ import { useDispatch, useSelector} from "react-redux";
 import { AppDispatch, RootState } from "@/store/datastore";
 import { NavNodeType } from "@/constants/NavigationNode";
 import { addNode, addEdge} from "@/store/NavMapSlice";
-import { pressNode } from "@/store/NavStateSlice";
+import { pressNode, pressSelectedNodes, unpressSelectedNodes } from "@/store/NavStateSlice";
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
+import SelectionBox from "./SelectionBox";
 
 type MapCanvasProps = {
     children: ReactNode,
     offsetCoor:Coordinate,
     dimension: Dimension,
-    canAddNode: boolean
 }
+
+
 // define the dynamic canvas view containing all canvas element in screen
 // will be moved and resize for the zoom-in features
 const MapCanvas = (props: MapCanvasProps) => {
@@ -28,44 +30,43 @@ const MapCanvas = (props: MapCanvasProps) => {
     const pastNodeId = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
     const currentNodeId = useSelector((state: RootState) => state.navState.selectedNodeId);
     const nodes = useSelector((state: RootState) => state.NavMapState.present.nodes);
+    const canAddNode = useSelector((state: RootState) => state.navState.mode === 'add-node');
 
     useEffect(() => {
-        const connectingNodes = true; // replace with actual control
-        if (connectingNodes && pastNodeId != "") {
+        if (canAddNode && pastNodeId != "") {
             connectSelectedNode();
         }
     }, [pastNodeId]);
 
-    useEffect(() => {
+    
+
+
+    // this cannot be used for mobile as window doesn't exist
+    /* useEffect(() => {
+        
         const undoEvent = (event: KeyboardEvent) => {
             if (event.ctrlKey && event.key === 'z') {
                 dispatch(UndoActionCreators.undo());
-                // dispatch(UndoActionCreators.undo());
             }
             if (event.ctrlKey && event.key === 'y') {
                 dispatch(UndoActionCreators.redo());
-                // dispatch(UndoActionCreators.redo());
             }
         }
         window.addEventListener('keydown', undoEvent);
         return () => {
             window.removeEventListener('keydown', undoEvent);
         }
-    }, []);
+    }, []); */
 
     const handlePress = (event: GestureResponderEvent) => {
-        // console.log("===== pressed canvas =====");
-        // console.log(event.nativeEvent);
         
         // false error from VS Code, it will work
         const { offsetX, offsetY } = event.nativeEvent;
         // false error from VS Code, it will work
 
-        // console.log(offsetX, offsetY);
-        // console.log("===== offsetted =====");
-        // console.log(offsetX - props.dimension.width/2, offsetY);
         addNodeEvent(offsetX - props.dimension.width/2, offsetY);
-        // console.log("node in canvas at" + offsetX + ", " + offsetY);
+        const coords:Coordinate = {x:offsetX - props.dimension.width/2, y:offsetY}
+        console.log("=> added node at " + coords.x + ", " + coords.y);
     };
 
     const addNodeEvent = (x:number, y:number) => {
@@ -86,13 +87,11 @@ const MapCanvas = (props: MapCanvasProps) => {
     };
 
     const connectSelectedNode = () => {
-        // console.log("selected ID", currentNodeId, pastNodeId)
         dispatch(addEdge({nodeID_1:pastNodeId, nodeID_2:currentNodeId}));
-        console.log("=> added edges between " + pastNodeId + " and " + currentNodeId);
     }
 
     return (
-        <Pressable onPress={handlePress} disabled={!props.canAddNode} style={[styles.canvas, 
+        <Pressable onPress={handlePress} disabled={!canAddNode} style={[styles.canvas,
             { 
                 marginLeft: -props.dimension.width/2 + props.offsetCoor.x,
                 marginTop: -props.dimension.height/2 + props.offsetCoor.y,
@@ -100,7 +99,7 @@ const MapCanvas = (props: MapCanvasProps) => {
                 width: props.dimension.width,
             }]} >
                 {props.children}
-        </Pressable>
+        </Pressable>     
     )
 }
 
@@ -109,20 +108,20 @@ type MapCanvasWrapperProps = {
     canvasStyle: StyleProp<ViewStyle>,
     offsetCoor:Coordinate,
     dimension: Dimension,
-    canAddNode: boolean
+    scrollEnabled: boolean
 }
 
 // define the static canvas view wrapper in screen
 const MapCanvasWrapper = (props: MapCanvasWrapperProps) => {
     return (
-        <View style={props.canvasStyle} >
+        <ScrollView style={props.canvasStyle} 
+                    scrollEnabled={props.scrollEnabled}>
             <AddNodeButton/>
             <MapCanvas offsetCoor={props.offsetCoor}  
-                       dimension={props.dimension}
-                       canAddNode={props.canAddNode}>
+                       dimension={props.dimension}>
                 {props.children} 
             </MapCanvas>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -135,29 +134,90 @@ const defaultNodeDimention:Dimension = {height:30, width: 30}
 
 type MapEditorCanvasProps = {
     canvasStyle: StyleProp<ViewStyle>
-    canAddNode: boolean
 }
 
 const MapEditorCanvas = (props: MapEditorCanvasProps) => {
     const [canvasDimensions, setCanvasDimensions] = useState({ height: 0,  width: 0 });
+    const [selectedNodes, setSelectedNodes] = useState<string[]>([]);
+    const [selection, setSelection] = useState<{ start : Coordinate, end : Coordinate } | null>(null);
+    const nodes = useSelector((state: RootState) => state.NavMapState.present.nodes);
+    const selectedNodeIDs = useSelector((state: RootState) => state.navState.selectedNodes);
+    const isSelectionMode = useSelector((state: RootState) => state.navState.mode === 'selection-drag');
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         const canvasWidth:number = convaseHeightState* aspectRatio;
         const canvasHeight:number = convaseHeightState;
         setCanvasDimensions({ height:canvasHeight, width:canvasWidth });
-        // console.log("updating canvas dimension")
-        // console.log(canvasDimensions)
     }, [aspectRatio]);
+
+    const selectionPanResponder = PanResponder.create({
+        onStartShouldSetPanResponder: () => isSelectionMode,
+        onPanResponderGrant: (evt) => {
+            const { locationX, locationY } = evt.nativeEvent;
+            setSelection({ start : { x: locationX, y: locationY }, end : { x: locationX, y: locationY } });
+        },
+        onPanResponderMove: (evt, gestureState) => {
+            if (selection) {
+                const { locationX, locationY } = evt.nativeEvent;
+                setSelection((prev) => {
+                    if (!prev) return null;
+                    return { start: prev.start, end: { x: locationX, y: locationY } };
+                });
+            }
+        },
+        onPanResponderRelease: () => {
+            if (selection) {
+                const selectedNodes = Array.from(nodes.values()).filter(node => isNodeInSelection(node.coords, selection));
+                const currSelectedNodeIDs = selectedNodes.map(node => node.id);
+                if (selectedNodeIDs.length > 0) {
+                    const unselectedNodes = selectedNodeIDs.filter(nodeID => !currSelectedNodeIDs.includes(nodeID));
+                    const newlySelectedNodes = currSelectedNodeIDs.filter(nodeID => !selectedNodeIDs.includes(nodeID));
+                    dispatch(pressSelectedNodes({nodeIDs: newlySelectedNodes}));
+                    dispatch(unpressSelectedNodes({nodeIDs: unselectedNodes}));
+                }
+                else{
+                    dispatch(pressSelectedNodes({nodeIDs: currSelectedNodeIDs}));
+                    console.log("Selected nodes: ", currSelectedNodeIDs);
+                }
+            }
+            setSelection(null);
+        },
+    });
+
+    // Utility function to check if a node is within the selection box
+    const isNodeInSelection = (node_coords: Coordinate, selection: { start: Coordinate, end: Coordinate}) => {
+        const x:number = node_coords.x + canvasDimensions.width/2;
+        const y:number = node_coords.y;
+        console.log("node coordinates: ", x +", " + y);
+        const { start, end } = selection;
+        if (start.x < end.x) {
+            if (x < start.x || x > end.x) return false;
+        }
+        else {
+            if (x > start.x || x < end.x) return false;
+        }
+        if (start.y < end.y) {
+            if (y < start.y || y > end.y) return false;
+        }
+        else {
+            if (y > start.y || y < end.y) return false;
+        }
+        return true;
+    };
     
     return (
         <MapCanvasWrapper canvasStyle = {props.canvasStyle} 
                           offsetCoor={centerCoor}  
                           dimension={canvasDimensions}
-                          canAddNode={props.canAddNode}>
-            <MapBackgroud imageURL={defultImage} canvasDimension={canvasDimensions}/>
-            <NavigationNodeDisplay dimension={defaultNodeDimention}/>
-            <NavigationEdgeDisplay />
-            {/* <Text>Hi Honghui</Text> */}
+                          scrollEnabled={!props.enableSelectionTool}>
+            <View {...selectionPanResponder.panHandlers}>
+                <MapBackgroud imageURL={defultImage} canvasDimension={canvasDimensions}/>
+                <NavigationNodeDisplay dimension={defaultNodeDimention}/>
+                <NavigationEdgeDisplay />
+                {/* <Text>Hi Honghui</Text> */}
+                {selection && <SelectionBox start={selection.start} end={selection.end} />}
+            </View>
         </MapCanvasWrapper>
     )
 }
