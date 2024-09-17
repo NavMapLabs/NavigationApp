@@ -1,0 +1,21 @@
+# Dockerfile.dev is used for local dev build for testing, etc
+# docker build -f Dockerfile.dev -t nav_app_dev:1.0 .
+# pull base image
+FROM node:20.17.0-bookworm
+
+LABEL Name="NavMap_Dev" \
+      Version="1.0"
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+RUN npx expo export -p web
+
+COPY . .
+
+
+EXPOSE 3000
+
+CMD [ "node", "server.ts" ]

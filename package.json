@@ -12,7 +12,12 @@
     "lint": "expo lint",
     "deploy": "gh-pages -t -d dist",
     "deploy-github-action": "gh-pages -d dist -t true -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git",
-    "predeploy": "expo export -p web"
+    "predeploy": "expo export -p web",
+    "build_dev_image": "docker build -t nav_app_dev:1.0 .",
+    "run_dev_image": "docker run -p 3000:3000 nav_app_dev:1.0",
+    
+    "build_image_CI_CD": "docker build -t nav_app_test:1.0 .",
+    "run_image_CI_CD": "docker run -p 3000:3000 nav_app_test:1.0"
   },
   "jest": {
     "preset": "jest-expo",
