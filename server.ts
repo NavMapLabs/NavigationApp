@@ -7,8 +7,8 @@ const express = require('express');
 const compression = require('compression');
 const morgan = require('morgan');
 
-const CLIENT_BUILD_DIR = path.join(process.cwd(), 'dist/client');
-const SERVER_BUILD_DIR = path.join(process.cwd(), 'dist/server');
+const CLIENT_BUILD_DIR = path.join(process.cwd(), 'dist');
+// const SERVER_BUILD_DIR = path.join(process.cwd(), 'dist/server');
 
 const app = express();
 
@@ -19,21 +19,29 @@ app.disable('x-powered-by');
 
 process.env.NODE_ENV = 'production';
 
-app.use(
+// app.use('/', express.static(path.join(CLIENT_BUILD_DIR, 'index.html')));
+
+app.use('/NavigationApp',
   express.static(CLIENT_BUILD_DIR, {
     maxAge: '1h',
     extensions: ['html'],
   })
 );
 
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(CLIENT_BUILD_DIR, 'index.html'));
+});
+
+
 app.use(morgan('tiny'));
 
-app.all(
-  '*',
-  createRequestHandler({
-    build: SERVER_BUILD_DIR,
-  })
-);
+// app.all(
+//   '*',
+//   createRequestHandler({
+//     build: SERVER_BUILD_DIR,
+//   })
+// );
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
