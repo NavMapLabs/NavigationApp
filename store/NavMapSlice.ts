@@ -32,7 +32,7 @@ const navMapSlice = createSlice({
       const newNode: NavNodeType = {
         name: action.payload.id,
         id: action.payload.id,
-        tag: "",
+        tags: [],
         coords: action.payload.coords,
         description: ""
       }
@@ -52,7 +52,7 @@ const navMapSlice = createSlice({
       const newNode: NavNodeType = {
         name: "node-" + id,
         id: id,
-        tag: "",
+        tags: [],
         coords: action.payload.coords,
         description: ""
       }
@@ -90,10 +90,18 @@ const navMapSlice = createSlice({
         state.nodes = state.nodes.set(action.payload.key, updatedNode);
       }
     },
-    updateName: (state, action: PayloadAction<{ key: string, name: string }>) => {
+    /// Temp solution will update if a better solution is found
+    updateNodeCoordsFinal: (state, action: PayloadAction<{ key: string, coords: Coordinate }>) => {
       const existingNode = state.nodes.get(action.payload.key);
       if (existingNode) {
-        const updatedNode = { ...existingNode, name: action.payload.name };
+        const updatedNode = { ...existingNode, coords: action.payload.coords };
+        state.nodes = state.nodes.set(action.payload.key, updatedNode);
+      }
+    },
+    updateNodeProperties: (state, action: PayloadAction<{ key: string, name: string, desc: string, tags: string[]}>) => {
+      const existingNode = state.nodes.get(action.payload.key);
+      if (existingNode) {
+        const updatedNode = { ...existingNode, name: action.payload.name, description: action.payload.desc, tags: action.payload.tags };
         state.nodes = state.nodes.set(action.payload.key, updatedNode);
       }
     },
@@ -146,7 +154,7 @@ const navMapSlice = createSlice({
       // console.log("====== after =====")
       // console.log(state.graph)
       // console.log(state.nodes)
-      console.log("added edge");
+      // console.log("added edge");
     },
     removeEdge: (state, action:PayloadAction<{nodeID_1: string, nodeID_2:string}>) => {
       const nodeID_1: string = action.payload.nodeID_1;
@@ -196,7 +204,9 @@ const navMapSlice = createSlice({
 // Export the actions
 export const {addNode_Dev, addNode, 
               addNodeWithCoord, removeNode, 
-              updateNodeCoords, addEdge, removeEdge } = navMapSlice.actions;
+              updateNodeCoords, updateNodeCoordsFinal,
+              updateNodeProperties,
+              addEdge, removeEdge } = navMapSlice.actions;
 
 // Export the reducer
 export default navMapSlice.reducer;

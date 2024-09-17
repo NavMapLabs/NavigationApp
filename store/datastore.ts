@@ -1,12 +1,13 @@
 import { configureStore, createSelector  } from '@reduxjs/toolkit';
 import { combineReducers } from "redux";
-import NavMapReducer from './NavMapSlice';
+import NavMapReducer, { updateNodeCoords } from './NavMapSlice';
 import NavStateReducer from './NavStateSlice';
-import undoable from 'redux-undo';
+import undoable, { excludeAction } from 'redux-undo';
 
 const rootReducer = combineReducers({
   NavMapState: undoable(NavMapReducer, {
-    limit: 20 //set a limit for the size of the history
+    limit: 20, //set a limit for the size of the history,
+    filter: excludeAction([updateNodeCoords.type])
   }),
   // NavMapState: NavMapReducer,
   navState: NavStateReducer

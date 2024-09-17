@@ -69,7 +69,7 @@ const Canvas = (props: CanvasProps) => {
         const newNode: NavNodeType = { 
             name: "node-" + newId,
             id: newId,
-            tag: "",
+            tags: [],
             coords: coords,
             description: ""
         }

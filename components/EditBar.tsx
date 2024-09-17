@@ -11,6 +11,7 @@ import { ActionCreators as UndoActionCreators } from 'redux-undo'
 
 type EditBarProps = {
     editBarStyle: StyleProp<ViewStyle>,
+    toggleEditNodeMenu: () => void,
 }
 
 // EditBar component, accepts a boolean value to determine if the node is clicked, add a style prop
@@ -53,7 +54,7 @@ const EditBar = (props: EditBarProps) => {
                 <View style={styles.bottom}>
                     {isVisible && (
                         <>
-                            <IconButton icon="pencil" size={24} onPress={() => console.log('pencil')} />
+                            <IconButton icon="pencil" size={24} onPress={props.toggleEditNodeMenu} />
                             <IconButton icon="plus" size={24} onPress={enableAddNode} />
                             <IconButton icon="minus" size={24} onPress={removeNodeEvent} />
                         </>

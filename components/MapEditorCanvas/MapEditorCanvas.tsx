@@ -1,4 +1,4 @@
-import { View, StyleSheet,StyleProp, ViewStyle, Pressable, GestureResponderEvent, PanResponder, ScrollView  } from "react-native";
+import { View, StyleSheet,StyleProp, ViewStyle, PanResponder, Animated } from "react-native";
 import React, { useEffect, useState } from "react";
 import MapBackgroud from './MapBackgroud';
 import NavigationNodeDisplay from './NavigationNodeDisplay';
@@ -8,6 +8,7 @@ import { Dimension } from "@/constants/Dimension";
 import { useDispatch, useSelector} from "react-redux";
 import { AppDispatch, RootState } from "@/store/datastore";
 import { pressSelectedNodes, unpressSelectedNodes } from "@/store/NavStateSlice";
+import { updateNodeCoordsFinal, updateNodeCoords } from "@/store/NavMapSlice";
 import SelectionBox from "./SelectionBox";
 import CanvasContainer from "./CanvasContainer";
 
@@ -28,6 +29,7 @@ const MapEditorCanvas = (props: MapEditorCanvasProps) => {
     const nodes = useSelector((state: RootState) => state.NavMapState.present.nodes);
     const selectedNodeIDs = useSelector((state: RootState) => state.navState.selectedNodes);
     const isSelectionMode = useSelector((state: RootState) => state.navState.mode === 'selection-drag');
+    const isMoveMode = useSelector((state: RootState) => state.navState.mode === 'move-node');
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
@@ -70,6 +72,31 @@ const MapEditorCanvas = (props: MapEditorCanvasProps) => {
         },
     });
 
+    const movePanResponder = PanResponder.create({
+        onStartShouldSetPanResponder: () => isMoveMode,
+        onPanResponderMove: (evt, gestureState) => {
+            if (selectedNodeIDs.length > 0) {
+                selectedNodeIDs.forEach(nodeID => {
+                    const node = nodes.get(nodeID);
+                    if (node) {
+                        dispatch(updateNodeCoords({key: nodeID, coords: {x: node.coords.x + gestureState.dx, y: node.coords.y + gestureState.dy}}));
+                    }
+                });
+            }
+        },
+        onPanResponderRelease: (evt, gestureState) => {
+            if (selectedNodeIDs.length > 0) {
+                selectedNodeIDs.forEach(nodeID => {
+                    const node = nodes.get(nodeID);
+                    if (node) {
+                        dispatch(updateNodeCoordsFinal({key: nodeID, coords: {x: node.coords.x + gestureState.dx, y: node.coords.y + gestureState.dy}}));
+                    }
+                });
+            }
+        }
+    });
+
+
     // Utility function to check if a node is within the selection box
     const isNodeInSelection = (node_coords: Coordinate, selection: { start: Coordinate, end: Coordinate}) => {
         const x:number = node_coords.x + canvasDimensions.width/2;
@@ -96,13 +123,15 @@ const MapEditorCanvas = (props: MapEditorCanvasProps) => {
                           offsetCoor={centerCoor}  
                           dimension={canvasDimensions}
                           scrollEnabled={!isSelectionMode}>
-            <View {...selectionPanResponder.panHandlers}>
-                <MapBackgroud imageURL={defultImage} canvasDimension={canvasDimensions}/>
-                <NavigationNodeDisplay dimension={defaultNodeDimention}/>
-                <NavigationEdgeDisplay />
-                {/* <Text>Hi Honghui</Text> */}
-                {selection && <SelectionBox start={selection.start} end={selection.end} />}
-            </View>
+            <Animated.View {...selectionPanResponder.panHandlers}>
+                <Animated.View {...movePanResponder.panHandlers}>
+                    <MapBackgroud imageURL={defultImage} canvasDimension={canvasDimensions}/>
+                    <NavigationNodeDisplay dimension={defaultNodeDimention} canvasDimensions={canvasDimensions}/>
+                    <NavigationEdgeDisplay />
+                    {/* <Text>Hi Honghui</Text> */}
+                    {selection && <SelectionBox start={selection.start} end={selection.end} />}
+                </Animated.View>
+            </Animated.View>
         </CanvasContainer>
     )
 }

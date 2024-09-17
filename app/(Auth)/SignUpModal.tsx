@@ -23,7 +23,7 @@ const SignUpModal = (props: SignUpProps) => {
     return (
         <Modal
             transparent={true}
-            animationType="none"
+            animationType="fade"
             visible={props.isVisible}
             onRequestClose={props.onClose}
         >

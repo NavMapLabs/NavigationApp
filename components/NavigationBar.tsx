@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Appbar } from 'react-native-paper';
 import { View, StyleProp, ViewStyle,  Dimensions} from 'react-native';
 import { useSelector } from "react-redux";
-import { unpressNode, changeMode } from "@/store/NavStateSlice";
+import { changeMode } from "@/store/NavStateSlice";
 import { AppDispatch, RootState } from '../store/datastore';
 import { useDispatch } from 'react-redux';
 
@@ -10,8 +10,7 @@ type NavBarProps = {
     navBarStyle: StyleProp<ViewStyle>,
     toggleSubMenu: () => void,
     toggleFilterMenu: () => void,
-    toggleFloorMenu: () => void,
-    overrideSelectedAction?: string
+    toggleFloorMenu: () => void
 }
 
 const NavTitle = ({title}: {title: string}) =>(
@@ -24,7 +23,7 @@ const NavigationBar = (props: NavBarProps) => {
     const screenWidth = useState(Dimensions.get('window').width);
     const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
     const [filters, setFilters] = useState<string[]>([]);
-    const isSelected = useSelector((state: any) => state.navState.pressed);
+    const mode = useSelector((state: RootState) => state.navState.mode);
     const dispatch = useDispatch<AppDispatch>();
 
     const [selectedAction, setSelectedAction] = useState('');
@@ -42,11 +41,9 @@ const NavigationBar = (props: NavBarProps) => {
     },   [screenWidth])
 
     useEffect(() => {
-        if(props.overrideSelectedAction === 'add-node'){
-            setSelectedAction(props.overrideSelectedAction);
-            dispatch(changeMode({mode: 'add-node'}));
-        }
-    }, [props.overrideSelectedAction])
+        if(selectedAction !== 'add-node' && mode === 'add-node')
+            setSelectedAction('add-node');
+    }, [mode])
 
     const updateTitle = () => {
         if(screenWidth[0] > 1000){
@@ -76,7 +73,9 @@ const NavigationBar = (props: NavBarProps) => {
                 <Appbar.Action icon={require('../assets/icons/node.png')} onPress={() => enableTool('add-node')} color={
                     selectedAction === 'add-node' ? 'red' : 'black'
                 }/>
-                <Appbar.Action icon={require('../assets/icons/move.png')} onPress={() => {}} />
+                <Appbar.Action icon={require('../assets/icons/move.png')} onPress={() => enableTool('move-node')} color={
+                    selectedAction === 'move-node' ? 'red' : 'black'   
+                }/>
                 <Appbar.Action icon='dots-grid' onPress={() => enableTool('multi-select')} color={
                     selectedAction === 'multi-select' ? 'red' : 'black'
                 }/>
