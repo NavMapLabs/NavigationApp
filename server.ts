@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// @ts-ignore, ignore the warning of duplicate define
+// only one server file will be ran
 const path = require('path');
 const { createRequestHandler } = require('@expo/server/adapter/express');
 
