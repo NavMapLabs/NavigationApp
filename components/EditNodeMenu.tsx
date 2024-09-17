@@ -15,13 +15,19 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
     const [nodeName, setNodeName] = useState('');
     const [nodeDescription, setNodeDescription] = useState('');
     const testTags = ['tag1', 'tag2', 'tag3'];
-    let selectedTags: string[] = [];
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     
     const selectedNodeID = useSelector((state: RootState) => state.navState.selectedNodeId);
     const selectedNodeIDs = useSelector((state: RootState) => state.navState.selectedNodes);
     const nodeList = useSelector((state: RootState) => state.NavMapState.present.nodes);
 
     const dispatch = useDispatch<AppDispatch>();
+
+    const resetData = () => {
+        setNodeName('');
+        setNodeDescription('');
+        setSelectedTags([]);
+    }
 
     const updateNode = () => {
         if (selectedNodeIDs.length > 0) {
@@ -35,6 +41,10 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
         }
         else if (selectedNodeID !== "") {
             dispatch(updateNodeProperties({key: selectedNodeID, name: nodeName, desc: nodeDescription, tags: selectedTags}));
+            console.log("Updated Node: " + selectedNodeID);
+            console.log("Name: " + nodeName);
+            console.log("Description: " + nodeDescription);
+            console.log("Tags: " + selectedTags);
         }
         props.onClose();
     }
@@ -43,10 +53,15 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
         if (!selectedTags.includes(tag)) {
             selectedTags.push(tag);
         }
+        setSelectedTags([...selectedTags]);
     }
 
     const removeSetTag = (tag: string) => {
-        selectedTags = selectedTags.filter((value) => value !== tag);
+        let index = selectedTags.indexOf(tag);
+        if (index > -1) {
+            selectedTags.splice(index, 1);
+        }
+        setSelectedTags([...selectedTags]);
     }
 
     const displayID = () => {
@@ -60,11 +75,11 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
 
     useEffect(() => {
         if (selectedNodeID !== "") {
-            const node = nodeList.get(selectedNodeID);
+            let node = nodeList.get(selectedNodeID);
             if (node) {
                 setNodeName(node.name);
                 setNodeDescription(node.description);
-                selectedTags = node.tags;
+                setSelectedTags(node.tags);
             }
         }
         else if (selectedNodeIDs.length > 0) {
@@ -74,7 +89,7 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
             if (name && desc && tags) {
                 setNodeName(name);
                 setNodeDescription(desc);
-                selectedTags = tags;
+                setSelectedTags(tags);
             }
         }
     }, [selectedNodeID, selectedNodeIDs]);

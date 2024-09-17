@@ -1,6 +1,5 @@
 import React from "react";
 import {View, StyleSheet, Modal, Pressable, Text, TextInput, FlatList} from "react-native";
-import { Searchbar } from "react-native-paper";
 
 type FilterMenuProps = {
     isVisible: boolean,
