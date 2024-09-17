@@ -15,7 +15,9 @@
     "predeploy": "expo export -p web",
     "build_dev_image": "docker build -t nav_app_dev:1.0 .",
     "run_dev_image": "docker run -p 3000:3000 nav_app_dev:1.0",
+    "separator":"------- don't mind this, will be remove ---------",
     "build_image_CI_CD": "docker build -t nav_app_test:1.0 .",
+    "prebuild_image_CI_CD": "npx expo export -p web",
     "run_image_CI_CD": "docker run -p 3000:3000 nav_app_test:1.0"
   },
   "jest": {

@@ -22,7 +22,7 @@ const Homepage = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Hi Honghui</Text>
+      <Text>This is the Tester Version</Text>
       <View style={[{ height: 10, backgroundColor: '#000' }]} />
 
       <LogInModal
