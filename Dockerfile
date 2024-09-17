@@ -15,4 +15,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "npx", "serve", "dist", "--single" ]
+CMD [ "node", "server.ts" ]
