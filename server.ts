@@ -8,7 +8,6 @@ const compression = require('compression');
 const morgan = require('morgan');
 
 const CLIENT_BUILD_DIR = path.join(process.cwd(), 'dist');
-// const SERVER_BUILD_DIR = path.join(process.cwd(), 'dist/server');
 
 const app = express();
 
@@ -19,8 +18,8 @@ app.disable('x-powered-by');
 
 process.env.NODE_ENV = 'production';
 
-// app.use('/', express.static(path.join(CLIENT_BUILD_DIR, 'index.html')));
 
+/*********** Serves quested to script file ***********/
 app.use('/NavigationApp',
   express.static(CLIENT_BUILD_DIR, {
     maxAge: '1h',
@@ -28,6 +27,9 @@ app.use('/NavigationApp',
   })
 );
 
+/*********** Serves quested to index.html ***********/
+// @ts-ignore, needed to ignore the missing type definition of (_req, res)
+// having type definition breaks something behind the scene that's pure js
 app.get('/', (_req, res) => {
   res.sendFile(path.join(CLIENT_BUILD_DIR, 'index.html'));
 });
@@ -35,15 +37,8 @@ app.get('/', (_req, res) => {
 
 app.use(morgan('tiny'));
 
-// app.all(
-//   '*',
-//   createRequestHandler({
-//     build: SERVER_BUILD_DIR,
-//   })
-// );
-
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`Express server listening on port ${port}`);
+  console.log(`Express server running on port ${port}`);
 });
