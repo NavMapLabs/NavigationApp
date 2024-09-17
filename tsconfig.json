@@ -7,7 +7,7 @@
         "./*"
       ]
     },
-    "types": ["@types/immutable", "jest", "react-native"], // Add Jest and React Native types
+    "types": ["@types/immutable", "jest", "react-native", "node"], // Add Jest and React Native types
     "jsx": "react-native", // Ensure JSX is set for React Native
     "esModuleInterop": true, // Ensure ES module interoperability for Jest
     "skipLibCheck": true, // Skip type checks on declaration files

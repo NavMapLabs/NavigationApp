@@ -13,6 +13,6 @@ RUN npx expo export -p web
 
 COPY . .
 
-EXPOSE 8081
+EXPOSE 3000
 
 CMD [ "npx", "serve", "dist", "--single" ]
