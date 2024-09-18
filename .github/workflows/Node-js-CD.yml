@@ -101,12 +101,12 @@ jobs:
         run: sudo apt-get install -y openssh-client
 
       - name: Create the Authentication Key File
-        run: echo "${{ env.SSH_PRIVATE_KEY}}" > ${{KEY_NAME}}
+        run: echo "${{ env.SSH_PRIVATE_KEY}}" > ${{ env.KEY_NAME }}
 
       - name: Setting Key permission
-        run: chmod 400 ${{KEY_NAME}}
+        run: chmod 400 ${{ env.KEY_NAME }}
 
-      - run: ls -l ${{KEY_NAME}}
+      - run: ls -l ${{ env.KEY_NAME }}
 
       # - name: Connecting to EC2 instance and running commands
       #   run: |
@@ -119,7 +119,7 @@ jobs:
 
       - name: Connecting to EC2 instance and running commands
         run: |
-          ssh -o StrictHostKeyChecking=no -i "${{KEY_NAME}}" ${{ env.EC2_USER }}@${{ env.EC2_HOST }} "
+          ssh -o StrictHostKeyChecking=no -i "${{ env.KEY_NAME }}" ${{ env.EC2_USER }}@${{ env.EC2_HOST }} "
             docker stop ReactApp || true;
             docker rm ReactApp || true;
           "
