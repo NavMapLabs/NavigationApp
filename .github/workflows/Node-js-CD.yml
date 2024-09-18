@@ -99,6 +99,12 @@ jobs:
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
 
+      # use self-define steps to load env
+      - name: Load Node.js
+        uses: ./.github/actions/setup-and-install
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          
       - name: Extract version from package.json
         run: |
           VERSION=$(jq -r '.version' package.json)
@@ -108,7 +114,7 @@ jobs:
 
           # set it as an environment variable for later steps
           echo "VERSION_WITH_BUILD=$VERSION_WITH_BUILD" >> $GITHUB_ENV
-          
+
       - name: Create the Authentication Key File
         run: echo "${{ env.SSH_PRIVATE_KEY}}" > ${{ env.KEY_NAME }}
 
