@@ -8,8 +8,6 @@ import FilterMenu from '../../components/FilterMenu';
 import SubMenu from "@/components/SubMenu";
 import EditNodeMenu from "@/components/EditNodeMenu";
 
-
-
 const MapEditor = () => {
     const [isSubMenuVisible, setIsSubMenuVisible] = useState(false);
     const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
@@ -27,6 +25,9 @@ const MapEditor = () => {
     
     const toggleFloorMenu = () => {
         setIsFloorMenuVisible(!isFloorMenuVisible);
+        if(isFloorMenuVisible){
+            
+        }
     }
 
     const applyFilters = (filters: string[]) => {

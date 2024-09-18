@@ -21,7 +21,6 @@ const NavTitle = ({title}: {title: string}) =>(
 
 const NavigationBar = (props: NavBarProps) => {
     const screenWidth = useState(Dimensions.get('window').width);
-    const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
     const [filters, setFilters] = useState<string[]>([]);
     const mode = useSelector((state: RootState) => state.navState.mode);
     const dispatch = useDispatch<AppDispatch>();
@@ -43,6 +42,8 @@ const NavigationBar = (props: NavBarProps) => {
     useEffect(() => {
         if(selectedAction !== 'add-node' && mode === 'add-node')
             setSelectedAction('add-node');
+        else if(selectedAction !== 'default' && mode === 'default')
+            setSelectedAction('');
     }, [mode])
 
     const updateTitle = () => {
@@ -60,6 +61,12 @@ const NavigationBar = (props: NavBarProps) => {
         else {
             setSelectedAction(tool);
             dispatch(changeMode({mode: tool}));
+            if (tool === 'filter'){
+                props.toggleFilterMenu();
+            }
+            else if (tool === 'floor'){
+                props.toggleFloorMenu();
+            }
         }
     }
 
@@ -82,8 +89,12 @@ const NavigationBar = (props: NavBarProps) => {
                 <Appbar.Action icon= 'selection-drag' onPress={() => enableTool('selection-drag')}  color={
                     selectedAction === 'selection-drag' ? 'red' : 'black'
                 }/>
-                <Appbar.Action icon={require('../assets/icons/search.png')} onPress={props.toggleFilterMenu} />
-                <Appbar.Action icon={require('../assets/icons/layer.png')} onPress={props.toggleFloorMenu} />
+                <Appbar.Action icon={require('../assets/icons/search.png')} onPress={() => enableTool('filter')} color={
+                    selectedAction === 'filter' ? 'red' : 'black'
+                }/>    
+                <Appbar.Action icon={require('../assets/icons/layer.png')} onPress={() => enableTool('floor')} color={
+                    selectedAction === 'floor' ? 'red' : 'black'
+                }/>    
             </Appbar.Header>
         </View>
     )

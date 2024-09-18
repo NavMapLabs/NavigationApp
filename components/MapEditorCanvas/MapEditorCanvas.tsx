@@ -142,7 +142,6 @@ export default MapEditorCanvas;
 const styles = StyleSheet.create({
     canvas: {
         flex: 1,
-        left: "50%",
-        // height:"100%"
+        left: "50%"
     }
 })

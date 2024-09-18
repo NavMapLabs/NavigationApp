@@ -83,5 +83,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: 'auto',
         bottom: 80,
+        zIndex: 5,
     },
 });

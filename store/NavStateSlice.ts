@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { remove } from 'immutable';
 
 //create the initial state, pressed on a node
 

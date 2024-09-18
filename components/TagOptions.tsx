@@ -10,7 +10,6 @@ type TagOptionsProps = {
 
 const TagOptions = (props: TagOptionsProps) => {
     const isSelected = (tag: string) => {
-        console.log(props.selectedTags);
         return props.selectedTags.includes(tag);
     }
 
