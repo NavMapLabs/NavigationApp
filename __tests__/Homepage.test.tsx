@@ -13,7 +13,7 @@ describe('Homepage Component', () => {
     );
 
     // Verify that the text "Hi Honghui" is rendered
-    expect(getByText('Hi Honghui')).toBeTruthy();
+    expect(getByText('This is the Tester Version')).toBeTruthy();
   });
 
   // it('should toggle login modal visibility when "Go to Login" button is pressed', () => {
