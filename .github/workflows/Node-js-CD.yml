@@ -95,17 +95,18 @@ jobs:
       EC2_HOST: ${{ secrets.EC2_HOST }}
       EC2_USER: ${{ secrets.EC2_USER }}
       DOCKER_IMAGE_TAG: ${{ secrets.DOCKER_HUB_LOGIN }}/nav_map
+      KEY_NAME: TestServer-HL.pem
     steps:
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
 
       - name: Create the Authentication Key File
-        run: echo "${{ env.SSH_PRIVATE_KEY}}" > key.pem
+        run: echo "${{ env.SSH_PRIVATE_KEY}}" > ${{KEY_NAME}}
 
       - name: Setting Key permission
-        run: chmod 400 key.pem
+        run: chmod 400 ${{KEY_NAME}}
 
-      - run: ls -l key.pem
+      - run: ls -l ${{KEY_NAME}}
 
       # - name: Connecting to EC2 instance and running commands
       #   run: |
@@ -118,7 +119,7 @@ jobs:
 
       - name: Connecting to EC2 instance and running commands
         run: |
-          ssh -o StrictHostKeyChecking=no -i "key.pem" ${{ env.EC2_USER }}@${{ env.EC2_HOST }} "
+          ssh -o StrictHostKeyChecking=no -i "${{KEY_NAME}}" ${{ env.EC2_USER }}@${{ env.EC2_HOST }} "
             docker stop ReactApp || true;
             docker rm ReactApp || true;
           "
