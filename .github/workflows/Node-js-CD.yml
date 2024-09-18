@@ -1,0 +1,91 @@
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ Deployment/CI-CD_RenderUnitTest_HL]
+  pull_request:
+    branches: [ Deployment/CI-CD_RenderUnitTest_HL ]
+  # push:
+  #   branches: [ Deployment/CI-CD ]
+  # pull_request:
+  #   branches: [ Deployment/CI-CD ]
+
+env:
+  NODE_VERSION: 16.x
+
+# Grant the necessary permission to workflow
+permissions:
+  contents: read
+  pages: write 
+  id-token: write
+
+jobs:
+  # Test workflow
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out Branch
+      uses: actions/checkout@v2
+
+    # use self-define steps to load env
+    - name: Load Node.js
+      uses: ./.github/actions/setup-and-install
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Running Test
+      run: npm run test
+
+  # Build workflow 
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out Branch
+      uses: actions/checkout@v2
+      
+    # use self-define steps to load env
+    - name: Load Node.js
+      uses: ./.github/actions/setup-and-install
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Extract version from package.json
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          BUILD_NUMBER=$GITHUB_RUN_NUMBER
+          VERSION_WITH_BUILD="$VERSION-build.$BUILD_NUMBER"
+          echo "App Version.Build: $VERSION_WITH_BUILD"
+
+          # set it as an environment variable for later steps
+          echo "VERSION_WITH_BUILD=$VERSION_WITH_BUILD" >> $GITHUB_ENV
+
+    # Create the Build
+    - name: Create Production Build
+      run: npx expo export -p web
+
+    # Containerization and upload to Docker Hub
+    - name: login to docker registry
+      uses: docker/login-action@v3
+      with:
+        username: ${{secrets.DOCKER_HUB_LOGIN}}
+        password: ${{secrets.DOCKER_HUB_TOKEN}}
+
+    - name: build and push docker image to registry
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: nav_app_test:$VERSION_WITH_BUILD
+
+  # Deployment workflow
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: TB Finish
+      run: echo TB Finish
