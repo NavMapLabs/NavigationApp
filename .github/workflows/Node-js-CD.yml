@@ -88,7 +88,7 @@ jobs:
 
   # Deployment workflow
   deploy:
-    # needs: build
+    needs: build
     runs-on: ubuntu-latest
     env:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -101,7 +101,7 @@ jobs:
 
       - name: Create the Authentication Key File
         run: |
-          echo "${{SSH_PRIVATE_KEY}}" > key.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
           chmod 400 key.pem
 
       - name: Connecting to EC2 instance and running commands
