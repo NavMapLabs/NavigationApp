@@ -95,7 +95,6 @@ jobs:
       EC2_INSTANCE: ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
       DOCKER_IMAGE_TAG: ${{ secrets.DOCKER_HUB_LOGIN }}/nav_map
       KEY_NAME: TestServer-HL.pem
-      VERSION_WITH_BUILD: 1.0.0-build.16
     steps:
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
