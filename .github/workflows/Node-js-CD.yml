@@ -92,8 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      EC2_HOST: ${{ secrets.EC2_HOST }}
-      EC2_USER: ${{ secrets.EC2_USER }}
+      EC2_INSTANCE: ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
       DOCKER_IMAGE_TAG: ${{ secrets.DOCKER_HUB_LOGIN }}/nav_map
       KEY_NAME: TestServer-HL.pem
     steps:
@@ -118,8 +117,6 @@ jobs:
       #     EOF
 
       - name: Connecting to EC2 instance and running commands
-        run: |
-          ssh -o StrictHostKeyChecking=no -i "${{ env.KEY_NAME }}" ${{ env.EC2_USER }}@${{ env.EC2_HOST }} "
-            docker stop ReactApp || true;
-            docker rm ReactApp || true;
-          "
+        run: ssh -o StrictHostKeyChecking=no -i "${{ env.KEY_NAME }}" ${{ env.EC2_INSTANCE }} "
+          docker stop ReactApp || true &&
+          docker rm ReactApp || true"
