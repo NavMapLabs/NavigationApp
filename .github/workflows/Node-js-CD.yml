@@ -101,7 +101,7 @@ jobs:
 
       - name: Create the Authentication Key File
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+          echo "${{ env.SSH_PRIVATE_KEY}}" > key.pem
           chmod 400 key.pem
 
       - name: Connecting to EC2 instance and running commands
