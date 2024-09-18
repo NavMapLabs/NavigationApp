@@ -103,7 +103,7 @@ jobs:
         run: echo "${{ env.SSH_PRIVATE_KEY}}" > ${{ env.KEY_NAME }}
 
       - name: Setting Key permission
-        run: chmod 400 ${{ env.KEY_NAME }}
+        run: chmod 400 "${{ env.KEY_NAME }}"
 
       - run: ls -l ${{ env.KEY_NAME }}
 
