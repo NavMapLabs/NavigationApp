@@ -95,6 +95,7 @@ jobs:
       EC2_INSTANCE: ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
       DOCKER_IMAGE_TAG: ${{ secrets.DOCKER_HUB_LOGIN }}/nav_map
       KEY_NAME: TestServer-HL.pem
+      VERSION_WITH_BUILD: 1.0.0-build.16
     steps:
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
@@ -119,4 +120,6 @@ jobs:
       - name: Connecting to EC2 instance and running commands
         run: ssh -o StrictHostKeyChecking=no -i "${{ env.KEY_NAME }}" ${{ env.EC2_INSTANCE }} "
           docker stop ReactApp || true &&
-          docker rm ReactApp || true"
+          docker rm ReactApp || true &&
+          docker pull ${{ env.DOCKER_IMAGE_TAG }}:${{ env.VERSION_WITH_BUILD }} &&
+          docker run --name ReactApp -d -p 80:3000 ${{ env.DOCKER_IMAGE_TAG }}:${{ env.VERSION_WITH_BUILD }}"
