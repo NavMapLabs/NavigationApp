@@ -52,14 +52,14 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
 
     - name: Extract version from package.json
-        run: |
-          VERSION=$(jq -r '.version' package.json)
-          BUILD_NUMBER=$GITHUB_RUN_NUMBER
-          VERSION_WITH_BUILD="$VERSION-build.$BUILD_NUMBER"
-          echo "App Version.Build: $VERSION_WITH_BUILD"
+      run: |
+        VERSION=$(jq -r '.version' package.json)
+        BUILD_NUMBER=$GITHUB_RUN_NUMBER
+        VERSION_WITH_BUILD="$VERSION-build.$BUILD_NUMBER"
+        echo "App Version.Build: $VERSION_WITH_BUILD"
 
-          # set it as an environment variable for later steps
-          echo "VERSION_WITH_BUILD=$VERSION_WITH_BUILD" >> $GITHUB_ENV
+        # set it as an environment variable for later steps
+        echo "VERSION_WITH_BUILD=$VERSION_WITH_BUILD" >> $GITHUB_ENV
 
     # Create the Build
     - name: Create Production Build
