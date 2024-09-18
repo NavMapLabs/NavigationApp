@@ -2,6 +2,15 @@
   "name": "navigationapp",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "extra": {
+    "EXPO_PUBLIC_FIREBASE_API_KEY": "process.env.EXPO_PUBLIC_FIREBASE_API_KEY",
+    "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN",
+    "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID",
+    "EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET": "process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET",
+    "EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID",
+    "EXPO_PUBLIC_FIREBASE_APP_ID": "process.env.EXPO_PUBLIC_FIREBASE_APP_ID",
+    "EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID": "process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID"
+  },
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -15,7 +24,7 @@
     "predeploy": "expo export -p web",
     "build_dev_image": "docker build -t nav_app_dev:1.0 .",
     "run_dev_image": "docker run -p 3000:3000 nav_app_dev:1.0",
-    "separator":"------- don't mind this, will be remove ---------",
+    "separator": "------- don't mind this, will be remove ---------",
     "build_image_CI_CD": "docker build -t nav_app_test:1.0 .",
     "prebuild_image_CI_CD": "npx expo export -p web",
     "run_image_CI_CD": "docker run -p 3000:3000 nav_app_test:1.0"
@@ -38,6 +47,7 @@
     "@types/express": "^4.17.21",
     "@types/immutable": "^3.8.7",
     "@types/react-native": "^0.73.0",
+    "dotenv": "^16.4.5",
     "expo": "~51.0.18",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.7",
@@ -55,6 +65,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.74.3",
     "react-native-canvas": "^0.1.40",
+    "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-paper": "^5.12.5",
     "react-native-reanimated": "~3.10.1",
