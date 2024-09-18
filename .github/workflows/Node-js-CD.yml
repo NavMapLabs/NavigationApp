@@ -106,6 +106,7 @@ jobs:
         run: chmod 400 "${{ env.KEY_NAME }}"
 
       - run: ls -l ${{ env.KEY_NAME }}
+      - run: echo ${{ env.VERSION_WITH_BUILD }}
 
       - name: Connecting to EC2 instance and running commands
         run: ssh -o StrictHostKeyChecking=no -i "${{ env.KEY_NAME }}" ${{ env.EC2_INSTANCE }} "
