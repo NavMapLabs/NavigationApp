@@ -1,9 +1,0 @@
-{
-    "cSpell.words": [
-        "adjlist"
-    ],
-    "[dockerfile]": {
-        "editor.defaultFormatter": "ms-azuretools.vscode-docker",
-        "editor.defaultFoldingRangeProvider": "ms-azuretools.vscode-docker"
-    }
-}
