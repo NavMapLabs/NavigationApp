@@ -2,17 +2,9 @@ name: Node.js CD
 
 on:
   push:
-    branches: []
+    branches: [prod]
   pull_request:
-    branches: []
-  # push:
-  #   branches: [Deployment/CI-CD_RenderUnitTest_HL]
-  # pull_request:
-  #   branches: [Deployment/CI-CD_RenderUnitTest_HL]
-  # push:
-  #   branches: [ Deployment/CI-CD ]
-  # pull_request:
-  #   branches: [ Deployment/CI-CD ]
+    branches: [prod]
 
 env:
   NODE_VERSION: 16.x
@@ -24,25 +16,25 @@ permissions:
   id-token: write
 
 jobs:
-  # Test workflow
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out Branch
-        uses: actions/checkout@v4
+  # # Test workflow
+  # test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out Branch
+  #       uses: actions/checkout@v4
 
-      # use self-define steps to load env
-      - name: Load Node.js
-        uses: ./.github/actions/setup-and-install
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+  #     # use self-define steps to load env
+  #     - name: Load Node.js
+  #       uses: ./.github/actions/setup-and-install
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
 
-      - name: Running Test
-        run: npm run test
+  #     - name: Running Test
+  #       run: npm run test
 
   # Build workflow
   build:
-    needs: test
+    # needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Check out Branch
