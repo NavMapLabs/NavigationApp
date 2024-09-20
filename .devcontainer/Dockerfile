@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm
+FROM node:20.17.0-bookworm
 RUN apt-get update
 
 # Expose port

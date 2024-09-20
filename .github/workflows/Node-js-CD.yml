@@ -1,0 +1,125 @@
+name: Node.js CD
+
+on:
+  push:
+    branches: [prod]
+  pull_request:
+    branches: [prod]
+
+env:
+  NODE_VERSION: 16.x
+
+# Grant the necessary permission to workflow
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  # # Test workflow
+  # test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out Branch
+  #       uses: actions/checkout@v4
+
+  #     # use self-define steps to load env
+  #     - name: Load Node.js
+  #       uses: ./.github/actions/setup-and-install
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+
+  #     - name: Running Test
+  #       run: npm run test
+
+  # Build workflow
+  build:
+    # needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Branch
+        uses: actions/checkout@v4
+
+      # use self-define steps to load env
+      - name: Load Node.js
+        uses: ./.github/actions/setup-and-install
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Extract version from package.json
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          BUILD_NUMBER=$GITHUB_RUN_NUMBER
+          VERSION_WITH_BUILD="$VERSION-build.$BUILD_NUMBER"
+          echo "App Version.Build: $VERSION_WITH_BUILD"
+
+          # set it as an environment variable for later steps
+          echo "VERSION_WITH_BUILD=$VERSION_WITH_BUILD" >> $GITHUB_ENV
+
+      # Create the Build
+      - name: Create Production Build
+        run: npx expo export -p web
+        env:
+          REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+          REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          REACT_APP_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+          REACT_APP_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+          REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+
+      # Containerization and upload to Docker Hub
+      - name: login to docker registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{secrets.DOCKER_HUB_LOGIN}}
+          password: ${{secrets.DOCKER_HUB_TOKEN}}
+
+      - name: build and push docker image to registry
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_LOGIN }}/nav_map:${{ env.VERSION_WITH_BUILD }}
+
+  # Deployment workflow
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      EC2_INSTANCE: ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
+      DOCKER_IMAGE_TAG: ${{ secrets.DOCKER_HUB_LOGIN }}/nav_map
+      KEY_NAME: TestServer-HL.pem
+    steps:
+      - name: Check out Branch
+        uses: actions/checkout@v4
+
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client
+
+      - name: Extract version from package.json
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          BUILD_NUMBER=$GITHUB_RUN_NUMBER
+          VERSION_WITH_BUILD="$VERSION-build.$BUILD_NUMBER"
+          echo "App Version.Build: $VERSION_WITH_BUILD"
+
+          # set it as an environment variable for later steps
+          echo "VERSION_WITH_BUILD=$VERSION_WITH_BUILD" >> $GITHUB_ENV
+
+      - name: Create the Authentication Key File
+        run: echo "${{ env.SSH_PRIVATE_KEY}}" > ${{ env.KEY_NAME }}
+
+      - name: Setting Key permission
+        run: chmod 400 "${{ env.KEY_NAME }}"
+
+      - run: ls -l ${{ env.KEY_NAME }}
+      - run: echo ${{ env.VERSION_WITH_BUILD }}
+
+      - name: Connecting to EC2 instance and running commands
+        run: ssh -o StrictHostKeyChecking=no -i "${{ env.KEY_NAME }}" ${{ env.EC2_INSTANCE }} "
+          docker stop ReactApp || true &&
+          docker rm ReactApp || true &&
+          docker pull ${{ env.DOCKER_IMAGE_TAG }}:${{ env.VERSION_WITH_BUILD }} &&
+          docker run --name ReactApp -d -p 80:3000 ${{ env.DOCKER_IMAGE_TAG }}:${{ env.VERSION_WITH_BUILD }}"

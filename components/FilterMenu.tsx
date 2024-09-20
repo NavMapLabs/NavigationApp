@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {View, StyleSheet, Modal, Pressable, Text, TextInput, FlatList} from "react-native";
-import { Searchbar } from "react-native-paper";
+import { changeMode } from "@/store/NavStateSlice";
+import { AppDispatch} from '../store/datastore';
+import { useDispatch } from 'react-redux';
 
 type FilterMenuProps = {
     isVisible: boolean,
@@ -13,6 +15,7 @@ type FilterMenuProps = {
 const FilterMenu = (props: FilterMenuProps) => {
     const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
     const [searchQuery, setSearchQuery] = React.useState('');
+    const dispatch = useDispatch<AppDispatch>();
 
     const filterOptions = props.filters.filter(option =>
         option.toLowerCase().includes(searchQuery.toLowerCase())
@@ -29,8 +32,13 @@ const FilterMenu = (props: FilterMenuProps) => {
 
     const applyFilters = () => {
         props.onApplyFilters(selectedFilters);
-        props.onClose();
+        closeMenu();
     };
+
+    const closeMenu = () => {
+        props.onClose();
+        dispatch(changeMode({mode: 'default'}));
+    }
 
     return (
         <Modal
@@ -39,7 +47,7 @@ const FilterMenu = (props: FilterMenuProps) => {
           visible={props.isVisible}
           onRequestClose={props.onClose}
         >
-            <Pressable style={styles.modalOverlay} onPress={props.onClose}>
+            <Pressable style={styles.modalOverlay} onPress={closeMenu}>
                 <View style={styles.menu}>
                     <Pressable onPress={(e) => e.stopPropagation()}>
                         <TextInput 
@@ -81,12 +89,7 @@ const styles = StyleSheet.create({
       padding: 10,
       borderRadius: 5,
       elevation: 5,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      marginRight: 10,
-      marginTop: 10,
+      marginTop: 15,
     },
     title: {
       fontSize: 18,

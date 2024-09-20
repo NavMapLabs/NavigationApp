@@ -1,51 +1,90 @@
-import { Pressable, StyleSheet, Image, ImageProps } from "react-native"
+import { Pressable, StyleSheet, Image, ImageProps, PanResponder, Animated } from "react-native";
 import { AppDispatch, RootState } from '../../store/datastore';
 import { useDispatch, useSelector } from 'react-redux';
-import { pressNode, unpressNode } from "@/store/NavStateSlice";
-import { addEdge } from "@/store/NavMapSlice";
-import React from "react"
+import { pressNode, unpressNode, addPressedNode, removePressedNode, changeMode } from "@/store/NavStateSlice";
+import { updateNodeCoords, updateNodeCoordsFinal } from "@/store/NavMapSlice";
+import React, { useEffect } from "react";
 import { Coordinate } from "../../constants/Coordinate"
 import { Dimension } from "@/constants/Dimension";
 import { is } from "immutable";
+import { useLinkProps } from "@react-navigation/native";
 
 const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
 
-  const NavigationNode = ({name, id, coords, dimension}: {name:string, id:string, coords:Coordinate, dimension:Dimension}) => {
-    const x = coords.x;
-    const y = coords.y;
-    const selectedID = useSelector((state: RootState) => state.navState.selectedNodeId);
-    const pastSelectedID = useSelector((state: RootState) => state.navState.pastSelectedNodeId);
-    const isPressed = is(selectedID, id);
-    const dispatch = useDispatch<AppDispatch>();
+type NavigationNodeProps = {
+  name: string,
+  id: string,
+  coords: Coordinate,
+  dimension: Dimension,
+  canvasDimension: Dimension,
+}
 
-    const handleClick = () => {
+const NavigationNode = (props: NavigationNodeProps) => {
+  const x = props.coords.x;
+  const y = props.coords.y;
+  const selectedID = useSelector((state: RootState) => state.navState.selectedNodeId);
+  const selectedNodeIDs = useSelector((state: RootState) => state.navState.selectedNodes);
+  const isPressed = is(selectedID, props.id);
+  const dispatch = useDispatch<AppDispatch>();
+  const isBatchPressed = selectedNodeIDs.includes(props.id);
+  const mode = useSelector((state: RootState) => state.navState.mode);
+
+  const handleClick = () => {
+    if(mode === 'add-node' || mode === 'move-node'){
       if(isPressed){
         dispatch(unpressNode());
-        console.log("unpressed node" + id);
       } 
       else {
-        dispatch(pressNode({nodeID: id}));
-        console.log("pressed node" + id);
+        dispatch(pressNode({nodeID: props.id}));
+        dispatch(changeMode({mode: 'move-node'}));
       }
     }
+    else if(mode === 'multi-select'){
+      if(isBatchPressed){
+        dispatch(removePressedNode({nodeID: props.id}));
+        if(selectedNodeIDs.length === 1){
+          dispatch(unpressNode());
+        }
+      }
+      else {
+        dispatch(addPressedNode({nodeID: props.id}));
+      }
+    }
+  }
 
-    return (
-      <Pressable onPress={handleClick} style={{zIndex:10}}>
+  const nodePanResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => (mode === 'move-node'),
+    onPanResponderMove: (evt) => {
+      //limit the movement to the canvas
+      const { locationX, locationY } = evt.nativeEvent;
+      dispatch(updateNodeCoords({key: props.id, coords: {x: locationX-(props.canvasDimension.width/2), y: locationY}}));
+    },
+    onPanResponderRelease: (evt) => {
+      const { locationX, locationY } = evt.nativeEvent;
+      dispatch(updateNodeCoordsFinal({key: props.id, coords: {x: locationX-(props.canvasDimension.width/2), y: locationY}}));
+      dispatch(changeMode({mode: 'add-node'}));
+    }
+  });
+
+  return (
+    <Pressable onPress={handleClick} style={{zIndex:10}}>
+      <Animated.View {...nodePanResponder.panHandlers}>
         <Image 
           source={defaultImage} 
           style={[styles.image, { 
-            marginLeft: x - dimension.width/2, 
-            marginTop: y - dimension.height/2, 
-            width: dimension.width, 
-            height: dimension.height,
+            marginLeft: x - props.dimension.width/2, 
+            marginTop: y - props.dimension.height/2, 
+            width: props.dimension.width, 
+            height: props.dimension.height,
             zIndex:10,
           },
-          isPressed && styles.imagePressed
+          (isPressed || isBatchPressed) && styles.imagePressed
         ]}
           z-index={10}
         />
-      </Pressable>
-    );
+      </Animated.View>
+    </Pressable>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -57,6 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: 'red',
+    borderStyle: 'dashed',
   }
 });
 

@@ -11,10 +11,10 @@ import { NavNodeType } from "@/constants/NavigationNode";
 //just testing this format out
 //make map component an empty component for now that takes up the whole screen using flex
 const NavigationEdgeDisplay = () => {
-    const nodes = useSelector((state: RootState) => state.NavMapState.nodes);
-    const graph = useSelector((state: RootState) => state.NavMapState.graph);
+    const nodes = useSelector((state: RootState) => state.NavMapState.present.nodes);
+    const graph = useSelector((state: RootState) => state.NavMapState.present.graph);
     // use graphModifiedFlag for sometime react don't recognized graph is updated (detail related to redux store state update rules...)
-    const graphModifiedFlag = useSelector((state: RootState) => state.NavMapState.graphModifiedFlag);
+    const graphModifiedFlag = useSelector((state: RootState) => state.NavMapState.present.graphModifiedFlag);
     const emptyCoords:Coordinate = {x:0, y:0}
     const emptyNode:NavNodeType = {
         name:"empty",
@@ -24,10 +24,10 @@ const NavigationEdgeDisplay = () => {
         coords: emptyCoords
     }
 
-    useEffect(() => {
-        console.log("=== graph updated ===")
-        console.log(graph)
-    }, [graph])
+    // useEffect(() => {
+    //     console.log("=== graph updated ===")
+    //     console.log(graph)
+    // }, [graph])
     return (
         <>
         {
@@ -51,28 +51,6 @@ const NavigationEdgeDisplay = () => {
                     })
     
                 })
-
-
-
-
-            // [...nodes.entries()].map(([ID_1, node_1]) => 
-            // {
-            //     console.log("=== computing " + ID_1 + " ===")
-            //     graph.get(ID_1)?.forwardList.map((ID_2) => {
-            //         console.log("=== computing " + ID_1 + "->" + ID_2+ " ===")
-
-            //         const node_2:NavNodeType = nodes.get(ID_2) ?? node_1; // ?? node_1 is used to avoid get(ID_2) return undefine
-            //         const edge_id = ID_1 + "-" + ID_2
-
-            //         console.log("==== redenring edge ====")
-            //         console.log(edge_id)
-
-            //         return (
-            //             <NavigationEdge key={edge_id} node_1={node_1} node_2={node_2}/>
-            //         )
-            //     })
-
-            // })
         }
         </>
     )

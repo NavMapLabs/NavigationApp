@@ -3,9 +3,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ Deployment/CI-CD ] # before we fix or give up unit-test, don't enable workflow for other branch
+    branches: [dev]
   pull_request:
-    branches: [ Deployment/CI-CD  ] # before we fix or give up unit-test, don't enable workflow for other branch
+    branches: [dev]
 
 # Grant the necessary permission to workflow
 permissions:
@@ -17,9 +17,6 @@ jobs:
   # Test workflow
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
     - name: Check out Branch
       uses: actions/checkout@v2
@@ -28,47 +25,7 @@ jobs:
     - name: Load Node.js
       uses: ./.github/actions/setup-and-install
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ env.NODE_VERSION }}
 
     - name: Running Test
       run: npm run test
-
-  # Build workflow 
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-    steps:
-    - name: Check out Branch
-      uses: actions/checkout@v2
-      
-    # use self-define steps to load env
-    - name: Load Node.js
-      uses: ./.github/actions/setup-and-install
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Setup Github Pages
-      uses: actions/configure-pages@v5
-
-    - name: Build Expo project
-      run: npx expo export -p web
-
-    - name: Upload Pages artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./dist
-
-  # Deployment workflow
-  deploy:
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-    - name: Deploy to github page
-      id: deployment
-      uses: actions/deploy-pages@v4
