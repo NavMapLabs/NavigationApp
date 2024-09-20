@@ -105,16 +105,14 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
             }
         }
         if (selectedNodeIDs.length > 0) {
-            let name = nodeList.get(selectedNodeIDs[0])?.name;
-            let desc = nodeList.get(selectedNodeIDs[0])?.description;
-            let tags = nodeList.get(selectedNodeIDs[0])?.tags;
-            if (name && desc && tags) {
-                setNodeName(name);
-                setNodeDescription(desc);
-                setSelectedTags(tags);
+            let node = nodeList.get(selectedNodeIDs[0]);
+            if (node) {
+                setNodeName(node.name);
+                setNodeDescription(node.description);
+                setSelectedTags(node.tags);
             }
         }
-    }, [props.isVisible, selectedNodeID, selectedNodeIDs]);
+    }, [selectedNodeID, selectedNodeIDs]);
 
     return (
         <Modal

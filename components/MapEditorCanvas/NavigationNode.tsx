@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Image, ImageProps, PanResponder, Animated } from "react-native";
 import { AppDispatch, RootState } from '../../store/datastore';
 import { useDispatch, useSelector } from 'react-redux';
-import { pressNode, unpressNode, addPressedNode, removePressedNode } from "@/store/NavStateSlice";
+import { pressNode, unpressNode, addPressedNode, removePressedNode, changeMode } from "@/store/NavStateSlice";
 import { updateNodeCoords, updateNodeCoordsFinal } from "@/store/NavMapSlice";
 import React, { useEffect } from "react";
 import { Coordinate } from "../../constants/Coordinate"
@@ -36,6 +36,7 @@ const NavigationNode = (props: NavigationNodeProps) => {
       } 
       else {
         dispatch(pressNode({nodeID: props.id}));
+        dispatch(changeMode({mode: 'move-node'}));
       }
     }
     else if(mode === 'multi-select'){
@@ -61,6 +62,7 @@ const NavigationNode = (props: NavigationNodeProps) => {
     onPanResponderRelease: (evt) => {
       const { locationX, locationY } = evt.nativeEvent;
       dispatch(updateNodeCoordsFinal({key: props.id, coords: {x: locationX-(props.canvasDimension.width/2), y: locationY}}));
+      dispatch(changeMode({mode: 'add-node'}));
     }
   });
 
@@ -94,6 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: 'red',
+    borderStyle: 'dashed',
   }
 });
 

@@ -25,9 +25,10 @@ const Canvas = (props: CanvasProps) => {
     const currentNodeId = useSelector((state: RootState) => state.navState.selectedNodeId);
     const nodes = useSelector((state: RootState) => state.NavMapState.present.nodes);
     const canAddNode = useSelector((state: RootState) => state.navState.mode === 'add-node');
+    const moveNode = useSelector((state: RootState) => state.navState.mode === 'move-node');
 
     useEffect(() => {
-        if (canAddNode && pastNodeId != "") {
+        if ((canAddNode||moveNode) && pastNodeId != "") {
             connectSelectedNode();
         }
     }, [pastNodeId]);

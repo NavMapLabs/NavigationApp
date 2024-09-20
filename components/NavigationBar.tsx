@@ -77,14 +77,11 @@ const NavigationBar = (props: NavBarProps) => {
                 <Appbar.Action icon={require('../assets/icons/submenu.png')} onPress={props.toggleSubMenu} />
                 <NavTitle title={updateTitle()} />
                 <Appbar.Content title='' /> 
-                <Appbar.Action icon={require('../assets/icons/node.png')} onPress={() => enableTool('add-node')} color={
+                <Appbar.Action icon='map-marker' onPress={() => enableTool('add-node')} color={
                     selectedAction === 'add-node' ? 'red' : 'black'
                 }/>
                 <Appbar.Action icon={require('../assets/icons/move.png')} onPress={() => enableTool('move-node')} color={
                     selectedAction === 'move-node' ? 'red' : 'black'   
-                }/>
-                <Appbar.Action icon='dots-grid' onPress={() => enableTool('multi-select')} color={
-                    selectedAction === 'multi-select' ? 'red' : 'black'
                 }/>
                 <Appbar.Action icon= 'selection-drag' onPress={() => enableTool('selection-drag')}  color={
                     selectedAction === 'selection-drag' ? 'red' : 'black'
