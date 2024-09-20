@@ -6,10 +6,14 @@ on:
   #   branches: [ Deployment/CI-CD_RenderUnitTest_HL]
   # pull_request:
   #   branches: [ Deployment/CI-CD_RenderUnitTest_HL ]
+  # push:
+  #   branches: [ Deployment/CI-CD ]
+  # pull_request:
+  #   branches: [ Deployment/CI-CD ]
   push:
-    branches: [ Deployment/CI-CD ]
+    branches: [ ]
   pull_request:
-    branches: [ Deployment/CI-CD ]
+    branches: [ ]
 
 env:
   NODE_VERSION: 16.x

@@ -2,9 +2,13 @@ name: Node.js CD
 
 on:
   push:
-    branches: [Deployment/CI-CD_RenderUnitTest_HL]
+    branches: []
   pull_request:
-    branches: [Deployment/CI-CD_RenderUnitTest_HL]
+    branches: []
+  # push:
+  #   branches: [Deployment/CI-CD_RenderUnitTest_HL]
+  # pull_request:
+  #   branches: [Deployment/CI-CD_RenderUnitTest_HL]
   # push:
   #   branches: [ Deployment/CI-CD ]
   # pull_request:
