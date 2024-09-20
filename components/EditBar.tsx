@@ -64,7 +64,7 @@ const EditBar = (props: EditBarProps) => {
                 </View>
             </SafeAreaView>
         </View>
-    )
+    );
 };
 
 export default EditBar;

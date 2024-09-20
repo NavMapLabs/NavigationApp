@@ -2,10 +2,21 @@
 name: Node.js CI
 
 on:
+  # push:
+  #   branches: [ Deployment/CI-CD_RenderUnitTest_HL]
+  # pull_request:
+  #   branches: [ Deployment/CI-CD_RenderUnitTest_HL ]
+  # push:
+  #   branches: [ Deployment/CI-CD ]
+  # pull_request:
+  #   branches: [ Deployment/CI-CD ]
   push:
-    branches: [ Deployment/CI-CD ]
+    branches: [ ]
   pull_request:
-    branches: [ Deployment/CI-CD  ]
+    branches: [ ]
+
+env:
+  NODE_VERSION: 16.x
 
 # Grant the necessary permission to workflow
 permissions:
@@ -17,9 +28,6 @@ jobs:
   # Test workflow
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
     - name: Check out Branch
       uses: actions/checkout@v2
@@ -28,47 +36,7 @@ jobs:
     - name: Load Node.js
       uses: ./.github/actions/setup-and-install
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ env.NODE_VERSION }}
 
     - name: Running Test
       run: npm run test
-
-  # Build workflow 
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-    steps:
-    - name: Check out Branch
-      uses: actions/checkout@v2
-      
-    # use self-define steps to load env
-    - name: Load Node.js
-      uses: ./.github/actions/setup-and-install
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Setup Github Pages
-      uses: actions/configure-pages@v5
-
-    - name: Build Expo project
-      run: npx expo export -p web
-
-    - name: Upload Pages artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./dist
-
-  # Deployment workflow
-  deploy:
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-    - name: Deploy to github page
-      id: deployment
-      uses: actions/deploy-pages@v4

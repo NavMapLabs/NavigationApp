@@ -165,6 +165,7 @@ const navMapSlice = createSlice({
 
       let draftGraph = state.graph;
 
+      // Need checking, would it return inside here
       if (!draftGraph.has(nodeID_1)) {
         console.log("Node not existing: ", nodeID_1)
       }
