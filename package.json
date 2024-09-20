@@ -73,7 +73,9 @@
     "react-responsive": "^10.0.0",
     "react-scripts": "^5.0.1",
     "react-test-renderer": "^18.2.0",
-    "redux": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "redux": "^5.0.1",
+    "redux-undo": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

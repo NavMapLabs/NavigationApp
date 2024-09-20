@@ -4,7 +4,7 @@ export interface NavNodeType {
     name: string;
     id: string;
     coords: Coordinate;
-    tag: string;
+    tags: string[];
     description: string;
   }
   
