@@ -25,9 +25,8 @@ const MapEditor = () => {
     
     const toggleFloorMenu = () => {
         setIsFloorMenuVisible(!isFloorMenuVisible);
-        if(isFloorMenuVisible){
-            
-        }
+        console.log(isFloorMenuVisible)
+        console.log('floor menu toggled')
     }
 
     const applyFilters = (filters: string[]) => {

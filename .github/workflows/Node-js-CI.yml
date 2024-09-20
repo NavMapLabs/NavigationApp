@@ -2,6 +2,10 @@
 name: Node.js CI
 
 on:
+  # push:
+  #   branches: [ Deployment/CI-CD_RenderUnitTest_HL]
+  # pull_request:
+  #   branches: [ Deployment/CI-CD_RenderUnitTest_HL ]
   push:
     branches: [dev]
   pull_request:
