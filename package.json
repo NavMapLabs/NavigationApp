@@ -9,6 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --coverage=true",
+    "clean-cache": "jest --clearCache",
     "lint": "expo lint",
     "deploy": "gh-pages -t -d dist",
     "deploy-github-action": "gh-pages -d dist -t true -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git",
@@ -71,6 +72,7 @@
     "react-scripts": "^5.0.1",
     "redux": "^5.0.1",
     "redux-saga": "^1.3.0",
+    "redux-undo": "^1.1.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {

@@ -20,7 +20,7 @@ const LogInModal = (props: LogInProps) => {
     return (
         <Modal
             transparent={true}
-            animationType="none"
+            animationType="fade"
             visible={props.isVisible}
             onRequestClose={props.onClose}
         >

@@ -1,5 +1,8 @@
-import { View, StyleSheet, Modal, Pressable, Image } from "react-native"
-import React from "react"
+import { View, StyleSheet, Modal, Pressable, Image } from "react-native";
+import React from "react";
+import { changeMode } from "@/store/NavStateSlice";
+import { AppDispatch} from '../store/datastore';
+import { useDispatch } from 'react-redux';
 
 type FloorMenuProps = {
     isVisible: boolean,
@@ -7,6 +10,13 @@ type FloorMenuProps = {
 }
 
 const FloorMenu = (props: FloorMenuProps) => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const closeMenu = () => {
+        props.onClose();
+        dispatch(changeMode({mode: 'default'}));
+    }
+
     return (
         <Modal
             transparent={true}
@@ -14,7 +24,7 @@ const FloorMenu = (props: FloorMenuProps) => {
             visible={props.isVisible}
             onRequestClose={props.onClose}
         >
-            <Pressable style={styles.modalOverlay} onPress={props.onClose}>
+            <Pressable style={styles.modalOverlay} onPress={closeMenu}>
                 <View style={styles.menu}>
                     <Pressable onPress={(e) => e.stopPropagation()}>
                         {/* work on this. this is just base version */}
@@ -44,12 +54,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         elevation: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        marginRight: 10,
-        marginTop: 10,
+        marginTop: 15,
     },
     image_size: {
         width: 40,

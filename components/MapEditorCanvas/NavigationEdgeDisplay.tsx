@@ -11,10 +11,10 @@ import { NavNodeType } from "@/constants/NavigationNode";
 //just testing this format out
 //make map component an empty component for now that takes up the whole screen using flex
 const NavigationEdgeDisplay = () => {
-    const nodes = useSelector((state: RootState) => state.NavMapState.nodes);
-    const graph = useSelector((state: RootState) => state.NavMapState.graph);
+    const nodes = useSelector((state: RootState) => state.NavMapState.present.nodes);
+    const graph = useSelector((state: RootState) => state.NavMapState.present.graph);
     // use graphModifiedFlag for sometime react don't recognized graph is updated (detail related to redux store state update rules...)
-    const graphModifiedFlag = useSelector((state: RootState) => state.NavMapState.graphModifiedFlag);
+    const graphModifiedFlag = useSelector((state: RootState) => state.NavMapState.present.graphModifiedFlag);
     const emptyCoords:Coordinate = {x:0, y:0}
     const emptyNode:NavNodeType = {
         name:"empty",
@@ -25,8 +25,8 @@ const NavigationEdgeDisplay = () => {
     }
 
     // useEffect(() => {
-    //     // console.log("=== graph updated ===")
-    //     // console.log(graph)
+    //     console.log("=== graph updated ===")
+    //     console.log(graph)
     // }, [graph])
     return (
         <>

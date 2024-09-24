@@ -1,5 +1,5 @@
 import { Button } from "react-native";
-import { AppDispatch } from "@/store/datastore";
+import { AppDispatch, RootState } from "@/store/datastore";
 import { useDispatch, UseDispatch, useSelector } from "react-redux";
 import {
   removeNode,
@@ -11,11 +11,14 @@ import {
 import { Coordinate } from "@/constants/Coordinate";
 import { NavNodeType } from "@/constants/NavigationNode";
 import { useState } from "react";
+import { ActionCreators as UndoActionCreators } from 'redux-undo';
 
 const AddNodeButton = () => {
   const [count, setCount] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
 
+  const curState = useSelector((state: RootState) => state.NavMapState.present);
+  const pastState = useSelector((state: RootState) => state.NavMapState.past);
 
   const handlePress = () => {
     const id_1: string = "node_1";
@@ -64,6 +67,11 @@ const AddNodeButton = () => {
     }
   };
 
+  const printState = () => {
+    console.log("===== state history =====");
+    // console.log(curState)
+    console.log("history length: " + pastState.length);
+  };
 
   const handlePress_2 = () => {
     const id_1: string = "node_1";
@@ -71,15 +79,44 @@ const AddNodeButton = () => {
     const coords_1: Coordinate = { x: 0, y: 100 };
     const coords_2: Coordinate = { x: 200, y: 300 };
 
-    if (count == 0) {
-      dispatch(addNode_Dev({ id: id_1, coords: coords_1 }));
+    switch (count) {
+      case 0:
+        dispatch(addNode_Dev({ id: id_1, coords: coords_1 }));
+        setCount(count + 1);
+        printState();
+        break;
+      case 1:
+        dispatch(addNode_Dev({ id: id_2, coords: coords_2 }));
+        setCount(count + 1);
+        printState();
+        break;
+      case 2:
+        dispatch(addEdge({ nodeID_1: id_1, nodeID_2: id_2 }));
+        setCount(count + 1);
+        printState();
+        break;
+      case 3:
+        dispatch(removeNode({ key: id_1 }));
+        setCount(count + 1);
+        printState();
+        break;
+      default:
+        dispatch(removeNode({ key: id_2 }));
+        setCount(0);
+        printState();
+        break;
     }
+  };
 
+  const func2  = () => {
+    dispatch(UndoActionCreators.undo());
+    printState();
   }
 
   return (
     <>
       <Button title="Add Node Tester (star)" onPress={handlePress_2} />
+      <Button title="undo" onPress={func2} />
     </>
   );
 };

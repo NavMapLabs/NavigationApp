@@ -1,9 +1,9 @@
-import { TouchableOpacity, View, StyleSheet } from "react-native"
+import { View, StyleSheet, Pressable } from "react-native"
 import React from 'react';
 import { Coordinate } from '@/constants/Coordinate';
 import { NavNodeType } from '@/constants/NavigationNode';
-import { AppDispatch } from '@/store/datastore';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/datastore';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeEdge } from "@/store/NavMapSlice";
 
 type NavigationEdgeProps = {
@@ -25,6 +25,7 @@ const calculateLineProperties = (coords_1:Coordinate, coords_2:Coordinate) => {
 const NavigationEdge = (props: NavigationEdgeProps) => {
     const { length, angle } = calculateLineProperties(props.coords_1, props.coords_2);
     const dispatch = useDispatch<AppDispatch>();
+    const isMoveMode = useSelector((state: RootState) => state.navState.mode === 'move-node');
 
     const handleClick = () => {
         console.log("clicked Edge");
@@ -32,7 +33,7 @@ const NavigationEdge = (props: NavigationEdgeProps) => {
     };
 
     return (
-        <TouchableOpacity onPress={handleClick} style={{zIndex:5}} testID="NavigationEdge">
+        <Pressable onPress={handleClick} style={{zIndex:5}} disabled={isMoveMode} >
             <View
                 style={[
                     styles.line,
@@ -47,7 +48,7 @@ const NavigationEdge = (props: NavigationEdgeProps) => {
                 ]}
                 z-index={5}
             />
-        </TouchableOpacity>
+        </Pressable>
     );
 }
 

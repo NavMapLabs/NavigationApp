@@ -1,7 +1,7 @@
-import { Modal, View, StyleSheet, Pressable } from "react-native";
+import { Modal, View, StyleSheet, Pressable, Animated } from "react-native";
 import { Drawer } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import LogInModal from "@/app/(Auth)/LogInModal";
 import SignUpModal from "@/app/(Auth)/SignUpModal";
 
@@ -13,7 +13,8 @@ type SubMenuProps = {
 // make this sub menu be set to the left side of the screen 
 const SubMenu = (props: SubMenuProps) => {
     const [isLogInVisible, setLogInVisible] = useState(false);
-    const [isSignUpVisible, setSignUpVisible] = useState(false);
+    const [isSignUpVisible, setSignUpVisible] = useState(false)
+    const slideAnimation = useRef(new Animated.Value(-200)).current;
 
     const toggleLogIn = () => {
         setLogInVisible(!isLogInVisible);
@@ -23,6 +24,27 @@ const SubMenu = (props: SubMenuProps) => {
         setSignUpVisible(!isSignUpVisible);
     }
 
+    const openSubmenu =
+        Animated.timing(slideAnimation, {
+            toValue: 0,
+            duration: 200,
+            useNativeDriver: true,
+        });
+
+    const closeSubmenu =
+        Animated.timing(slideAnimation, {
+            toValue: -200,
+            duration: 200,
+            useNativeDriver: true,
+        });
+
+    useEffect(() => {
+        if (props.isVisible) {
+            openSubmenu.start();
+        } else {
+            closeSubmenu.start();
+        }
+    }, [props.isVisible]);
 
     return (
         <Modal
@@ -32,46 +54,48 @@ const SubMenu = (props: SubMenuProps) => {
             onRequestClose={props.onClose}
         >
             <Pressable style={styles.container} onPress={props.onClose}>
-                <Pressable style={styles.left_side} onPress={(e) => e.stopPropagation()}>
-                    <Drawer.Section title="MENU">
-                        <Drawer.Item
-                            style={[styles.box, styles.TextSpace]}
-                            label="Log in"
-                            onPress={() => {
-                                toggleLogIn();
-                                console.log("Login Pressed")
-                            }}
-                        />
-                        <Drawer.Item
-                            style={[styles.box, styles.BigSpace]}
-                            label="Sign up"
-                            onPress={() => {
-                                toggleSignUp();
-                                console.log("Signup Pressed")
-                            }}
-                        />
-                        <Drawer.Item
-                            style={[styles.box, styles.TextSpace]}
-                            label="New"
-                            onPress={() => { }}
-                        />
-                        <Drawer.Item
-                            style={[styles.box, styles.TextSpace]}
-                            label="Save"
-                            onPress={() => { }}
-                        />
-                        <Drawer.Item
-                            style={[styles.box, styles.TextSpace]}
-                            label="Save & Exit"
-                            onPress={() => { }}
-                        />
-                        <Drawer.Item
-                            style={[styles.box, styles.TextSpace]}
-                            label="Exit"
-                            onPress={() => { }}
-                        />
-                    </Drawer.Section>
-                </Pressable>
+                <Animated.View style={[styles.left_side, { transform: [{ translateX: slideAnimation }] }]}>
+                    <Pressable style={styles.left_side} onPress={(e) => e.stopPropagation()}>
+                        <Drawer.Section title="MENU">
+                            <Drawer.Item
+                                style={[styles.box, styles.TextSpace]}
+                                label="Log in"
+                                onPress={() => {
+                                    toggleLogIn();
+                                    console.log("Login Pressed")
+                                }}
+                            />
+                            <Drawer.Item
+                                style={[styles.box, styles.BigSpace]}
+                                label="Sign up"
+                                onPress={() => {
+                                    toggleSignUp();
+                                    console.log("Signup Pressed")
+                                }}
+                            />
+                            <Drawer.Item
+                                style={[styles.box, styles.TextSpace]}
+                                label="New"
+                                onPress={() => { }}
+                            />
+                            <Drawer.Item
+                                style={[styles.box, styles.TextSpace]}
+                                label="Save"
+                                onPress={() => { }}
+                            />
+                            <Drawer.Item
+                                style={[styles.box, styles.TextSpace]}
+                                label="Save & Exit"
+                                onPress={() => { }}
+                            />
+                            <Drawer.Item
+                                style={[styles.box, styles.TextSpace]}
+                                label="Exit"
+                                onPress={() => { }}
+                            />
+                        </Drawer.Section>
+                    </Pressable>
+                </Animated.View>
             </Pressable>
 
             {/* LogInScreen Modal */}
