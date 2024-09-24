@@ -7,7 +7,7 @@ on:
     branches: [prod]
 
 env:
-  NODE_VERSION: 16.x
+  NODE_VERSION: 20.17.x
 
 # Grant the necessary permission to workflow
 permissions:

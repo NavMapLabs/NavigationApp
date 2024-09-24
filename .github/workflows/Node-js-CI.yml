@@ -11,6 +11,9 @@ on:
   pull_request:
     branches: [dev]
 
+env:
+  NODE_VERSION: 20.17.x
+  
 # Grant the necessary permission to workflow
 permissions:
   contents: read
