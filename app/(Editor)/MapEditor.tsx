@@ -1,5 +1,5 @@
 import React, { useEffect, useState }  from "react";
-import { View, StyleSheet, Pressable, Platform } from 'react-native';
+import { View, StyleSheet, Platform} from 'react-native';
 import NavigationBar from "../../components/NavigationBar";
 import EditBar from "../../components/EditBar";
 import MapEditorCanvas from "../../components/MapEditorCanvas/MapEditorCanvas";
@@ -7,6 +7,11 @@ import FloorMenu from "../../components/FloorMenu";
 import FilterMenu from '../../components/FilterMenu';
 import SubMenu from "@/components/SubMenu";
 import EditNodeMenu from "@/components/EditNodeMenu";
+import { useDispatch, useSelector} from "react-redux";
+import { AppDispatch, RootState } from "@/store/datastore";
+import { changeMode } from "@/store/NavStateSlice";
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
+
 
 const MapEditor = () => {
     const [isSubMenuVisible, setIsSubMenuVisible] = useState(false);
@@ -14,6 +19,8 @@ const MapEditor = () => {
     const [isFloorMenuVisible, setIsFloorMenuVisible] = useState(false);
     const [isEditNodeMenuVisible, setIsEditNodeMenuVisible] = useState(false);
     const [filters, setFilters] = useState<string[]>([]);
+    const mode = useSelector((state: RootState) => state.navState.mode);
+    const dispatch = useDispatch<AppDispatch>();
 
     const toggleSubMenu = () => {
         setIsSubMenuVisible(!isSubMenuVisible);
@@ -39,6 +46,38 @@ const MapEditor = () => {
         setIsEditNodeMenuVisible(!isEditNodeMenuVisible);
     }
 
+    const undoredoEvent = (event: KeyboardEvent) => {
+        if (event.ctrlKey && event.key === 'z') {
+            dispatch(UndoActionCreators.undo());
+        }
+        if (event.ctrlKey && event.key === 'y') {
+            dispatch(UndoActionCreators.redo());
+        }
+    }
+    const multiSelectEvent = (event: KeyboardEvent) => {
+        if (event.ctrlKey) {
+            dispatch(changeMode({mode: 'multi-select'}));
+        }
+    }
+    const resetMultiSelect = (event: KeyboardEvent) => {
+        if (!event.ctrlKey) {
+            dispatch(changeMode({mode: 'add-node'}));
+        }
+    }
+
+    useEffect(() => {
+        if (Platform.OS === 'web') {
+            window.addEventListener('keydown', undoredoEvent);
+            window.addEventListener('keydown', multiSelectEvent);
+            window.addEventListener('keyup', resetMultiSelect);
+            
+            return () => {
+                window.removeEventListener('keydown', undoredoEvent);
+                window.removeEventListener('keydown', multiSelectEvent);
+                window.removeEventListener('keyup', resetMultiSelect);
+            }
+        }
+    }, []);
 
     const filterOptions = ['Filter 1', 'Filter 2', 'Filter 3', 'Filter 4', 'Filter 5'];
 
