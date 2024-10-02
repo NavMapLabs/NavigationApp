@@ -9,6 +9,7 @@ import NavigationNode from "@/components/MapEditorCanvas/NavigationNode"
 type NavigationNodeDisplayProps = {
     dimension: Dimension,
     canvasDimensions: Dimension,
+    scale: number,
 }
 
 const NavigationNodeDisplay = (props: NavigationNodeDisplayProps) => {
@@ -23,7 +24,9 @@ const NavigationNodeDisplay = (props: NavigationNodeDisplayProps) => {
                           id={node.id} 
                           coords={node.coords} 
                           dimension={props.dimension}
-                          canvasDimension = {props.canvasDimensions}/>
+                          canvasDimension = {props.canvasDimensions}
+                          scale={props.scale}
+                          />
         ))
       }
       </>

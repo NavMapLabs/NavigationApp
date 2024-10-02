@@ -17,6 +17,7 @@ type NavigationNodeProps = {
   coords: Coordinate,
   dimension: Dimension,
   canvasDimension: Dimension,
+  scale: number
 }
 
 const NavigationNode = (props: NavigationNodeProps) => {
@@ -28,6 +29,7 @@ const NavigationNode = (props: NavigationNodeProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const isBatchPressed = selectedNodeIDs.includes(props.id);
   const mode = useSelector((state: RootState) => state.navState.mode);
+  const isMoveMode = useSelector((state: RootState) => state.navState.mode === 'move-node');
 
   const handleClick = () => {
     if(mode === 'add-node' || mode === 'move-node'){
@@ -53,22 +55,26 @@ const NavigationNode = (props: NavigationNodeProps) => {
   }
 
   const nodePanResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => (mode === 'move-node'),
+    onStartShouldSetPanResponder: () => isMoveMode,
     onPanResponderMove: (evt) => {
       //limit the movement to the canvas
       const { locationX, locationY } = evt.nativeEvent;
-      dispatch(updateNodeCoords({key: props.id, coords: {x: locationX-(props.canvasDimension.width/2), y: locationY}}));
+      const scaledX = locationX/props.scale;
+      const scaledY = locationY/props.scale;
+      dispatch(updateNodeCoords({key: props.id, coords: {x: scaledX-(props.canvasDimension.width/2), y: scaledY}}));
     },
     onPanResponderRelease: (evt) => {
       const { locationX, locationY } = evt.nativeEvent;
-      dispatch(updateNodeCoordsFinal({key: props.id, coords: {x: locationX-(props.canvasDimension.width/2), y: locationY}}));
+      const scaledX = locationX/props.scale;
+      const scaledY = locationY/props.scale;
+      dispatch(updateNodeCoordsFinal({key: props.id, coords: {x: scaledX-(props.canvasDimension.width/2), y: scaledY}}));
       dispatch(changeMode({mode: 'add-node'}));
     }
   });
 
   return (
     <Pressable onPress={handleClick} style={{zIndex:10}}>
-      <Animated.View {...nodePanResponder.panHandlers}>
+      <Animated.View {...(isMoveMode ? nodePanResponder.panHandlers : {})}>
         <Image 
           source={defaultImage} 
           style={[styles.image, { 

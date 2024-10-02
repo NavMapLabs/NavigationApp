@@ -100,7 +100,7 @@ const MapEditor = () => {
                             toggleFilterMenu={toggleFilterMenu}
                             toggleFloorMenu={toggleFloorMenu}/>
             <MapEditorCanvas canvasStyle = {styles.canvas} />
-            <EditBar editBarStyle={styles.ui} 
+            <EditBar editBarStyle={styles.ui, styles.editBar} 
                      toggleEditNodeMenu={toggleEditNodeMenu}/>
         </View>
     )
@@ -125,5 +125,12 @@ const styles = StyleSheet.create({
         zIndex: 1,
         height: '100%',
         width: '100%',
-    }
+    },
+    editBar: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 3,
+    }   
 })

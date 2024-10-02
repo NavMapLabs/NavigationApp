@@ -33,23 +33,6 @@ const Canvas = (props: CanvasProps) => {
         }
     }, [pastNodeId]);
 
-    // this cannot be used for mobile as window doesn't exist
-    /* useEffect(() => {
-        
-        const undoEvent = (event: KeyboardEvent) => {
-            if (event.ctrlKey && event.key === 'z') {
-                dispatch(UndoActionCreators.undo());
-            }
-            if (event.ctrlKey && event.key === 'y') {
-                dispatch(UndoActionCreators.redo());
-            }
-        }
-        window.addEventListener('keydown', undoEvent);
-        return () => {
-            window.removeEventListener('keydown', undoEvent);
-        }
-    }, []); */
-
     const handlePress = (event: GestureResponderEvent) => {
         
         // false error from VS Code, it will work

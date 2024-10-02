@@ -1,4 +1,4 @@
-import { Button } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import { AppDispatch, RootState } from "@/store/datastore";
 import { useDispatch, UseDispatch, useSelector } from "react-redux";
 import {
@@ -114,11 +114,17 @@ const AddNodeButton = () => {
   }
 
   return (
-    <>
+    <View style= {styles.button}>
       <Button title="Add Node Tester (star)" onPress={handlePress_2} />
       <Button title="undo" onPress={func2} />
-    </>
+    </View>
   );
 };
 
 export default AddNodeButton;
+
+const styles = StyleSheet.create({
+  button: {
+    zIndex: 9
+},
+});
