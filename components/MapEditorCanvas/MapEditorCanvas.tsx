@@ -91,7 +91,7 @@ const MapEditorCanvas = (props: MapEditorCanvasProps) => {
         }
       }, []);
 
-      // PanResponder for pinch-to-zoom and dragging
+    // PanResponder for pinch-to-zoom and dragging
     const panCanvasResponder = useRef(
         PanResponder.create({
         // disable pan responder if not in default mode
@@ -233,7 +233,6 @@ const MapEditorCanvas = (props: MapEditorCanvasProps) => {
     
     return (
         <View>
-        <AddNodeButton/>
             <Animated.View style={[styles.moveableCanvas,
                 {
                     transform: [

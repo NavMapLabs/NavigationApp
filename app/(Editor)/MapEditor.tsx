@@ -100,7 +100,7 @@ const MapEditor = () => {
                             toggleFilterMenu={toggleFilterMenu}
                             toggleFloorMenu={toggleFloorMenu}/>
             <MapEditorCanvas canvasStyle = {styles.canvas} />
-            <EditBar editBarStyle={styles.ui, styles.editBar} 
+            <EditBar editBarStyle={[styles.ui, styles.editBar]} 
                      toggleEditNodeMenu={toggleEditNodeMenu}/>
         </View>
     )
