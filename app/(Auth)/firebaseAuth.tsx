@@ -81,7 +81,7 @@ export const getData = async () => {
     //if not null, thats means users has signed in
     let token = await user.getIdToken();
     console.log(token);
-    fetch("http://127.0.0.1:8000/authentication/test", {
+    fetch("http://127.0.0.1:8080/authentication/test", {
       headers: new Headers({
         Authorization: `Bearer ${token}`,
       }),

@@ -5,7 +5,8 @@ import { HomeNavigationProp } from '@/constants/types';
 import { useState } from 'react';
 import LogInModal from "@/app/(Auth)/LogInModal";
 import SignUpModal from "@/app/(Auth)/SignUpModal";
-
+import {getData} from "@/app/(Backend)/BackendFunc"; 
+// testing
 const Homepage = () => {
   // Access navigation via useNavigation hook
   const navigation = useNavigation<HomeNavigationProp>();
@@ -40,6 +41,7 @@ const Homepage = () => {
       <Button
         title="Go to Login"
         onPress={() => {
+          getData("Kemper")
           toggleLogIn()
           console.log("Pressed")
         }}

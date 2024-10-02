@@ -69,6 +69,7 @@ const LogInModal = (props: LogInProps) => {
                     <Pressable
                         style={styles.button}
                         onPress={() => {
+
                             /* handle action here */
                         }}
                     >
@@ -80,6 +81,7 @@ const LogInModal = (props: LogInProps) => {
                             style={styles.underline}
                             onPress={() => {
                             /* handle action here */
+
                             }}
                         >
                             Forgot password?
