@@ -2,6 +2,9 @@ import { Text, View, TextInput, StyleSheet, Pressable, Modal } from "react-nativ
 import React, { useState } from "react";
 import { TextInput as PaperTextInput, IconButton } from 'react-native-paper';
 
+import { AuthError } from 'firebase/auth';
+import { signUp } from "./firebaseAuth";
+
 type SignUpProps = {
     isVisible: boolean,
     onClose: () => void
@@ -20,98 +23,117 @@ const SignUpModal = (props: SignUpProps) => {
     const [passwordbBorderColor, setPasswordBorderColor] = useState('gray');
     const [ReEnterPasswordbBorderColor, setReEnterPasswordBorderColor] = useState('gray');
 
+		const handleSignUp = async () => {
+			try {
+				const user = await signUp(emailText, password, reEnterPassword)
+				if(user) {
+					//use saveUserData from firebase if needed
+					const id = user.uid;
+				}
+				//should navigate to a loading screen, or ask to verify first before doing anything
+			} catch (error: unknown) {
+				if ((error as AuthError).code === 'auth/email-already-in-use') {
+					alert('Email already in use');
+				} else if ((error as AuthError).code === 'auth/weak-password') {
+					alert('Weak Password. Please choose a stronger password')
+				} else {
+					alert("Signup error: " + (error as Error).message)
+				}
+			};
+		}
+
     return (
-        <Modal
-            transparent={true}
-            animationType="fade"
-            visible={props.isVisible}
-            onRequestClose={props.onClose}
-        >
-            <Pressable style={styles.container} onPress={props.onClose}>
-                <Pressable style={styles.box} onPress={(e) => e.stopPropagation()}>
-                    <View style={styles.header}>
-                        <IconButton icon="close" size={24} onPress={props.onClose} />
-                    </View>
-                    <Text style={styles.label}>Email</Text>
-                    <PaperTextInput
-                        style={[styles.paperInput, { borderColor: emailBorderColor }]}
-                        onFocus={() => setEmailBorderColor('black')} // border color on focus
-                        onBlur={() => setEmailBorderColor('gray')}  // border color on focus
+			<Modal
+				transparent={true}
+				animationType="fade"
+				visible={props.isVisible}
+				onRequestClose={props.onClose}
+			>
+				<Pressable style={styles.container} onPress={props.onClose}>
+					<Pressable style={styles.box} onPress={(e) => e.stopPropagation()}>
+						<View style={styles.header}>
+							<IconButton icon="close" size={24} onPress={props.onClose} />
+						</View>
+						<Text style={styles.label}>Email</Text>
+						<PaperTextInput
+							style={[styles.paperInput, { borderColor: emailBorderColor }]}
+							onFocus={() => setEmailBorderColor('black')} // border color on focus
+							onBlur={() => setEmailBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
-                        placeholderTextColor="#a9a9a9"
-                        value={emailText}
-                        onChangeText={setEmailText}
+							placeholder='Value'
+							placeholderTextColor="#a9a9a9"
+							value={emailText}
+							onChangeText={setEmailText}
 
-                        theme={{ colors: { primary: "transparent" } }} // this removes the underline
-                        underlineColor="transparent"
-                    /* obtain data here */
-                    />
-                    <Text style={styles.label}>Password</Text>
-                    <PaperTextInput
-                        style={[styles.paperInput, { borderColor: passwordbBorderColor }]}
-                        onFocus={() => setPasswordBorderColor('black')} // border color on focus
-                        onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
+							theme={{ colors: { primary: "transparent" } }} // this removes the underline
+							underlineColor="transparent"
+						/* obtain data here */
+						/>
+						<Text style={styles.label}>Password</Text>
+						<PaperTextInput
+							style={[styles.paperInput, { borderColor: passwordbBorderColor }]}
+							onFocus={() => setPasswordBorderColor('black')} // border color on focus
+							onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
-                        placeholderTextColor="#a9a9a9"
-                        secureTextEntry={passwordVisible}
-                        value={password}
-                        onChangeText={setPassword}
-                        right={
-                            <PaperTextInput.Icon
-                                icon={passwordVisible ? 'eye' : 'eye-off'}
-                                onPress={() => setPasswordVisible(!passwordVisible)}
-                                style={styles.icon} // this adjusts eye icon position
-                            />
-                        }
-                        theme={{ colors: { primary: "transparent" } }} // this removes the underline
-                        underlineColor="transparent"
-                    /* obtain data here */
-                    />
-                    <Text style={styles.label}>Re-enter Password</Text>
-                    <PaperTextInput
-                        style={[styles.paperInput, { borderColor: ReEnterPasswordbBorderColor }]}
-                        onFocus={() => setReEnterPasswordBorderColor('black')} // border color on focus
-                        onBlur={() => setReEnterPasswordBorderColor('gray')}  // border color on focus
+							placeholder='Value'
+							placeholderTextColor="#a9a9a9"
+							secureTextEntry={passwordVisible}
+							value={password}
+							onChangeText={setPassword}
+							right={
+									<PaperTextInput.Icon
+											icon={passwordVisible ? 'eye' : 'eye-off'}
+											onPress={() => setPasswordVisible(!passwordVisible)}
+											style={styles.icon} // this adjusts eye icon position
+									/>
+							}
+							theme={{ colors: { primary: "transparent" } }} // this removes the underline
+							underlineColor="transparent"
+						/* obtain data here */
+						/>
+						<Text style={styles.label}>Re-enter Password</Text>
+						<PaperTextInput
+							style={[styles.paperInput, { borderColor: ReEnterPasswordbBorderColor }]}
+							onFocus={() => setReEnterPasswordBorderColor('black')} // border color on focus
+							onBlur={() => setReEnterPasswordBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
-                        placeholderTextColor="#a9a9a9"
-                        secureTextEntry={reEnterPasswordVisible}
-                        value={reEnterPassword}
-                        onChangeText={setReEnterPassword}
-                        right={
-                            <PaperTextInput.Icon
-                                icon={reEnterPasswordVisible ? 'eye' : 'eye-off'}
-                                onPress={() => setReEnterPasswordVisible(!reEnterPasswordVisible)}
-                                style={styles.icon} // this adjusts eye icon position
-                            />
-                        }
-                        theme={{ colors: { primary: "transparent" } }} // this removes the underline
-                        underlineColor="transparent"
-                    /* obtain data here */
-                    />
-                    <Pressable
-                        style={styles.button}
-                        onPress={() => {
-                            /* handle action here */
-                        }}
-                    >
-                        <Text style={styles.buttonText}>Sign In</Text>
-                    </Pressable>
-                    <Text
-                        style={[styles.underline, styles.textSpace]}
-                        onPress={() => {
-                            props.toggleLogIn();
-                            console.log("Login Pressed")
-                            props.onClose();
-                        }}
-                    >
-                        Already have an account? Login here!
-                    </Text>
-                </Pressable>
-            </Pressable>
-        </Modal>
+							placeholder='Value'
+							placeholderTextColor="#a9a9a9"
+							secureTextEntry={reEnterPasswordVisible}
+							value={reEnterPassword}
+							onChangeText={setReEnterPassword}
+							right={
+								<PaperTextInput.Icon
+									icon={reEnterPasswordVisible ? 'eye' : 'eye-off'}
+									onPress={() => setReEnterPasswordVisible(!reEnterPasswordVisible)}
+									style={styles.icon} // this adjusts eye icon position
+								/>
+							}
+							theme={{ colors: { primary: "transparent" } }} // this removes the underline
+							underlineColor="transparent"
+						/* obtain data here */
+						/>
+						<Pressable
+								style={styles.button}
+								onPress={() => {
+									handleSignUp()
+								}}
+						>
+								<Text style={styles.buttonText}>Sign In</Text>
+						</Pressable>
+						<Text
+								style={[styles.underline, styles.textSpace]}
+								onPress={() => {
+										props.toggleLogIn();
+										console.log("Login Pressed")
+										props.onClose();
+								}}
+						>
+								Already have an account? Login here!
+						</Text>
+					</Pressable>
+				</Pressable>
+			</Modal>
     );
 };
 

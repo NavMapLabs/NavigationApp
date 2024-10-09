@@ -8,12 +8,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-<<<<<<< HEAD
-web-report/
 
-# OSX
-#
-=======
 env
 .env
 
@@ -21,7 +16,6 @@ secret/
 coverage/
 
 # macOS
->>>>>>> ee31d0c0b1df76c426a6e045192669acdc820312
 .DS_Store
 
 # Xcode
