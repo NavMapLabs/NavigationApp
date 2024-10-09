@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { GalleryNavigationProp } from '@/constants/types';
@@ -10,7 +10,7 @@ const Header = () => {
 
     return (
         <View style={styles.header}>
-            <IconButton icon="arrow-left" size={30} style={styles.returnButton}
+            <IconButton icon="arrow-left" size={25} style={styles.returnButton}
                 onPress={() => navigation.navigate('MapEditor')}
             />
         </View>
@@ -63,8 +63,9 @@ const ProjectDisplay = () => {
                 onPress={() => console.log('Button Pressed')}
             >
                 <View style={styles.textRow}>
-                    <Text style={styles.text1}>John Doe</Text>
-                    <Text style={styles.text2}> 20 days ago</Text>
+                    <Text style={styles.text1}>File 1</Text>
+                    <Text>John Doe</Text>
+                    <Text style={styles.text3}> 15 days ago</Text>
                 </View>
             </Pressable>
         </View>
@@ -138,11 +139,10 @@ const styles = StyleSheet.create({
         height: 100,
         backgroundColor: '#71E0BC',
         width: '100%',
-        bottom: 45,
+        bottom: 55,
     },
     returnButton: {
         marginTop: 45, // Center the arrow vertically
-        bottom: 8,
         left: 5,
     },
     buttonForProject: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         width: '80%',
     },
     buttonNormal: {
-        backgroundColor: 'white'
+        backgroundColor: 'lightgrey'
     },
     buttonPressed: {
         backgroundColor: '#71E0BC', // change color when pressed
@@ -161,9 +161,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text1: {
-        left: 490,
+        right: 100,
     },
-    text2: {
+    text3: {
         left: 80,
     },
     textRow: {
@@ -177,7 +177,6 @@ const styles = StyleSheet.create({
 
 /*
 add submenu? or return button? (on header)
-add "Last modified" that'll display whether the user wants to organize the name of the project in order.
-
+add "Last modified"? that'll display whether the user wants to organize the name of the project in order.
 change the subtitle
 */
