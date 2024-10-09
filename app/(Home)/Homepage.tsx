@@ -6,13 +6,15 @@ import { useState } from 'react';
 import LogInModal from "@/app/(Auth)/LogInModal";
 import SignUpModal from "@/app/(Auth)/SignUpModal";
 import {getData} from "@/app/(Backend)/BackendFunc"; 
+import SubmissionModal from '../(Backend)/SubmissionModal';
+import { map_meta_info } from '@/app/(Backend)/BackendFunc';
 // testing
 const Homepage = () => {
   // Access navigation via useNavigation hook
   const navigation = useNavigation<HomeNavigationProp>();
   const [isLogInVisible, setLogInVisible] = useState(false);
   const [isSignUpVisible, setSignUpVisible] = useState(false);
-
+  const [isSubmitVisible, setSubmitVisible] = useState(false);
     const toggleLogIn = () => {
         setLogInVisible(!isLogInVisible);
     }
@@ -21,6 +23,10 @@ const Homepage = () => {
         setSignUpVisible(!isSignUpVisible);
     }
 
+    const toggleSubmit = () => {
+        setSubmitVisible(!isSubmitVisible);
+    }
+    const map_Info: map_meta_info = {}
   return (
     <View style={styles.container}>
       <Text>This is the Tester Version</Text>
@@ -38,11 +44,18 @@ const Homepage = () => {
         toggleLogIn={toggleLogIn}
       />
 
+      < SubmissionModal
+        isVisible = {isSubmitVisible}
+        onClose = {toggleSubmit}
+        map_Info={map_Info}
+      />
+
       <Button
         title="Go to Login"
         onPress={() => {
           getData("Kemper")
-          toggleLogIn()
+          toggleSubmit()
+          // toggleLogIn()
           console.log("Pressed")
         }}
       />
