@@ -12,9 +12,11 @@ type SubMenuProps = {
 
 // make this sub menu be set to the left side of the screen 
 const SubMenu = (props: SubMenuProps) => {
-    const [isLogInVisible, setLogInVisible] = useState(false);
+    const [isLogInVisible, setLogInVisible] = useState(false)
     const [isSignUpVisible, setSignUpVisible] = useState(false)
     const slideAnimation = useRef(new Animated.Value(-200)).current;
+
+    const navigation = useNavigation();
 
     const toggleLogIn = () => {
         setLogInVisible(!isLogInVisible);
@@ -80,6 +82,13 @@ const SubMenu = (props: SubMenuProps) => {
                             />
                             <Drawer.Item
                                 style={[styles.box, styles.TextSpace]}
+                                label="Project Gallery"
+                                onPress={() => {
+                                    navigation.navigate('Gallery');
+                                 }}
+                            />
+                            <Drawer.Item
+                                style={[styles.box, styles.TextSpace]}
                                 label="Save"
                                 onPress={() => { }}
                             />
@@ -111,6 +120,9 @@ const SubMenu = (props: SubMenuProps) => {
                 onClose={toggleSignUp}
                 toggleLogIn={toggleLogIn}
             />
+
+            {/* GalleryScreen Modal */}
+           
         </Modal>
     );
 };

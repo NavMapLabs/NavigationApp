@@ -35,7 +35,7 @@ const LogInModal = (props: LogInProps) => {
                         onFocus={() => setEmailBorderColor('black')} // border color on focus
                         onBlur={() => setEmailBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='e.g., johndoe@gmail.com'
                         placeholderTextColor="#a9a9a9"
                         value={emailText}
                         onChangeText={setEmailText}
@@ -50,7 +50,7 @@ const LogInModal = (props: LogInProps) => {
                         onFocus={() => setPasswordBorderColor('black')} // border color on focus
                         onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='e.g., ••••••••••••'
                         placeholderTextColor="#a9a9a9"
                         secureTextEntry={passwordVisible}
                         value={passwordText}

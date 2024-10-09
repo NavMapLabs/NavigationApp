@@ -38,7 +38,7 @@ const SignUpModal = (props: SignUpProps) => {
                         onFocus={() => setEmailBorderColor('black')} // border color on focus
                         onBlur={() => setEmailBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='e.g., johndoe@gmail.com'
                         placeholderTextColor="#a9a9a9"
                         value={emailText}
                         onChangeText={setEmailText}
@@ -53,7 +53,7 @@ const SignUpModal = (props: SignUpProps) => {
                         onFocus={() => setPasswordBorderColor('black')} // border color on focus
                         onBlur={() => setPasswordBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='e.g., ••••••••••••'
                         placeholderTextColor="#a9a9a9"
                         secureTextEntry={passwordVisible}
                         value={password}
@@ -75,7 +75,7 @@ const SignUpModal = (props: SignUpProps) => {
                         onFocus={() => setReEnterPasswordBorderColor('black')} // border color on focus
                         onBlur={() => setReEnterPasswordBorderColor('gray')}  // border color on focus
 
-                        placeholder='Value'
+                        placeholder='Re-enter your Password'
                         placeholderTextColor="#a9a9a9"
                         secureTextEntry={reEnterPasswordVisible}
                         value={reEnterPassword}
