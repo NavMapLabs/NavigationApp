@@ -54,6 +54,7 @@ const Canvas = (props: CanvasProps) => {
             name: "node-" + newId,
             id: newId,
             tags: [],
+            type: "Path",
             coords: coords,
             description: ""
         }

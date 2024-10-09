@@ -22,6 +22,7 @@ const NavigationNodeDisplay = (props: NavigationNodeDisplayProps) => {
           <NavigationNode key={node.id} 
                           name={node.name} 
                           id={node.id} 
+                          type={node.type}
                           coords={node.coords} 
                           dimension={props.dimension}
                           canvasDimension = {props.canvasDimensions}

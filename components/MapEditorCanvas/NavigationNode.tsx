@@ -7,14 +7,13 @@ import React, { useEffect } from "react";
 import { Coordinate } from "../../constants/Coordinate"
 import { Dimension } from "@/constants/Dimension";
 import { is } from "immutable";
-import { useLinkProps } from "@react-navigation/native";
-
-const defaultImage:ImageProps = require('../../assets/images/sampleNode.png')
+import { NodeTypeMapper } from "@/constants/NodeTypeMapper";
 
 type NavigationNodeProps = {
   name: string,
   id: string,
   coords: Coordinate,
+  type: string,
   dimension: Dimension,
   canvasDimension: Dimension,
   scale: number
@@ -53,6 +52,8 @@ const NavigationNode = (props: NavigationNodeProps) => {
       }
     }
   }
+
+  const defaultImage = NodeTypeMapper[props.type];
 
   const nodePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => isMoveMode,

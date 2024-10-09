@@ -55,8 +55,8 @@ const NavigationEdge = (props: NavigationEdgeProps) => {
 const styles = StyleSheet.create({
     line: {
       position: 'absolute',
-      height: 5,
-      backgroundColor: 'red',
+      height: 3,
+      backgroundColor: 'lime',
       left: "50%",
     },
   });
