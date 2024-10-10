@@ -19,7 +19,8 @@ const NavigationEdgeDisplay = () => {
     const emptyNode:NavNodeType = {
         name:"empty",
         id:"empty",
-        tag:"empty",
+        type:"empty",
+        tags:[],
         description:"empty",
         coords: emptyCoords
     }
