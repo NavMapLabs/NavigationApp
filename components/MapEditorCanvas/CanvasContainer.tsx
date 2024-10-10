@@ -1,9 +1,11 @@
-import { StyleProp, ViewStyle, ScrollView, StyleSheet } from "react-native";
-import React, { ReactNode } from "react";
+import { StyleProp, ViewStyle, StyleSheet, View} from "react-native";
+import React, { ReactNode, } from "react";
 import { Coordinate } from "@/constants/Coordinate";
 import { Dimension } from "@/constants/Dimension";
 import AddNodeButton from "./AddNodeButton";
 import Canvas from "./Canvas";
+import { RootState } from "@/store/datastore";
+import { useSelector } from "react-redux";
 
 type CanvasContainerProps = {
     children: ReactNode,
@@ -13,17 +15,18 @@ type CanvasContainerProps = {
     scrollEnabled: boolean
 }
 
+
 // define the static canvas view wrapper in screen
 const CanvasContainer = (props: CanvasContainerProps) => {
+    
+
     return (
-        <ScrollView style={props.canvasStyle} 
-                    scrollEnabled={props.scrollEnabled}>
-            <AddNodeButton/>
+        <View>
             <Canvas offsetCoor={props.offsetCoor}  
                        dimension={props.dimension}>
                 {props.children} 
             </Canvas>
-        </ScrollView>
+        </View>
     )
 }
 
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
         flex: 1,
         left: "50%",
         // height:"100%"
-    }
+    },
 });
 
 export default CanvasContainer;

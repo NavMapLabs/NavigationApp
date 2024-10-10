@@ -1,4 +1,4 @@
-import { Button } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import { AppDispatch, RootState } from "@/store/datastore";
 import { useDispatch, UseDispatch, useSelector } from "react-redux";
 import {
@@ -7,48 +7,53 @@ import {
   addNode_Dev,
   addEdge,
   removeEdge,
+  loadMapState,
+  NavMapState
 } from "@/store/NavMapSlice";
 import { Coordinate } from "@/constants/Coordinate";
 import { NavNodeType } from "@/constants/NavigationNode";
 import { useState } from "react";
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
-import {json} from "stream/consumers";
+import { serializeMapData, deSerializationMapData } from "@/scripts/mapDataSerialization";
 
 const AddNodeButton = () => {
   const [count, setCount] = useState(0);
+  const [savedMap, setSavedMap] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
 
   const curState = useSelector((state: RootState) => state.NavMapState.present);
   const pastState = useSelector((state: RootState) => state.NavMapState.past);
 
-  const handlePress = () => {
-    const jsonString = JSON.stringify(curState);
-    console.log("Json string ----------")
-    console.log(JSON.stringify(curState));
-
-    console.log("parsed ----------")
-    console.log(JSON.parse(jsonString))
-    console.log("original ----------")
-    console.log(curState)
+  const handlePress_s = () => {
+    // console.log("=== original ===");
+    // console.log(curState);
+    // console.log("=== serialized ===");
+    const dataString = serializeMapData(curState);
+    console.log(dataString);
+    setSavedMap(dataString);
   };
 
-  const printState = () => {
-    console.log("===== state history =====");
-    // console.log(curState)
-    console.log("history length: " + pastState.length);
+  const handlePress_l = () => {
+    // console.log("=== de-serialized ===");
+    // console.log(deSerializationMapData(savedMap));
+    const newMapState = deSerializationMapData(savedMap);
+    dispatch(loadMapState({newMapState: newMapState}));
+    // console.log("=== loaded ===");
   };
 
-  const func2  = () => {
-    dispatch(UndoActionCreators.undo());
-    printState();
-  }
 
   return (
     <>
-      <Button title="stringify" onPress={handlePress} />
-      <Button title="undo" onPress={func2} />
+      <Button title="save State" onPress={handlePress_s} />
+      <Button title="load state" onPress={handlePress_l} />
     </>
   );
 };
 
 export default AddNodeButton;
+
+const styles = StyleSheet.create({
+  button: {
+    zIndex: 9
+},
+});
