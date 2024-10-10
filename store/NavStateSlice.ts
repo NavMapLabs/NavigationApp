@@ -15,7 +15,7 @@ const initialState: NavStateState = {
   selectedNodeId: "",
   pastSelectedNodeId: "",
   selectedNodes: [],
-  mode: "single" // single, multiple or drag
+  mode: "default"
 };
 
 //create the slice

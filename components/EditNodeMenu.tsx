@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from "@/store/datastore";
 import { useDispatch, useSelector } from "react-redux";
 import { updateNodeProperties } from "@/store/NavMapSlice";
 import TagOptions from "./TagOptions";
+import { Picker } from '@react-native-picker/picker';
 
 type editNodeMenuProps = {
     isVisible: boolean,
@@ -13,6 +14,7 @@ type editNodeMenuProps = {
 const EditNodeMenu = (props: editNodeMenuProps) => {
     const [nodeName, setNodeName] = useState('');
     const [nodeDescription, setNodeDescription] = useState('');
+    const [nodeType, setNodeType] = useState('');
     const testTags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9', 'tag10'];
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     
@@ -28,17 +30,19 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
     const updateNode = () => {
         if (selectedNodeIDs.length > 0) {
             selectedNodeIDs.forEach((nodeID) => {
-                dispatch(updateNodeProperties({key: nodeID, name: nodeName, desc: nodeDescription, tags: selectedTags}));
+                dispatch(updateNodeProperties({key: nodeID, name: nodeName, type: nodeType, desc: nodeDescription, tags: selectedTags}));
                 console.log("Updated Node: " + nodeID);
                 console.log("Name: " + nodeName);
+                console.log("Type: " + nodeType);
                 console.log("Description: " + nodeDescription);
                 console.log("Tags: " + selectedTags);
             });
         }
         else if (selectedNodeID !== "") {
-            dispatch(updateNodeProperties({key: selectedNodeID, name: nodeName, desc: nodeDescription, tags: selectedTags}));
+            dispatch(updateNodeProperties({key: selectedNodeID, name: nodeName, type: nodeType, desc: nodeDescription, tags: selectedTags}));
             console.log("Updated Node: " + selectedNodeID);
             console.log("Name: " + nodeName);
+            console.log("Type: " + nodeType);
             console.log("Description: " + nodeDescription);
             console.log("Tags: " + selectedTags);
         }
@@ -101,6 +105,7 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
             if (node) {
                 setNodeName(node.name);
                 setNodeDescription(node.description);
+                setNodeType(node.type);
                 setSelectedTags(node.tags);
             }
         }
@@ -109,6 +114,7 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
             if (node) {
                 setNodeName(node.name);
                 setNodeDescription(node.description);
+                setNodeType(node.type);
                 setSelectedTags(node.tags);
             }
         }
@@ -141,6 +147,16 @@ const EditNodeMenu = (props: editNodeMenuProps) => {
                         multiline={true}
                         numberOfLines={2}
                     />
+                    <Text>Node Type:</Text>
+                    <Picker
+                        selectedValue={nodeType}
+                        onValueChange={(itemValue, itemIndex) => setNodeType(itemValue)}
+                    >
+                        <Picker.Item label="Entrance" value="Entrance" />
+                        <Picker.Item label="Stairs" value="Stairs" />
+                        <Picker.Item label="Special" value="Special" />
+                        <Picker.Item label="Path" value="Path" />
+                    </Picker>
                     <Text>Tags:</Text>
                     <View style={{flexDirection: 'row', flexWrap: 'wrap', columnGap: 
                     10, rowGap: 10, marginBottom: 10, marginTop: 10, justifyContent: 'center'

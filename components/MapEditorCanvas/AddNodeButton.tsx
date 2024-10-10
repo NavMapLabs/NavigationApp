@@ -1,4 +1,4 @@
-import { Button } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import { AppDispatch, RootState } from "@/store/datastore";
 import { useDispatch, UseDispatch, useSelector } from "react-redux";
 import {
@@ -51,3 +51,9 @@ const AddNodeButton = () => {
 };
 
 export default AddNodeButton;
+
+const styles = StyleSheet.create({
+  button: {
+    zIndex: 9
+},
+});

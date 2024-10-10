@@ -32,6 +32,7 @@ const navMapSlice = createSlice({
       const newNode: NavNodeType = {
         name: action.payload.id,
         id: action.payload.id,
+        type: action.payload.id,
         tags: [],
         coords: action.payload.coords,
         description: ""
@@ -53,6 +54,7 @@ const navMapSlice = createSlice({
         name: "node-" + id,
         id: id,
         tags: [],
+        type: "Path",
         coords: action.payload.coords,
         description: ""
       }
@@ -98,10 +100,10 @@ const navMapSlice = createSlice({
         state.nodes = state.nodes.set(action.payload.key, updatedNode);
       }
     },
-    updateNodeProperties: (state, action: PayloadAction<{ key: string, name: string, desc: string, tags: string[]}>) => {
+    updateNodeProperties: (state, action: PayloadAction<{ key: string, name: string, type: string, desc: string, tags: string[]}>) => {
       const existingNode = state.nodes.get(action.payload.key);
       if (existingNode) {
-        const updatedNode = { ...existingNode, name: action.payload.name, description: action.payload.desc, tags: action.payload.tags };
+        const updatedNode = { ...existingNode, name: action.payload.name,type: action.payload.type, description: action.payload.desc, tags: action.payload.tags };
         state.nodes = state.nodes.set(action.payload.key, updatedNode);
       }
     },

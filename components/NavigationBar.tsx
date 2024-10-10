@@ -43,7 +43,7 @@ const NavigationBar = (props: NavBarProps) => {
         if(selectedAction !== 'add-node' && mode === 'add-node')
             setSelectedAction('add-node');
         else if(selectedAction !== 'default' && mode === 'default')
-            setSelectedAction('');
+            setSelectedAction('default');
     }, [mode])
 
     const updateTitle = () => {
