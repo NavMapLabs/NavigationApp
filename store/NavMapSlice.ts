@@ -5,13 +5,13 @@ import { NavNodeType } from '@/constants/NavigationNode';
 import { Coordinate } from '@/constants/Coordinate';
 import { pressNode } from './NavStateSlice';
 
-interface AdjacencyList {
+export interface AdjacencyList {
   forwardList: string[],
   backwardList: string[]
 }
 
 // Define the initial state using an Immutable.js Map
-interface NavMapState {
+export interface NavMapState {
   nodes: Map_I<string, NavNodeType>;
   graph: Map_I<string, AdjacencyList>;
   graphModifiedFlag: number;
@@ -198,6 +198,11 @@ const navMapSlice = createSlice({
       state.graphModifiedFlag = (state.graphModifiedFlag + 1) % 100
       // console.log("====== after =====")
       // console.log(state.graph)
+    },
+    loadMapState: (state, action:PayloadAction<{newMapState: NavMapState}>) => {
+      state.nodes  = action.payload.newMapState.nodes;
+      state.graph  = action.payload.newMapState.graph;
+      state.graphModifiedFlag = (state.graphModifiedFlag + 1) % 100
     }
   },
 });
@@ -207,7 +212,7 @@ export const {addNode_Dev, addNode,
               addNodeWithCoord, removeNode, 
               updateNodeCoords, updateNodeCoordsFinal,
               updateNodeProperties,
-              addEdge, removeEdge } = navMapSlice.actions;
+              addEdge, removeEdge, loadMapState } = navMapSlice.actions;
 
 // Export the reducer
 export default navMapSlice.reducer;
