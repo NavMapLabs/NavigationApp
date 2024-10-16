@@ -35,8 +35,8 @@ const AddNodeButton = () => {
 
   const handlePress_l = () => {
     // console.log("=== de-serialized ===");
-    // console.log(deSerializationMapData(savedMap));
     const newMapState = deSerializationMapData(savedMap);
+    // console.log(newMapState);
     dispatch(loadMapState({newMapState: newMapState}));
     // console.log("=== loaded ===");
   };

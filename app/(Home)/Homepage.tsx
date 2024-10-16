@@ -5,16 +5,16 @@ import { HomeNavigationProp } from '@/constants/types';
 import { useState } from 'react';
 import LogInModal from "@/app/(Auth)/LogInModal";
 import SignUpModal from "@/app/(Auth)/SignUpModal";
-import {getData} from "@/app/(Backend)/BackendFunc"; 
+import {search} from "@/scripts/BackendFunc"; 
 import SubmissionModal from '../(Backend)/SubmissionModal';
-import { map_meta_info } from '@/app/(Backend)/BackendFunc';
+import { map_update_info } from '@/scripts/BackendFunc';
 // testing
 const Homepage = () => {
   // Access navigation via useNavigation hook
   const navigation = useNavigation<HomeNavigationProp>();
   const [isLogInVisible, setLogInVisible] = useState(false);
   const [isSignUpVisible, setSignUpVisible] = useState(false);
-  const [isSubmitVisible, setSubmitVisible] = useState(false);
+  const [isSubmitVisible, setSubmitVisible] = useState(false); // todo: remove
     const toggleLogIn = () => {
         setLogInVisible(!isLogInVisible);
     }
@@ -24,9 +24,9 @@ const Homepage = () => {
     }
 
     const toggleSubmit = () => {
-        setSubmitVisible(!isSubmitVisible);
+        setSubmitVisible(!isSubmitVisible); // todo: remove
     }
-    const map_Info: map_meta_info = {}
+    const map_Info: map_update_info = {mapData: "dummy"} // todo: remove 
   return (
     <View style={styles.container}>
       <Text>This is the Tester Version</Text>
@@ -46,15 +46,15 @@ const Homepage = () => {
 
       < SubmissionModal
         isVisible = {isSubmitVisible}
-        onClose = {toggleSubmit}
+        onClose = {toggleSubmit}// todo : remove after testing
         map_Info={map_Info}
-      />
+      /> 
 
       <Button
         title="Go to Login"
         onPress={() => {
-          getData("Kemper")
-          toggleSubmit()
+          search("Kemper")
+          toggleSubmit() // todo: remove
           // toggleLogIn()
           console.log("Pressed")
         }}

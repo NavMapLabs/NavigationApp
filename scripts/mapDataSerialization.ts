@@ -14,8 +14,9 @@ export const deSerializationMapData = (mapDataString:string): NavMapState => {
   let mapData:NavMapState = {
     nodes: Map_I<string, NavNodeType>(Object.entries(mapDataJson.nodes)),
     graph: Map_I<string, AdjacencyList>(Object.entries(mapDataJson.graph)),
-    graphModifiedFlag: 0,
+    graphModifiedFlag: mapDataJson.graphModifiedFlag,
   };
+  // console.log(mapData)
 
   return mapData;
 }

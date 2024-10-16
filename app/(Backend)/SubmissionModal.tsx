@@ -2,8 +2,8 @@ import { Text, View, StyleSheet, Pressable, Modal } from "react-native"
 import React, { useState } from "react";
 import { TextInput as PaperTextInput, IconButton } from 'react-native-paper';
 import {Checkbox} from 'react-native-paper';
-import { map_meta_info } from "./BackendFunc";
-import { createMap, updateMap, deleteMap, craftCreateJsonObject, craftUpdateJsonObject } from "./BackendFunc";
+import { map_update_info } from "../../scripts/BackendFunc";
+import { createMap, updateMap, deleteMap, craftCreateJsonObject, craftUpdateJsonObject } from "../../scripts/BackendFunc";
 
 
 export type SubmitProps = {
@@ -17,7 +17,7 @@ export type SubmitProps = {
 
 
 // map_meta_info should be passed in from the editor page, and act as default value. the text box is for editing these meta data if needed 
-const SubmissionModal = (props: SubmitProps & {map_Info: map_meta_info} ) => {
+const SubmissionModal = (props: SubmitProps & {map_Info: map_update_info} ) => {
     //for testing only, add check box and map_id
     const [isNewMap, setIsNewMap] = useState(false);
     const [isNewVersion, setIsNewVersion] = useState(false);
@@ -196,12 +196,14 @@ const SubmissionModal = (props: SubmitProps & {map_Info: map_meta_info} ) => {
                             props.map_Info.mapId = mapIdText;
                             props.map_Info.mapName = mapNameText;
                             props.map_Info.versionName = versionNameText;
-                            console.log(props.map_Info.versionName)
+                        
+                            console.log(props.map_Info.mapData)
                             if (isDelete){
                                 deleteMap(mapIdText)
                             }
                             else if (isNewMap){
                                 data = craftCreateJsonObject(props.map_Info)
+                                // console.log("data: " + data)
                                 createMap(data)
                             }
                             else if (isNewVersion){
