@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Pressable, Text, FlatList } from 'react-native';
+import { View, StyleSheet, Pressable, Text, FlatList, TextInput } from 'react-native';
 import { IconButton } from 'react-native-paper';
-import { GalleryNavigationProp } from '@/constants/types';
+import { SearchHistoryNavigationProp } from '@/constants/types';
 import { useNavigation } from '@react-navigation/native';
 
 // Header Function to render the header
 const Header = () => {
-    const navigation = useNavigation<GalleryNavigationProp>();
+    const navigation = useNavigation<SearchHistoryNavigationProp>();
 
     return (
         <View style={styles.header}>
@@ -17,54 +17,50 @@ const Header = () => {
     );
 };
 
-// ButtonRow Function to render the buttons
-const ButtonRow = () => {
+// Search Bar Function (rendering)
+const SearchBar = ({ searchQuery, setSearchQuery }) => {
     return (
-        <View style={styles.buttonContainer}>
-            <Pressable
-                style={styles.addProjectButton}
-                onPress={() => {
-                    /* handle action here */
-                }}
-            >
-                <Text>Add Project</Text>
-            </Pressable>
-            <Pressable
-                style={styles.shareButton}
-                onPress={() => {
-                    /* handle action here */
-                }}
-            >
-                <Text>Share</Text>
-            </Pressable>
+        <View style={styles.searchContainer}>
+            <TextInput
+                style={[styles.boxSearch, {color: 'gray'}]}
+                placeholder="Search..."
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+            />
         </View>
     );
 };
 
-const FileDisplay = () => {
-    // file array in state: file name, owner, and updated date
+const FileDisplay = ({ searchQuery }) => {
+    // file array in state: file name, owner, and updated date (Dynamic....)
     const files = [
         { name: 'gal', owner: 'John Doe', updated: '20 days ago', id: '1' },
         { name: 'kangaroo', owner: 'Patrick Jane', updated: '2 days ago', id: '2' },
         { name: 'abby', owner: 'Queen Elizabeth III', updated: '15 days ago', id: '3' },
+        { name: 'bruce wayne', owner: 'Ed Sheeran', updated: '6 days ago', id: '4' },
     ];
 
     const [sortOrder, setSortOrder] = useState('asc');
-
-    // this statement sorts alphabetically based on the name of the file in the Gallery
-    const sortedFiles = files.sort((a, b) => {
-        if (sortOrder === 'asc') {
-            return a.name.localeCompare(b.name);
-        }
-        else {
-            return b.name.localeCompare(a.name);
-        }
-    });
 
     // this function is used to toggle alphabetically: A-Z or Z-A
     const toggleSortOrder = () => {
         setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
     };
+
+    // this filters the files based on the search query
+    const filterFiles = files.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+      // this statement sorts alphabetically based on sortOrder (Study on this)
+    const sortedFiles = filterFiles.sort((a, b) => {
+        if (sortOrder === 'asc') {
+            return a.name.localeCompare(b.name); // ascending
+        }
+        else {
+            return b.name.localeCompare(a.name); // descending
+        }
+    });
 
     return (
         <View style={styles.textContainer}>
@@ -83,7 +79,7 @@ const FileDisplay = () => {
                 data={sortedFiles}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View style={[styles.listRow, styles.box]}>
+                    <View style={[styles.listRow, styles.boxFiles]}>
                         {/* Pressable for name */}
                         <Pressable style={{ width: '33%' }} onPress={() => {/* handle action here */ }}>
                             <Text style={{ textAlign: 'left' }}>{item.name}</Text>
@@ -106,17 +102,21 @@ const FileDisplay = () => {
 };
 
 // Main Function
-const Gallery = () => {
+const SearchHistory = () => {
+    const [searchQuery, setSearchQuery] = useState('');
+
     return (
         <View style={styles.container}>
             <Header />
-            <ButtonRow />
-            <FileDisplay />
+            {/* Passing searchQuery and setSearchQuery to SearchBar Function */}
+            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            {/* Passing searchQuery to FileDisplay Function */}
+            <FileDisplay searchQuery={searchQuery} />
         </View>
     );
 };
 
-export default Gallery; // needed for Main Function
+export default SearchHistory; // needed for Main Function
 
 const styles = StyleSheet.create({
     container: {
@@ -130,10 +130,10 @@ const styles = StyleSheet.create({
         marginRight: 90,
         top: 10,
     },
-    buttonContainer: {
+    searchContainer: {
         flexDirection: 'row',
-        left: 830,
-        bottom: 15,
+        bottom: 10,
+        right: 50,
     },
     header: {
         height: 100,
@@ -148,30 +148,6 @@ const styles = StyleSheet.create({
         left: 10,
         marginBottom: 10,
     },
-    addProjectButton: {
-        backgroundColor: '#71E0BC',
-        borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 10,
-        padding: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: 10,
-        width: 100,
-        marginLeft: 15, // Adjusted to a more reasonable margin
-    },
-    shareButton: {
-        backgroundColor: 'white',
-        borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 10,
-        padding: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: 10,
-        width: 70,
-        marginLeft: 15,
-    },
     returnButton: {
         marginTop: 45, // Center the arrow vertically
         left: 5,
@@ -182,15 +158,25 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between', // Distributes space between the texts
         paddingVertical: 20,
     },
-    box: {
+    boxFiles: {
         padding: 8,
-        borderWidth: 2,
-        borderColor: 'black',
+        borderWidth: 1,
+        borderColor: 'light-gray',
         borderRadius: 8,
         marginHorizontal: 5,
         marginVertical: 15,
         backgroundColor: 'white',
     },
+    boxSearch: {
+        padding: 13,
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 10,
+        backgroundColor: 'white',
+    },
 });
 
-/* make it dynamic */
+// both the gallery and the query have red underline. FIX THEM
+// add sorting for owner and updated (same as name)
+// make a indicator for name, owner and updated
+// change file name to search page, not searchhistory

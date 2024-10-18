@@ -87,6 +87,13 @@ const SubMenu = (props: SubMenuProps) => {
                                     navigation.navigate('Gallery');
                                  }}
                             />
+                             <Drawer.Item
+                                style={[styles.box, styles.TextSpace]}
+                                label="Search History"
+                                onPress={() => {
+                                    navigation.navigate('SearchHistory');
+                                 }}
+                            />
                             <Drawer.Item
                                 style={[styles.box, styles.TextSpace]}
                                 label="Save"
