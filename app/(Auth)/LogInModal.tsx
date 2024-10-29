@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { TextInput as PaperTextInput, IconButton, Props } from 'react-native-paper';
 
 import { AuthError, User } from "firebase/auth";
-import { useNavigation } from '@react-navigation/native';
 
 import { emailVerification, logIn, logOut } from "./firebaseAuth";
 
