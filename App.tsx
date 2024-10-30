@@ -5,6 +5,7 @@ import { RootStackParamList } from './constants/types';
 import datastore from './store/datastore';
 import Homepage from './app/(Home)/Homepage'
 import MapEditor from './app/(Editor)/MapEditor';
+import SearchHistory from './app/(Editor)/SearchHistory';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -17,6 +18,7 @@ const App = () => {
             >
                 <Stack.Screen name="Homepage" component={Homepage} />
                 <Stack.Screen name="MapEditor" component={MapEditor} />
+                <Stack.Screen name="SearchHistory" component={SearchHistory} />
             </Stack.Navigator>
         </Provider>
     )

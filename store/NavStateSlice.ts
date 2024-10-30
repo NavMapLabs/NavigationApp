@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
+import { map_meta } from '@/scripts/BackendFunc';
 //create the initial state, pressed on a node
+
+
 
 interface NavStateState {
   pressed: boolean;
@@ -8,6 +10,7 @@ interface NavStateState {
   pastSelectedNodeId: string;
   selectedNodes: string[];
   mode: string;
+  meta_data: map_meta;
 }
 
 const initialState: NavStateState = {
@@ -15,7 +18,14 @@ const initialState: NavStateState = {
   selectedNodeId: "",
   pastSelectedNodeId: "",
   selectedNodes: [],
-  mode: "default"
+  mode: "default",
+  meta_data:{
+    mapName: "",  // Optional
+    mapAddr: "",  // Optional
+    mapDescription: "",  // Optional
+    versionName: "",    // Optional
+    mapId: "",         // Optional
+  }
 };
 
 //create the slice
@@ -23,6 +33,9 @@ const navStateSlice = createSlice({
   name: 'navState',
   initialState,
   reducers: {
+    loadMapMeta: (state, action:PayloadAction<{ meta_info: map_meta }>) =>{
+      state.meta_data = action.payload.meta_info
+    },
     pressNode: (state, action: PayloadAction<{ nodeID: string }>) => {
         state.selectedNodes = [];
         state.pastSelectedNodeId = state.selectedNodeId;
@@ -66,6 +79,8 @@ const navStateSlice = createSlice({
     },
     resetSelectedNodes: (state) => {
       state.selectedNodes = [];
+      state.selectedNodeId = "";
+      state.pressed = false
     }
   }
 });
@@ -77,6 +92,7 @@ export const { pressNode,
                addPressedNode,
                removePressedNode,
                changeMode,
-               resetSelectedNodes } = navStateSlice.actions;
+               resetSelectedNodes,
+              loadMapMeta } = navStateSlice.actions;
 
 export default navStateSlice.reducer;

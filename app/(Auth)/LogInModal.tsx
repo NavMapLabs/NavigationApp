@@ -81,7 +81,7 @@ const LogInModal = (props: LogInProps) => {
                             style={styles.underline}
                             onPress={() => {
                             /* handle action here */
-
+                                
                             }}
                         >
                             Forgot password?

@@ -4,6 +4,8 @@ import { TextInput as PaperTextInput, IconButton } from 'react-native-paper';
 import {Checkbox} from 'react-native-paper';
 import { map_update_info } from "../../scripts/BackendFunc";
 import { createMap, updateMap, deleteMap, craftCreateJsonObject, craftUpdateJsonObject } from "../../scripts/BackendFunc";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/datastore";
 
 
 export type SubmitProps = {
@@ -19,18 +21,19 @@ export type SubmitProps = {
 // map_meta_info should be passed in from the editor page, and act as default value. the text box is for editing these meta data if needed 
 const SubmissionModal = (props: SubmitProps & {map_Info: map_update_info} ) => {
     //for testing only, add check box and map_id
+    // const dispatch = useDispatch<AppDispatch>();
+    const curState = useSelector((state: RootState) => state.navState);
     const [isNewMap, setIsNewMap] = useState(false);
     const [isNewVersion, setIsNewVersion] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [isOldVersion, setIsOldVersion] = useState(false);
-    const [mapIdText, setMapIdText] = useState('');
+    const [mapIdText, setMapIdText] = useState(curState.meta_data.mapId);
     const [mapIdBorderColor, setMapIdBorderColor] = useState('gray');
     // end of testing
-    const [mapNameText, setMapNameText] = useState('');
-    const [versionNameText, setVersionNameText] = useState('');
-    const [mapAddrText, setMapAddrText] = useState('');
-    const [mapDescriptionText, setMapDescriptionText] = useState('');
-    
+    const [mapNameText, setMapNameText] = useState(curState.meta_data.mapName);
+    const [versionNameText, setVersionNameText] = useState(curState.meta_data.versionName);
+    const [mapAddrText, setMapAddrText] = useState(curState.meta_data.mapAddr);
+    const [mapDescriptionText, setMapDescriptionText] = useState(curState.meta_data.mapDescription);
     
     const [mapNameBorderColor, setMapNameBorderColor] = useState('gray');
     const [versionNameBorderColor, setVersionNameBorderColor] = useState('gray');
@@ -40,7 +43,7 @@ const SubmissionModal = (props: SubmitProps & {map_Info: map_update_info} ) => {
 
 
     var canEditAddress: boolean = false;
-    
+
 
     return (
         <Modal
@@ -66,7 +69,7 @@ const SubmissionModal = (props: SubmitProps & {map_Info: map_update_info} ) => {
                         placeholderTextColor="#a9a9a9"
                         value={mapIdText}
                         onChangeText={setMapIdText}
-
+                        readOnly = {isDelete || isOldVersion}
                         theme={{ colors: { primary: "transparent" } }} // this removes the underline
                         underlineColor="transparent"  // this removes the any extra underline
                     />
@@ -78,6 +81,7 @@ const SubmissionModal = (props: SubmitProps & {map_Info: map_update_info} ) => {
                           setIsDelete(false);
                           setIsNewVersion(false);
                           setIsOldVersion(false);
+                          console.log(curState.meta_data.mapAddr)
                         }}
                         color="blue" // Optional: Customize the color
                       />
@@ -135,7 +139,7 @@ const SubmissionModal = (props: SubmitProps & {map_Info: map_update_info} ) => {
                         placeholderTextColor="#a9a9a9"
                         value={mapNameText}
                         onChangeText={setMapNameText}
-
+                        readOnly = {!isNewMap}
                         theme={{ colors: { primary: "transparent" } }} // this removes the underline
                         underlineColor="transparent"  // this removes the any extra underline
                       
@@ -145,7 +149,7 @@ const SubmissionModal = (props: SubmitProps & {map_Info: map_update_info} ) => {
                         style={[styles.paperInput, { borderColor: versionNameBorderColor }]}
                         onFocus={() => setVersionNameBorderColor('black')} // border color on focus
                         onBlur={() => setVersionNameBorderColor('gray')}  // border color on focus
-
+                        readOnly = {isDelete || isOldVersion}
                         placeholder='Value'
                         placeholderTextColor="#a9a9a9"
                         value={versionNameText}
@@ -160,7 +164,7 @@ const SubmissionModal = (props: SubmitProps & {map_Info: map_update_info} ) => {
                         style={[styles.paperInput, { borderColor: addressBorderColor }]}
                         onFocus={() => setAddressBorderColor('black')} // border color on focus
                         onBlur={() => setAddressBorderColor('gray')}  // border color on focus
-
+                        readOnly = {!isNewMap}
                         placeholder='Value'
                         placeholderTextColor="#a9a9a9"
                         value={mapAddrText}
@@ -175,12 +179,12 @@ const SubmissionModal = (props: SubmitProps & {map_Info: map_update_info} ) => {
                         style={[styles.paperInput, { borderColor: descriptionBorderColor }]}
                         onFocus={() => setDescriptionBorderColor('black')} // border color on focus
                         onBlur={() => setDescriptionBorderColor('gray')}  // border color on focus
-
+                        readOnly = {!isNewMap}
                         placeholder='Value'
                         placeholderTextColor="#a9a9a9"
                         value={mapDescriptionText}
                         onChangeText={setMapDescriptionText}
-
+                        
                         theme={{ colors: { primary: "transparent" } }} // this removes the underline
                         underlineColor="transparent"  // this removes the any extra underline
                       

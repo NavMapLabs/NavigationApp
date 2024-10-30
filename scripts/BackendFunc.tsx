@@ -2,11 +2,11 @@ import { NavMapState } from "@/store/NavMapSlice"
 import { deSerializationMapData } from "./mapDataSerialization"
 // direct communication calls to the frontend 
 export type map_meta = {
-  mapName?: string,
-  mapAddr?: string,
-  mapDescription?: string,
-  versionName?: string,
-  mapId?: string,
+  mapName: string,
+  mapAddr: string,
+  mapDescription: string,
+  versionName: string,
+  mapId: string,
 }
 
 export type map_update_info = {
@@ -15,7 +15,6 @@ export type map_update_info = {
     mapDescription?: string,
     versionName?: string,
     mapId?: string,
-    // mapData: string,
     mapData: string
 }
 
@@ -61,14 +60,56 @@ export const getDataById = async (map_id : string ): Promise<NavMapState | undef
   return mapData;
 };
 
-
-export const search = async (map_name : string, ): Promise<any> => {
+export const getMetaDataById = async (map_id : string ): Promise<map_meta | undefined> => {
+  const user = "yudi";
+  const url = prefix +"id_to_meta";
+  const params = new URLSearchParams({
+      param1: map_id,
+    }).toString();
+  const metaData: map_meta | undefined = await fetch(`${url}?${params}`, {
+  method: "GET",
+  headers: new Headers({
+      Authorization: `Bearer ${user}`,
+      "Content-Type": "application/json",
+  }),
+  })
+  .then((response) => {
+      if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+  })
+  .then((jsonResponse) => {
+    const data: map_meta = {
+      mapName: "Example Map",
+      mapAddr: "123 Example St",
+      mapDescription: "A detailed description of the example map.",
+      versionName: "1.0",
+      mapId: "example123"
+    };
+    const metaData : map_meta = {
+      mapAddr : jsonResponse["map_addr"],
+      mapDescription : jsonResponse["map_description"],
+      mapId : jsonResponse["map_id"],
+      mapName : jsonResponse["map_name"],
+      versionName : jsonResponse["version_name"],
+    }
+    
+    return metaData;
+  })
+  .catch((error) => {
+      console.error("Error fetching data:", error);
+      return undefined;
+  });
+  return metaData;
+};
+export const search = async (map_name : string, ):Promise<{ name: string; owner: string; updated: string; id: string }[]> =>  {
     const user = "yudi";
     const url = prefix +"get_map_meta_info";
     const params = new URLSearchParams({
         param1: map_name,
       }).toString();
-    fetch(`${url}?${params}`, {
+    const mapMeta: any = await fetch(`${url}?${params}`, {
     method: "GET",
     headers: new Headers({
         Authorization: `Bearer ${user}`,
@@ -82,11 +123,17 @@ export const search = async (map_name : string, ): Promise<any> => {
         return response.json();
     })
     .then((jsonResponse) => {
-        console.log(jsonResponse);
+        const mapMeta = jsonResponse
+        console.log(mapMeta);
+        let files = processSearchResult(mapMeta);
+        console.log(files)
+        return files
     })
     .catch((error) => {
         console.error("Error fetching data:", error);
     });
+
+    return mapMeta;
   };
 
   // maybe two parameter, json, one for map infromation, one for 
@@ -209,3 +256,15 @@ export const search = async (map_name : string, ): Promise<any> => {
       console.log(requestBody)
     return requestBody;
   };
+
+  export const processSearchResult = (dataJson :any) => {
+    console.log(dataJson)
+    const count = dataJson["data"]["variations_count"]
+    let files: { name: string; owner: string; updated: string; id: string }[] = [];
+    for (let i:number = count; i > 0 ; i--){
+      const map = dataJson["data"]["variations"][i]
+      // console.log(map)
+      files.push({name: map.version_name, owner: map.map_editor, updated: map.modified_date, id: map.map_id})
+    }
+    return files
+  }

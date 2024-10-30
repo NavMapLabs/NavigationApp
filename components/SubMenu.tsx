@@ -11,6 +11,7 @@ import { useSelector,useDispatch  } from "react-redux";
 import { RootState, AppDispatch } from "@/store/datastore";
 import {getDataById} from "@/scripts/BackendFunc";
 import {loadMapState, NavMapState} from "@/store/NavMapSlice";
+import { MapEditorNavigationProp, SearchHistoryNavigationProp } from "@/constants/types";
 
 type SubMenuProps = {
     isVisible: boolean,
@@ -25,7 +26,7 @@ const SubMenu = (props: SubMenuProps) => {
     const [isSignUpVisible, setSignUpVisible] = useState(false)
     const [isSubmitVisible, setSubmitVisible] = useState(false);
     const slideAnimation = useRef(new Animated.Value(-200)).current;
-
+    const navigation = useNavigation<MapEditorNavigationProp>();
     const toggleLogIn = () => {
         setLogInVisible(!isLogInVisible);
     }
@@ -97,6 +98,13 @@ const SubMenu = (props: SubMenuProps) => {
                                     toggleSignUp();
                                     console.log("Signup Pressed")
                                 }}
+                            />
+                             <Drawer.Item
+                                style={[styles.box, styles.TextSpace]}
+                                label="Search History"
+                                onPress={() => {
+                                    navigation.navigate('SearchHistory');
+                                 }}
                             />
                             <Drawer.Item
                                 style={[styles.box, styles.TextSpace]}

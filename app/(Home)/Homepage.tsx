@@ -52,12 +52,12 @@ const Homepage = () => {
 
       <Button
         title="Go to Login"
-        onPress={() => {
-          search("Kemper")
+        onPress={async () => {
+          await search("Shield Library")
           toggleSubmit() // todo: remove
           // toggleLogIn()
           console.log("Pressed")
-        }}
+        }} 
       />
 
       <View style={[{ height: 10, backgroundColor: '#000' }]} />
