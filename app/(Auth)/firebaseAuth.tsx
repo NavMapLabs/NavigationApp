@@ -2,11 +2,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendEmailVerification,
-  signOut,
+  signOut
 } from "firebase/auth";
 
 import auth from "../../scripts/firebaseConfig";
-
 
 export const signUp = async (
   email: string,
