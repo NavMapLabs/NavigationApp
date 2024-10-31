@@ -2,6 +2,9 @@ import { Text, View, TextInput, StyleSheet, Pressable, Modal } from "react-nativ
 import React, { useState } from "react";
 import { TextInput as PaperTextInput, IconButton } from 'react-native-paper';
 
+import { AuthError } from 'firebase/auth';
+import { signUp } from "./firebaseAuth";
+
 type SignUpProps = {
     isVisible: boolean,
     onClose: () => void
@@ -19,6 +22,26 @@ const SignUpModal = (props: SignUpProps) => {
     const [emailBorderColor, setEmailBorderColor] = useState('gray');
     const [passwordbBorderColor, setPasswordBorderColor] = useState('gray');
     const [ReEnterPasswordbBorderColor, setReEnterPasswordBorderColor] = useState('gray');
+
+    const handleSignUp = async () => {
+        try {
+            const user = await signUp(emailText, password, reEnterPassword)
+            if(user) {
+                //use saveUserData from firebase if needed
+                const id = user.uid;
+            }
+            //should navigate to a loading screen, or ask to verify first before doing anything
+        } catch (error: unknown) {
+            if ((error as AuthError).code === 'auth/email-already-in-use') {
+                alert('Email already in use');
+            } else if ((error as AuthError).code === 'auth/weak-password') {
+                alert('Weak Password. Please choose a stronger password')
+                //invalid email also
+            } else {
+                alert("Signup error: " + (error as Error).message)
+            }
+        };
+    }
 
     return (
         <Modal
@@ -94,7 +117,7 @@ const SignUpModal = (props: SignUpProps) => {
                     <Pressable
                         style={styles.button}
                         onPress={() => {
-                            /* handle action here */
+                            handleSignUp()
                         }}
                     >
                         <Text style={styles.buttonText}>Sign In</Text>

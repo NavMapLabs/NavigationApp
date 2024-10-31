@@ -39,6 +39,7 @@ const LogInModal = (props: LogInProps) => {
         alert("No Email Found, please Sign Up!");
       } else if ((error as AuthError).code === "auth/too-many-request") {
         alert("Too many unsuccessful login attempts. Please try again later.");
+        //invalid-credentials (just say wrong email or password)
       } else {
         console.log((error as AuthError).code);
         alert("Sign In error: " + (error as Error).message);
