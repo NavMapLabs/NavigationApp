@@ -24,10 +24,9 @@ export type map_data_by_id = {
 }
 
 const prefix = "http://127.0.0.1:8082/map_manager/"
-
+const user = "yudi"
 
 export const getDataById = async (map_id : string ): Promise<NavMapState | undefined> => {
-  const user = "yudi";
   const url = prefix +"get_map_data";
   const params = new URLSearchParams({
       param1: map_id,
@@ -61,7 +60,6 @@ export const getDataById = async (map_id : string ): Promise<NavMapState | undef
 };
 
 export const getMetaDataById = async (map_id : string ): Promise<map_meta | undefined> => {
-  const user = "yudi";
   const url = prefix +"id_to_meta";
   const params = new URLSearchParams({
       param1: map_id,
@@ -104,7 +102,6 @@ export const getMetaDataById = async (map_id : string ): Promise<map_meta | unde
   return metaData;
 };
 export const search = async (map_name : string, ):Promise<{ name: string; owner: string; updated: string; id: string }[]> =>  {
-    const user = "yudi";
     const url = prefix +"get_map_meta_info";
     const params = new URLSearchParams({
         param1: map_name,
@@ -138,7 +135,6 @@ export const search = async (map_name : string, ):Promise<{ name: string; owner:
 
   // maybe two parameter, json, one for map infromation, one for 
   export const createMap = async (data: any  ) => {
-    const user = "yudi";
 
     const url = prefix +"create_map";
     fetch(`${url}`, {
@@ -165,8 +161,6 @@ export const search = async (map_name : string, ):Promise<{ name: string; owner:
   };
 
   export const updateMap = async (data: any  ) => {
-    const user = "yudi";
-
     const url = prefix +"update_map";
     fetch(`${url}`, {
     method: "PUT",
@@ -228,16 +222,14 @@ export const search = async (map_name : string, ):Promise<{ name: string; owner:
 
   export const craftUpdateJsonObject =  ( map_info: map_update_info, isNewVersion: Boolean) => {
     let requestBody = {
-        data: {
-          map_name: map_info.mapName,
-          version_name: map_info.versionName,
-          map_description: map_info.mapDescription,
-          // map_data: "dummy data"
-          map_data: map_info.mapData
-        },
+        map_name: map_info.mapName,
+        version_name: map_info.versionName,
+        map_description: map_info.mapDescription,
+        // map_data: "dummy data"
+        map_data: map_info.mapData
       };
     if(!isNewVersion){
-        requestBody.data.map_id = map_info.mapId;
+        requestBody.map_id = map_info.mapId;
     }
     console.log(requestBody)
     return requestBody;
@@ -245,13 +237,11 @@ export const search = async (map_name : string, ):Promise<{ name: string; owner:
 
   export const craftCreateJsonObject= (map_info: map_update_info) => {
     let requestBody = {
-        data: {
-          map_name: map_info.mapName,
-          version_name: map_info.versionName,
-          map_address: map_info.mapAddr,
-          map_description: map_info.mapDescription,
-          map_data: map_info.mapData
-        },
+        map_name: map_info.mapName,
+        version_name: map_info.versionName,
+        map_address: map_info.mapAddr,
+        map_description: map_info.mapDescription,
+        map_data: map_info.mapData
       };
       console.log(requestBody)
     return requestBody;
@@ -259,10 +249,10 @@ export const search = async (map_name : string, ):Promise<{ name: string; owner:
 
   export const processSearchResult = (dataJson :any) => {
     console.log(dataJson)
-    const count = dataJson["data"]["variations_count"]
+    const count = dataJson["variations_count"]
     let files: { name: string; owner: string; updated: string; id: string }[] = [];
     for (let i:number = count; i > 0 ; i--){
-      const map = dataJson["data"]["variations"][i]
+      const map = dataJson["variations"][i]
       // console.log(map)
       files.push({name: map.version_name, owner: map.map_editor, updated: map.modified_date, id: map.map_id})
     }
