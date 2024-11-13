@@ -85,14 +85,14 @@ const SubMenu = (props: SubMenuProps) => {
                                 label="Project Gallery"
                                 onPress={() => {
                                     navigation.navigate('Gallery');
-                                 }}
+                                }}
                             />
-                             <Drawer.Item
+                            <Drawer.Item
                                 style={[styles.box, styles.TextSpace]}
-                                label="Search History"
+                                label="Search Page"
                                 onPress={() => {
-                                    navigation.navigate('SearchHistory');
-                                 }}
+                                    navigation.navigate('SearchPage');
+                                }}
                             />
                             <Drawer.Item
                                 style={[styles.box, styles.TextSpace]}
@@ -129,7 +129,7 @@ const SubMenu = (props: SubMenuProps) => {
             />
 
             {/* GalleryScreen Modal */}
-           
+
         </Modal>
     );
 };

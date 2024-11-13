@@ -6,7 +6,7 @@ import datastore from './store/datastore';
 import Homepage from './app/(Home)/Homepage'
 import MapEditor from './app/(Editor)/MapEditor';
 import Gallery from './app/(Editor)/Gallery';
-import SearchHistory from './app/(Editor)/SearchHistory';
+import SearchPage from './app/(Editor)/SearchPage';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -14,13 +14,13 @@ const App = () => {
     return (
         <Provider store={datastore}>
             <Stack.Navigator
-            screenOptions={{headerShown: false}}
-            initialRouteName='Homepage'
+                screenOptions={{ headerShown: false }}
+                initialRouteName='Homepage'
             >
                 <Stack.Screen name="Homepage" component={Homepage} />
                 <Stack.Screen name="MapEditor" component={MapEditor} />
                 <Stack.Screen name="Gallery" component={Gallery} />
-                <Stack.Screen name="SearchHistory" component={SearchHistory} />
+                <Stack.Screen name="SearchPage" component={SearchPage} />
             </Stack.Navigator>
         </Provider>
     )

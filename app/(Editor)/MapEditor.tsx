@@ -1,4 +1,4 @@
-import React, { useEffect, useState }  from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Pressable, Platform } from 'react-native';
 import NavigationBar from "../../components/NavigationBar";
 import EditBar from "../../components/EditBar";
@@ -22,7 +22,7 @@ const MapEditor = () => {
     const toggleFilterMenu = () => {
         setIsFilterMenuVisible(!isFilterMenuVisible);
     }
-    
+
     const toggleFloorMenu = () => {
         setIsFloorMenuVisible(!isFloorMenuVisible);
         console.log(isFloorMenuVisible)
@@ -44,10 +44,10 @@ const MapEditor = () => {
 
     return (
         <View style={styles.main} testID="MapEditor">
-            <SubMenu isVisible={isSubMenuVisible} onClose={toggleSubMenu}/>
-            <EditNodeMenu isVisible={isEditNodeMenuVisible} onClose={toggleEditNodeMenu}/>
-            <FilterMenu 
-                isVisible={isFilterMenuVisible} 
+            <SubMenu isVisible={isSubMenuVisible} onClose={toggleSubMenu} />
+            <EditNodeMenu isVisible={isEditNodeMenuVisible} onClose={toggleEditNodeMenu} />
+            <FilterMenu
+                isVisible={isFilterMenuVisible}
                 filters={filterOptions}
                 onClose={toggleFilterMenu}
                 onApplyFilters={applyFilters}
@@ -56,13 +56,13 @@ const MapEditor = () => {
                 isVisible={isFloorMenuVisible}
                 onClose={toggleFloorMenu}
             />
-            <NavigationBar  navBarStyle={styles.ui} 
-                            toggleSubMenu={toggleSubMenu} 
-                            toggleFilterMenu={toggleFilterMenu}
-                            toggleFloorMenu={toggleFloorMenu}/>
-            <MapEditorCanvas canvasStyle = {styles.canvas} />
-            <EditBar editBarStyle={styles.ui} 
-                     toggleEditNodeMenu={toggleEditNodeMenu}/>
+            <NavigationBar navBarStyle={styles.ui}
+                toggleSubMenu={toggleSubMenu}
+                toggleFilterMenu={toggleFilterMenu}
+                toggleFloorMenu={toggleFloorMenu} />
+            <MapEditorCanvas canvasStyle={styles.canvas} />
+            <EditBar editBarStyle={styles.ui}
+                toggleEditNodeMenu={toggleEditNodeMenu} />
         </View>
     )
 }
@@ -76,9 +76,9 @@ const styles = StyleSheet.create({
     ui: {
         zIndex: 2
     },
-    canvasContainer:{
+    canvasContainer: {
         flex: 1,
-        justifyContent: 'center', 
+        justifyContent: 'center',
         alignItems: 'center',
         zIndex: 1,
     },
